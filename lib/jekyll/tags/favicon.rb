@@ -8,7 +8,7 @@ module Jekyll
       end
 
       def render(context)
-        <<~HTML
+        <<-HTML
         <!-- Begin Jekyll Favicon tag v#{Jekyll::Favicon::VERSION} -->
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
         <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
