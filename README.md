@@ -9,7 +9,7 @@ Notoriously inspired by [jekyll/jekyll-seo-tag](https://github.com/jekyll/jekyll
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.1.2', group: :jekyll_plugins
 ```
 
 ## Usage
