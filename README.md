@@ -14,14 +14,16 @@ gem 'jekyll-favicon', group: :jekyll_plugins
 
 ## Usage
 
-Just add the favicon tag `{{ favicon }}`. For example
+Just add the favicon tag `{{ favicon }}`. For example, on your `index.html`
 
 ```html
+---
+---
 <!DOCTYPE html>
 <html>
-  <header>
-    {{ favicon }}
-  </header>
+  <head>
+    {% favicon %}
+  </head>
   <body>
     <h1>Jekyll Favicon</h1>
   </body>
