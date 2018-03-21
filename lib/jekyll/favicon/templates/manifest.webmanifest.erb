@@ -1,0 +1,1 @@
+<%= JSON.pretty_generate "icons" => Favicon.config['sizes'].collect{|size| {"src" => "/#{Favicon.config['path']}/favicon-#{size}.png", "type" => "png", "sizes" => size}} %>

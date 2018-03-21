@@ -5,10 +5,18 @@ module Jekyll
 
       def generate(site)
         @site = site
-        mozilla_manifest = Jekyll::Favicon::Page.new(@site, @site.source, '', 'manifest.json')
-        @site.pages << mozilla_manifest
-        microsoft_config = Jekyll::Favicon::Page.new(@site, @site.source, '', 'browserconfig.xml')
+        sizes = Favicon.config['sizes']
+        path = Favicon.config['path']
+        icons = sizes.each do |size|
+          png_favicon = Icon.new(@site, @site.source, path, "favicon-#{size}.png")
+          @site.static_files << png_favicon
+        end
+        ico_favicon = Icon.new(@site, @site.source, '', 'favicon.ico')
+        @site.static_files << ico_favicon
+        microsoft_config = Metadata.new(@site, @site.source, '', 'browserconfig.xml')
         @site.pages << microsoft_config
+        chrome_manifest = Metadata.new(@site, @site.source, '', 'manifest.webmanifest')
+        @site.pages << chrome_manifest
       end
     end
   end
