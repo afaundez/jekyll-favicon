@@ -22,6 +22,7 @@ module Jekyll
       def copy_file(dest_path)
         MiniMagick::Tool::Convert.new do |convert|
           convert << path
+          convert.merge! ['-background', 'none', '-density', '1000']
           convert.merge! case @extname
           when '.ico'
             ['-define', 'icon:auto-resize=256,128,64,48,32,16']
@@ -33,6 +34,8 @@ module Jekyll
             else
               ['-resize', "#{w}x#{h}"]
             end
+          when '.svg'
+            []
           end
           convert << dest_path
         end

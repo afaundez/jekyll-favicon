@@ -11,10 +11,12 @@ module Jekyll
           png_favicon = Icon.new(@site, @site.source, path, "favicon-#{size}.png")
           @site.static_files << png_favicon
         end
+        safari_pinned_favicon = Icon.new(@site, @site.source, path, 'safari-pinned-tab.svg')
+        @site.static_files << safari_pinned_favicon
         ico_favicon = Icon.new(@site, @site.source, '', 'favicon.ico')
         @site.static_files << ico_favicon
-        microsoft_config = Metadata.new(@site, @site.source, '', 'browserconfig.xml')
-        @site.pages << microsoft_config
+        ie_browserconfig = Metadata.new(@site, @site.source, '', 'browserconfig.xml')
+        @site.pages << ie_browserconfig
         chrome_manifest = Metadata.new(@site, @site.source, '', 'manifest.webmanifest')
         @site.pages << chrome_manifest
       end
