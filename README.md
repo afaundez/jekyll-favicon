@@ -2,7 +2,7 @@
 
 This [Jekyll](https://jekyllrb.com) plugin adds:
 
-- a .png, .ico, [webmanifest](https://developer.mozilla.org/en-US/docs/Web/Manifest), [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426(v=vs.85) generator
+- a .png, .ico, [webmanifest](https://developer.mozilla.org/en-US/docs/Web/Manifest), [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29) generator
 - a `favicon` tag to generate all the corresponding links and metadata needed in the head tag
 
 Notes: this project depends on [minimagick/minimagick](https://github.com/minimagick/minimagick/), which depends on [ImageMagick](https://imagemagick.org/) or [GraphicsMagick](http://www.graphicsmagick.org/).
