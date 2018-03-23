@@ -1,11 +1,14 @@
 module Jekyll
   module Favicon
     class Icon < Jekyll::StaticFile
-      def initialize(site, base, dir, name, collection = nil)
+      attr_accessor :source
+
+      def initialize(site, base, dir, name, source, collection = nil)
         @site = site
         @base = base
         @dir  = dir
         @name = name
+        @source = source
         @collection = collection
         @relative_path = File.join(*[@dir, name].compact)
         @extname = File.extname(@name)
@@ -15,28 +18,32 @@ module Jekyll
       end
 
       def path
-        File.join(*[@base, Favicon.config['source']].compact)
+        source
       end
 
       private
       def copy_file(dest_path)
+        case @extname
+        when '.ico'
+          define = 'icon:auto-resize=256,128,64,48,32,16'
+        when '.png'
+          w, h = @name[/favicon-(\d+x\d+).png/, 1].split('x').collect(&:to_i)
+          odd = true if w != h
+          resize = "#{w}x#{h}"
+        when '.svg'
+          FileUtils.cp path, dest_path
+          return
+        else
+          Jekyll.logger.warn "Jekyll::Favicon: Can't generate #{dest_path}, extension not supported supported."
+          return
+        end
         MiniMagick::Tool::Convert.new do |convert|
           convert << path
-          convert.merge! ['-background', 'none', '-density', '1000']
-          convert.merge! case @extname
-          when '.ico'
-            ['-define', 'icon:auto-resize=256,128,64,48,32,16']
-          when '.png'
-            w, h = @name[/favicon-(\d+x\d+).png/, 1].split('x').collect(&:to_i)
-            size = w < h ? h : w
-            if w != h
-              ['-crop', "#{w}x#{h}#{"+#{(size - w)/2}+#{(size - h)/2}" if w != h}"]
-            else
-              ['-resize', "#{w}x#{h}"]
-            end
-          when '.svg'
-            []
-          end
+          convert.background Favicon.config['background']
+          convert.gravity 'center' if resize && odd
+          convert.define define if define
+          convert.resize resize if resize
+          convert.extent resize if resize && odd
           convert << dest_path
         end
       end

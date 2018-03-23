@@ -10,7 +10,7 @@ module Jekyll
         site = context.registers[:site]
         templates_dir = Favicon.templates
         head ="<!-- Begin Jekyll Favicon tag v#{Favicon::VERSION} -->"
-        body = %w[generic safari chrome ie].collect do |template|
+        body = %w[classic safari chrome ie].collect do |template|
           ERB.new(File.read(File.join templates_dir, "#{template}.html.erb"), nil, '-').result(binding).strip
         end
         foot = "<!-- End Jekyll Favicon tag -->"
