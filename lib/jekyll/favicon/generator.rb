@@ -45,9 +45,9 @@ module Jekyll
           case File.extname(favicon_source)
           when '.svg'
             convert.density Favicon.config['svg']['density']
-            convert.resize '1024x1024'
+            convert.resize Favicon.config['svg']['dimensions']
           when '.png'
-            convert.resize '558x558'
+            convert.resize Favicon.config['png']['dimensions']
           end
           convert << favicon_source
           convert << tempfile.path

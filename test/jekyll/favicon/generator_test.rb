@@ -6,7 +6,14 @@ describe Jekyll::Favicon::Generator do
     @options['quiet'] = true
     @options['destination'] = Dir.mktmpdir
     @options['favicon'] = {
-      'svg' => { 'density' => '72' },
+      'sizes' => ['48x48', '32x32', '16x16'],
+      'svg' => {
+        'density' => '72',
+        'dimensions' => '64x64'
+      },
+      'png' => {
+        'dimensions' => '64x64'
+      },
       'ico' => { 'sizes' => [32, 16] }
     }
   end
@@ -41,7 +48,7 @@ describe Jekyll::Favicon::Generator do
       assert File.exist? File.join(@options['destination'], 'favicon.ico')
       generated_files = Dir.glob File.join(@options['destination'], '**', '*.png')
       defaults = Jekyll::Favicon::DEFAULTS
-      defaults['sizes'].each do |size|
+      @options['favicon']['sizes'].each do |size|
         icon = File.join @options['destination'], defaults['path'], "favicon-#{size}.png"
         assert_includes generated_files, icon
       end
