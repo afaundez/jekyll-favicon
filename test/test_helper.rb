@@ -10,3 +10,5 @@ end
 def fixture(*subdirs)
   root 'test', 'fixtures', *subdirs
 end
+
+Jekyll.logger.log_level = :error

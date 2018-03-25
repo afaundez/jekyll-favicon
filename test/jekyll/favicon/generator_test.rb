@@ -2,62 +2,51 @@ require 'test_helper'
 
 describe Jekyll::Favicon::Generator do
   before do
-    @options = {}
-    @options['quiet'] = true
+    @options = YAML.load_file fixture '_test.yml'
     @options['destination'] = Dir.mktmpdir
-    @options['favicon'] = {
-      'sizes' => %w[48x48 32x32 16x16],
-      'svg' => {
-        'density' => '72',
-        'dimensions' => '64x64'
-      },
-      'png' => {
-        'dimensions' => '64x64'
-      },
-      'ico' => { 'sizes' => [32, 16] }
-    }
   end
 
   after do
     FileUtils.remove_entry @site.config['destination']
   end
 
-  describe 'when favicon source exists' do
+  describe 'using empty site' do
     before do
-      @options['quiet'] = false
       @options['source'] = fixture 'sites', 'empty'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
     end
 
-    it 'should not generate files' do
-      skip
+    it 'should not generate files because favicon source is missing' do
       assert_output(nil, /Jekyll::Favicon: Missing favicon.svg/) do
+        Jekyll.logger.log_level = :warn
         @site.process
+        Jekyll.logger.log_level = :error
       end
     end
   end
 
-  describe 'when favicon source exists' do
-    before do
-      @options['source'] = fixture 'sites', 'default'
+  describe 'using site with favicon' do
+    before :all do
+      @options['source'] = fixture 'sites', 'with-favicon'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
+      @destination = @options['destination']
+      @defaults = Jekyll::Favicon::DEFAULTS
     end
 
-    it 'should generate icons' do
-      assert File.exist? File.join(@options['destination'], 'favicon.ico')
-      generated_files = Dir.glob File.join(@options['destination'],
-                                           '**',
-                                           '*.png')
-      defaults = Jekyll::Favicon::DEFAULTS
+    it 'should generate favicons and metadata' do
+      assert File.exist? File.join(@destination, 'favicon.ico')
+
+      generated_files = Dir.glob File.join(@destination, '**', '*.png')
       @options['favicon']['sizes'].each do |size|
-        icon = File.join @options['destination'],
-                         defaults['path'],
-                         "favicon-#{size}.png"
+        icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
         assert_includes generated_files, icon
       end
+
+      assert File.exist? File.join(@destination, 'manifest.webmanifest')
+      assert File.exist? File.join(@destination, 'browserconfig.xml')
     end
   end
 end
