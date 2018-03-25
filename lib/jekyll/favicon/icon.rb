@@ -22,6 +22,7 @@ module Jekyll
       end
 
       private
+
       def copy_file(dest_path)
         case @extname
         when '.ico'

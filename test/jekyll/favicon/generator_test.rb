@@ -35,7 +35,7 @@ describe Jekyll::Favicon::Generator do
 
     it 'should generate icons' do
       assert File.exist? File.join(@options['destination'], 'favicon.ico')
-      generated_files = Dir.glob File.join(@options['destination'], "**", "*.png")
+      generated_files = Dir.glob File.join(@options['destination'], '**', '*.png')
       defaults = Jekyll::Favicon::DEFAULTS
       defaults['sizes'].each do |size|
         icon = File.join @options['destination'], defaults['path'], "favicon-#{size}.png"

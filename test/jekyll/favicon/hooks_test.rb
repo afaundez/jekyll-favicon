@@ -15,7 +15,7 @@ describe 'Setup Favicon configuration configuration with hooks' do
   end
 
   it 'should loads favicon config in default config file' do
-    custom = YAML.load_file(File.join @options['source'], '_config.yml')['favicon']
+    custom = YAML.load_file(File.join(@options['source'], '_config.yml'))['favicon']
     assert @site.config['favicon']['source'], custom['source']
     assert @site.config['favicon']['path'], custom['path']
     assert @site.config['favicon']['background'], custom['background']

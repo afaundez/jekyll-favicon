@@ -7,12 +7,12 @@ module Jekyll
         @dir = dir
         @name = name
 
-        self.process @name
+        process @name
         template = File.read File.join Favicon.templates, "#{name}.erb"
         self.content = ERB.new(template, nil, '-').result binding
         self.data = {}
-        self.data['name'] = name
-        self.data['layout'] = nil
+        data['name'] = name
+        data['layout'] = nil
       end
     end
   end
