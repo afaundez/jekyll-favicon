@@ -26,7 +26,7 @@ module Jekyll
       def copy_file(dest_path)
         case @extname
         when '.ico'
-          define = 'icon:auto-resize=256,128,64,48,32,16'
+          define = "icon:auto-resize=#{Favicon.config['ico']['sizes'].join ','}"
         when '.png'
           w, h = @name[/favicon-(\d+x\d+).png/, 1].split('x').collect(&:to_i)
           odd = true if w != h

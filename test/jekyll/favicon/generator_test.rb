@@ -6,7 +6,8 @@ describe Jekyll::Favicon::Generator do
     @options['quiet'] = true
     @options['destination'] = Dir.mktmpdir
     @options['favicon'] = {
-      'svg' => { 'density' => '72' }
+      'svg' => { 'density' => '72' },
+      'ico' => { 'sizes' => [32, 16] }
     }
   end
 
