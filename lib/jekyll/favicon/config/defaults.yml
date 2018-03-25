@@ -20,3 +20,5 @@ favicon:
     - 270x270
     - 558x270
     - 558x558
+  svg:
+    density: 2000
