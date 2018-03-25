@@ -1,36 +1,55 @@
 module Jekyll
   module Favicon
+    # Extended generator that creates all the stastic icons and metadata files
     class Generator < Jekyll::Generator
       priority :high
 
       def generate(site)
         @site = site
         if File.exist? favicon_source
-          sizes = Favicon.config['sizes']
-          path = Favicon.config['path']
-
-          favicon_template = favicon_tempfile
-
-          ico_favicon = Icon.new(@site, @site.source, '', 'favicon.ico', favicon_template.path)
-          @site.static_files << ico_favicon
-
-          sizes.each do |size|
-            png_favicon = Icon.new(@site, @site.source, path, "favicon-#{size}.png", favicon_template.path)
-            @site.static_files << png_favicon
-          end
-
-          if File.extname(favicon_source) == '.svg'
-            safari_pinned_favicon = Icon.new(@site, @site.source, path, 'safari-pinned-tab.svg', favicon_source)
-            @site.static_files << safari_pinned_favicon
-          end
-
-          ['browserconfig.xml', 'manifest.webmanifest'].each do |template|
-            metadata_page = Metadata.new(@site, @site.source, '', template)
-            @site.pages << metadata_page
-          end
+          generate_files Favicon.config['sizes'], Favicon.config['path']
         else
-          Jekyll.logger.warn "Jekyll::Favicon: Missing #{Favicon.config['source']}, not generating favicons."
+          Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
+                             " #{Favicon.config['source']}, not generating" \
+                             ' favicons.'
         end
+      end
+
+      private
+
+      def generate_files(sizes, prefix)
+        favicon_template = favicon_tempfile
+        generate_ico_from favicon_template.path
+        generate_png_from favicon_template.path, prefix, sizes
+        if File.extname(favicon_source) == '.svg'
+          generate_svg_from favicon_template.path, prefix,
+                            'safari-pinned-tab.svg'
+        end
+        generate_metadata_from 'browserconfig.xml'
+        generate_metadata_from 'manifest.webmanifest'
+      end
+
+      def generate_ico_from(source)
+        ico_favicon = Icon.new(@site, '', 'favicon.ico', source)
+        @site.static_files << ico_favicon
+      end
+
+      def generate_png_from(source, prefix, sizes)
+        sizes.each do |size|
+          png_favicon = Icon.new(@site, prefix,
+                                 "favicon-#{size}.png", source)
+          @site.static_files << png_favicon
+        end
+      end
+
+      def generate_metadata_from(template)
+        metadata_page = Metadata.new(@site, @site.source, '', template)
+        @site.pages << metadata_page
+      end
+
+      def generate_svg_from(source, prefix, name)
+        svg_favicon = Icon.new(@site, prefix, name, source)
+        @site.static_files << svg_favicon
       end
 
       def favicon_source
@@ -39,20 +58,27 @@ module Jekyll
 
       def favicon_tempfile
         tempfile = Tempfile.new(['favicon_template', '.png'])
-        MiniMagick::Tool::Convert.new do |convert|
-          convert.flatten
-          convert.background Favicon.config['background']
-          case File.extname(favicon_source)
-          when '.svg'
-            convert.density Favicon.config['svg']['density']
-            convert.resize Favicon.config['svg']['dimensions']
-          when '.png'
-            convert.resize Favicon.config['png']['dimensions']
-          end
-          convert << favicon_source
-          convert << tempfile.path
-        end
+        convert favicon_source, tempfile.path, Favicon.config
         tempfile
+      end
+
+      def convert(source, output, options = {})
+        MiniMagick::Tool::Convert.new do |convert|
+          options_for convert, source, options
+          convert << favicon_source
+          convert << output
+        end
+      end
+
+      def options_for(convert, source, options)
+        convert.flatten
+        convert.background options['background']
+        if source.svg?
+          convert.density options['svg']['density']
+          convert.resize options['svg']['dimensions']
+        elsif source.png?
+          convert.resize options['png']['dimensions']
+        end
       end
     end
   end

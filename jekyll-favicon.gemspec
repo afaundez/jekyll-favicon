@@ -10,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['alvaro@faundez.net']
 
   spec.summary       = 'Jekyll plugin for favicon tag generation.'
-  spec.description   = 'Jekyll-favicon is a jekyll plugin that adds the tag favicon, generating html tags for favicon.'
+  spec.description   = 'Jekyll-favicon is a jekyll plugin that adds the' \
+                       ' tag favicon, generating html tags for favicon.'
   spec.homepage      = 'https://github.com/afaundez/jekyll-favicon'
   spec.license       = 'MIT'
 
