@@ -1,4 +1,5 @@
 <!-- Chrome -->
-<link rel="icon" sizes="192x192" href="/<%= Favicon.config['path'] %>/favicon-192x192.png">
-<link rel="icon" sizes="128x128" href="/<%= Favicon.config['path'] %>/favicon-128x128.png">
-<link rel="manifest" href="/manifest.webmanifest">
+<%- Favicon.config['chrome']['sizes'].each do |size| -%>
+  <link rel="icon" sizes="<%= size %>" href="<%= File.join Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- end -%>
+<link rel="manifest" href="<%= File.join Favicon.config['chrome']['manifest-path'], 'manifest.webmanifest' %>">

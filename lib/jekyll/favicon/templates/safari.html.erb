@@ -1,8 +1,5 @@
-<!-- Apple -->
-<link rel="apple-touch-icon" sizes="180x180" href="/<%= Favicon.config['path'] %>/favicon-180x180.png">
-<link rel="apple-touch-icon" sizes="167x167" href="/<%= Favicon.config['path'] %>/favicon-167x167.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/<%= Favicon.config['path'] %>/favicon-152x152.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/<%= Favicon.config['path'] %>/favicon-120x120.png">
-<link rel="apple-touch-icon" sizes="76x76" href="/<%= Favicon.config['path'] %>/favicon-76x76.png">
-<link rel="apple-touch-icon" sizes="57x57" href="/<%= Favicon.config['path'] %>/favicon-57x57.png">
-<link rel="mask-icon" color="#5bbad5" href="/<%= Favicon.config['path'] %>/safari-pinned-tab.svg">
+<!-- Safari -->
+<%- Favicon.config['apple-touch-icon']['sizes'].each do |size| -%>
+  <link rel="apple-touch-icon" sizes="<%= size %>" href="<%= File.join Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- end -%>
+<link rel="mask-icon" color="<%= Favicon.config['safari-pinned-tab']['mask-icon-color'] %>" href="<%= File.join Favicon.config['path'], 'safari-pinned-tab.svg' %>">

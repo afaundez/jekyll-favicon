@@ -1,7 +1,6 @@
 <!-- Classic -->
 <link rel="shortcut icon" href="favicon.ico">
-<link rel="icon" sizes="16x16 32x32 48x48 64x64 128x128 256x256" href="/favicon.ico">
-<link rel="icon" sizes="96x96" type="image/png" href="/<%= Favicon.config['path'] %>/favicon-96x96.png">
-<link rel="icon" sizes="64x64" type="image/png" href="/<%= Favicon.config['path'] %>/favicon-32x32.png">
-<link rel="icon" sizes="32x32" type="image/png" href="/<%= Favicon.config['path'] %>/favicon-32x32.png">
-<link rel="icon" sizes="16x16" type="image/png" href="/<%= Favicon.config['path'] %>/favicon-16x16.png">
+<link rel="icon" sizes="<%= Favicon.config['ico']['sizes'].collect{|s| "#{s}x#{s}"}.join ' ' %>" href="<%= File.join Favicon.config['ico']['path'], 'favicon.ico' %>">
+<%- Favicon.config['classic']['sizes'].each do |size| -%>
+  <link rel="icon" sizes="<%= size %>" type="image/png" href="<%= File.join Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- end -%>

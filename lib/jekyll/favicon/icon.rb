@@ -62,13 +62,21 @@ module Jekyll
       end
 
       def options_for(convert, options)
-        convert.background Favicon.config['background']
+        convert.background background_for options[:resize]
         convert.define options[:define] if options[:define]
         return unless options[:resize]
         convert.resize options[:resize]
         return unless options[:odd]
         convert.gravity 'center'
         convert.extent options[:resize]
+      end
+
+      def background_for(size)
+        if Favicon.config['apple-touch-icon']['sizes'].include? size
+          Favicon.config['apple-touch-icon']['background']
+        else
+          'none'
+        end
       end
     end
   end

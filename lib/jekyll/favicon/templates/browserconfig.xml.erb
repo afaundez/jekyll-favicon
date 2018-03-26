@@ -1,11 +1,11 @@
 <browserconfig>
   <msapplication>
     <tile>
-      <square310x310logo src="/<%= Favicon.config['path'] %>/favicon-558x558.png"/>
-      <wide310x150logo src="/<%= Favicon.config['path'] %>/favicon-558x270.png"/>
-      <square150x150logo src="/<%= Favicon.config['path'] %>/favicon-270x270.png"/>
-      <square70x70logo src="/<%= Favicon.config['path'] %>/favicon-128x128.png"/>
-      <TileColor>#FFFFFF</TileColor>
+      <square310x310logo src="<%= File.join Favicon.config['path'], 'favicon-558x558.png' %>" />
+      <wide310x150logo src="<%= File.join Favicon.config['path'], 'favicon-558x270.png' %>" />
+      <square150x150logo src="<%= File.join Favicon.config['path'], 'favicon-270x270.png' %>" />
+      <square70x70logo src="<%= File.join Favicon.config['path'], 'favicon-128x128.png' %>" />
+      <TileColor><%= Favicon.config['ie']['tile-color'] %></TileColor>
     </tile>
   </msapplication>
 </browserconfig>

@@ -22,7 +22,7 @@ module Jekyll
         generate_ico_from favicon_template.path
         generate_png_from favicon_template.path, prefix, sizes
         if File.extname(favicon_source) == '.svg'
-          generate_svg_from favicon_template.path, prefix,
+          generate_svg_from favicon_source, prefix,
                             'safari-pinned-tab.svg'
         end
         generate_metadata_from 'browserconfig.xml'
@@ -35,10 +35,11 @@ module Jekyll
       end
 
       def generate_png_from(source, prefix, sizes)
-        sizes.each do |size|
-          png_favicon = Icon.new(@site, prefix,
-                                 "favicon-#{size}.png", source)
-          @site.static_files << png_favicon
+        ['classic', 'ie', 'chrome', 'apple-touch-icon'].each do |template|
+          Favicon.config[template]['sizes'].each do |size|
+            png_favicon = Icon.new(@site, prefix, "favicon-#{size}.png", source)
+            @site.static_files << png_favicon
+          end
         end
       end
 
@@ -72,7 +73,7 @@ module Jekyll
 
       def options_for(convert, source, options)
         convert.flatten
-        convert.background options['background']
+        convert.background 'none'
         if source.svg?
           convert.density options['svg']['density']
           convert.resize options['svg']['dimensions']
