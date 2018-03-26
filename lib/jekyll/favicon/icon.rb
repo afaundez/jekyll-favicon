@@ -62,6 +62,7 @@ module Jekyll
       end
 
       def options_for(convert, options)
+        convert.flatten
         convert.background background_for options[:resize]
         convert.define options[:define] if options[:define]
         return unless options[:resize]
