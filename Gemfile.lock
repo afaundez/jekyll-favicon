@@ -84,7 +84,7 @@ DEPENDENCIES
   jekyll-favicon!
   minitest (~> 5.0)
   rake (~> 10.0)
-  rubocop (~> 0.54.0)
+  rubocop (~> 0.54.0, >= 0.54.0)
 
 BUNDLED WITH
    1.16.1
