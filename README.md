@@ -16,7 +16,7 @@ Note: this project depends on [minimagick/minimagick](https://github.com/minimag
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.0', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.1', group: :jekyll_plugins
 ```
 
 ## Usage
