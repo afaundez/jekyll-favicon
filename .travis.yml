@@ -11,3 +11,7 @@ before_install:
   - sudo apt-get install imagemagick libmagickcore-dev libmagickwand-dev
   - sudo apt-get install -qq graphicsmagick
   - gem install bundler -v 1.16.1
+addons:
+  apt:
+    config:
+      retries: true
