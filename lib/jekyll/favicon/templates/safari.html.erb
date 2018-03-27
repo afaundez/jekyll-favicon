@@ -1,0 +1,5 @@
+<!-- Safari -->
+<%- Favicon.config['apple-touch-icon']['sizes'].each do |size| -%>
+  <link rel="apple-touch-icon" sizes="<%= size %>" href="<%= File.join Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- end -%>
+<link rel="mask-icon" color="<%= Favicon.config['safari-pinned-tab']['mask-icon-color'] %>" href="<%= File.join Favicon.config['path'], 'safari-pinned-tab.svg' %>">
