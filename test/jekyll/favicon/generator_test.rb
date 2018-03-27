@@ -26,9 +26,33 @@ describe Jekyll::Favicon::Generator do
     end
   end
 
-  describe 'using site with favicon' do
+  describe 'using site with default favicon' do
     before :all do
-      @options['source'] = fixture 'sites', 'with-favicon'
+      @options['source'] = fixture 'sites', 'with-svg-favicon'
+      @config = Jekyll.configuration @options
+      @site = Jekyll::Site.new @config
+      @site.process
+      @destination = @options['destination']
+      @defaults = Jekyll::Favicon::DEFAULTS
+    end
+
+    it 'should generate favicons and metadata' do
+      assert File.exist? File.join(@destination, 'favicon.ico')
+
+      generated_files = Dir.glob File.join(@destination, '**', '*.png')
+      @options['favicon']['sizes'].each do |size|
+        icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
+        assert_includes generated_files, icon
+      end
+
+      assert File.exist? File.join(@destination, 'manifest.webmanifest')
+      assert File.exist? File.join(@destination, 'browserconfig.xml')
+    end
+  end
+
+  describe 'using site with PNG favicon' do
+    before :all do
+      @options['source'] = fixture 'sites', 'with-png-favicon'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
