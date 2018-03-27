@@ -1,0 +1,6 @@
+<!-- Classic -->
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" sizes="<%= Favicon.config['ico']['sizes'].collect{|s| "#{s}x#{s}"}.join ' ' %>" href="<%= File.join Favicon.config['ico']['path'], 'favicon.ico' %>">
+<%- Favicon.config['classic']['sizes'].each do |size| -%>
+  <link rel="icon" sizes="<%= size %>" type="image/png" href="<%= File.join Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- end -%>

@@ -1,0 +1,5 @@
+Metrics/BlockLength:
+  Exclude:
+    - Rakefile
+    - '**/*.rake'
+    - test/**/*.rb

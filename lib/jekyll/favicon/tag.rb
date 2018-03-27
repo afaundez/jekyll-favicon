@@ -1,6 +1,7 @@
 module Jekyll
-  module Tags
-    class Favicon < Liquid::Tag
+  module Favicon
+    # New `favicon` tag for favicon include on templates
+    class Tag < Liquid::Tag
       def initialize(tag_name, text, tokens)
         super
         @text = text
@@ -8,16 +9,17 @@ module Jekyll
 
       def render(context)
         site = context.registers[:site]
-        templates_dir = Jekyll::Favicon.templates
-        head ="<!-- Begin Jekyll Favicon tag v#{Jekyll::Favicon::VERSION} -->"
-        body = %w[generic apple chrome microsoft].collect do |template|
-          ERB.new(File.read(File.join templates_dir, "#{template}.html.erb")).result.strip
+        templates_dir = Favicon.templates
+        head = "<!-- Begin Jekyll Favicon tag v#{Favicon::VERSION} -->"
+        body = %w[classic safari chrome ie].collect do |template|
+          template_path = File.join templates_dir, "#{template}.html.erb"
+          ERB.new(File.read(template_path), nil, '-').result(binding).strip
         end
-        foot = "<!-- End Jekyll Favicon tag -->"
+        foot = '<!-- End Jekyll Favicon tag -->'
         [head, body.join("\n"), foot].join("\n")
       end
     end
   end
 end
 
-Liquid::Template.register_tag('favicon', Jekyll::Tags::Favicon)
+Liquid::Template.register_tag('favicon', Jekyll::Favicon::Tag)

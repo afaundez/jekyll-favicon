@@ -1,0 +1,14 @@
+favicon:
+  sizes:
+  - 48x48
+  - 32x32
+  - 16x16
+  svg:
+    density: '72'
+    dimensions: 64x64
+  png:
+    dimensions: 64x64
+  ico:
+    sizes:
+    - 32
+    - 16
