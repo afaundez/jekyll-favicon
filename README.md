@@ -31,7 +31,7 @@ Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.1', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.2', group: :jekyll_plugins
 ```
 
 ## Usage
