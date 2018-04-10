@@ -9,7 +9,22 @@ This [Jekyll](https://jekyllrb.com) plugin adds:
   - a [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29)
 - a tag to generate all the corresponding links and metadata needed in the head tag
 
-Note: this project depends on [minimagick/minimagick](https://github.com/minimagick/minimagick/), which depends on [ImageMagick](https://imagemagick.org/) or [GraphicsMagick](http://www.graphicsmagick.org/).
+
+
+## Prerequisites
+
+Before using this plugin your system must have installed [ImageMagick](http://www.imagemagick.org) (or [GraphicsMagick](http://www.graphicsmagick.org/)).
+
+Check if it is already installed by running:
+
+```sh
+$ convert --version
+Version: ImageMagick 7.0.7-27 Q16 x86_64 2018-03-18 http://www.imagemagick.org
+Copyright: © 1999-2018 ImageMagick Studio LLC
+License: http://www.imagemagick.org/script/license.php
+Features: Cipher DPC HDRI Modules
+Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
+```
 
 ## Installation
 
