@@ -4,10 +4,13 @@ module Jekyll
     class Generator < Jekyll::Generator
       priority :high
 
+      attr_accessor :template
+
       def generate(site)
         @site = site
         if File.exist? favicon_source
-          generate_files Favicon.config['sizes'], Favicon.config['path']
+          @template = favicon_tempfile
+          generate_files Favicon.config['path']
         else
           Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
                              " #{Favicon.config['source']}, not generating" \
@@ -15,12 +18,17 @@ module Jekyll
         end
       end
 
+      def clean
+        return unless @tempfile
+        @template.close
+        @template.unlink
+      end
+
       private
 
-      def generate_files(sizes, prefix)
-        favicon_template = favicon_tempfile
-        generate_ico_from favicon_template.path
-        generate_png_from favicon_template.path, prefix, sizes
+      def generate_files(prefix)
+        generate_ico_from @template.path
+        generate_png_from @template.path, prefix
         if File.extname(favicon_source) == '.svg'
           generate_svg_from favicon_source, prefix,
                             'safari-pinned-tab.svg'
@@ -34,7 +42,7 @@ module Jekyll
         @site.static_files << ico_favicon
       end
 
-      def generate_png_from(source, prefix, sizes)
+      def generate_png_from(source, prefix)
         ['classic', 'ie', 'chrome', 'apple-touch-icon'].each do |template|
           Favicon.config[template]['sizes'].each do |size|
             png_favicon = Icon.new(@site, prefix, "favicon-#{size}.png", source)
