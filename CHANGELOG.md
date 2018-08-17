@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Changelog
 - Contributing guide
 - Issue and Pull Request templates
+- Improve Readme usage
 
 ### Fixed
 - Missing baseurl in links from `favicon` tag

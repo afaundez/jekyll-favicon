@@ -36,7 +36,9 @@ gem 'jekyll-favicon', '~> 0.2.2', group: :jekyll_plugins
 
 ## Usage
 
-Note: this plugin does not work with the [github-pages](https://pages.github.com) build, but you can generate the site and push it.
+If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [running example](https://afaundez.gitlab.io/jekyll-favicon-example/) hosted by [GitLab](https://about.gitlab.com/features/pages/).
+
+As [Github Pages](https://pages.github.com) build doesn't load custom plugins, this plugin won't work. As an alternative, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
 
 ### Generator
 
