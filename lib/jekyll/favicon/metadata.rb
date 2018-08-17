@@ -12,9 +12,7 @@ module Jekyll
         prepend_path = @site.baseurl || ''
         template = File.read File.join Favicon.templates, "#{name}.erb"
         self.content = ERB.new(template, nil, '-').result binding
-        self.data = {}
-        data['name'] = name
-        data['layout'] = nil
+        self.data = { 'name' => name, 'layout' => nil }
       end
     end
   end
