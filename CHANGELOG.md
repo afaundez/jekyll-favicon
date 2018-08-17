@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Missing baseurl in links from `favicon` tag
 
-## [0.2.1] - 2015-03-27
+## [0.2.2] - 2015-03-27
 ### Fixed
 - Missing png template
 
