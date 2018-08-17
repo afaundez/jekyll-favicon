@@ -9,6 +9,7 @@ module Jekyll
         @name = name
 
         process @name
+        prepend_path = @site.baseurl || ''
         template = File.read File.join Favicon.templates, "#{name}.erb"
         self.content = ERB.new(template, nil, '-').result binding
         self.data = {}

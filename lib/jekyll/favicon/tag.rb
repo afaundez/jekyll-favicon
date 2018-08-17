@@ -9,6 +9,7 @@ module Jekyll
 
       def render(context)
         site = context.registers[:site]
+        prepend_path = site.baseurl || ''
         templates_dir = Favicon.templates
         head = "<!-- Begin Jekyll Favicon tag v#{Favicon::VERSION} -->"
         body = %w[classic safari chrome ie].collect do |template|
