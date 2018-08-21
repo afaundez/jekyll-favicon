@@ -30,8 +30,12 @@ GEM
     jekyll-favicon (0.2.3)
       jekyll (~> 3.0)
       mini_magick (~> 4.5)
+    jekyll-feed (0.10.0)
+      jekyll (~> 3.3)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
+    jekyll-seo-tag (2.4.0)
+      jekyll (~> 3.3)
     jekyll-watch (2.0.0)
       listen (~> 3.0)
     kramdown (1.17.0)
@@ -41,6 +45,10 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
     mercenary (0.3.6)
     mini_magick (4.8.0)
+    minima (2.5.0)
+      jekyll (~> 3.5)
+      jekyll-feed (~> 0.9)
+      jekyll-seo-tag (~> 2.1)
     pathutil (0.16.1)
       forwardable-extended (~> 2.6)
     public_suffix (3.0.3)
@@ -61,6 +69,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll (~> 3.0, >= 3.0.5)
   jekyll-favicon (~> 0.2.3)
+  minima (~> 2.5)
 
 BUNDLED WITH
    1.16.1

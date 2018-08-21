@@ -1,1 +1,10 @@
 baseurl: /jekyll-favicon-example
+
+theme: minima
+title: Jekyll Favicon Example
+author: Alvaro Faundez
+email: alvaro@faundez.net
+description: >
+  This site is a working example of the jekyll-favicon plugin.
+twitter_username: afaundez
+github_username:  afaundez
