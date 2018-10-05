@@ -22,11 +22,14 @@ describe Jekyll::Favicon::Tag do
 
     it 'should generate links and meta' do
       index_destination = File.join(@destination, 'index.html')
+      ico_destination = File.join @destination,
+                                  Jekyll::Favicon.config['ico']['path'],
+                                  'favicon.ico'
       assert File.exist? index_destination
+      assert File.exist? ico_destination
       index_document = Nokogiri::Slop File.open(index_destination)
       refute_empty index_document.css('link')
-      assert index_document.at_css('link[href="favicon.ico"]')
-      favicon_path = File.join @site.baseurl, Jekyll::Favicon.config['path'],
+      favicon_path = File.join @site.baseurl, Jekyll::Favicon.config['ico']['path'],
                                'favicon.ico'
       css_selector = 'link[href="' + favicon_path + '"]'
       assert index_document.at_css(css_selector)
