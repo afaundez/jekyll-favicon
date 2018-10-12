@@ -7,7 +7,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   after do
-    FileUtils.remove_entry @site.config['destination']
+    FileUtils.remove_entry @options['destination']
   end
 
   describe 'using empty site' do
@@ -27,7 +27,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   describe 'using site with default favicon' do
-    before :all do
+    before do
       @options['source'] = fixture 'sites', 'with-svg-favicon'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
@@ -51,7 +51,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   describe 'using site with PNG favicon' do
-    before :all do
+    before do
       @options['source'] = fixture 'sites', 'with-png-favicon'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
@@ -71,6 +71,54 @@ describe Jekyll::Favicon::Generator do
 
       assert File.exist? File.join(@destination, 'manifest.webmanifest')
       assert File.exist? File.join(@destination, 'browserconfig.xml')
+    end
+  end
+
+  describe 'using site with existing default webmanifest' do
+    before :all do
+      @options['source'] = fixture 'sites', 'with-default-webmanifest'
+      @config = Jekyll.configuration @options
+      @site = Jekyll::Site.new @config
+      @site.process
+      @destination = @options['destination']
+      @defaults = Jekyll::Favicon::DEFAULTS
+      webmanifest_path = File.join @destination,
+                                   @defaults['chrome']['manifest']['target']
+      webmanifest_content = File.read webmanifest_path
+      @webmanifest = JSON.parse webmanifest_content
+    end
+
+    it 'should keep values from existent webmanifest' do
+      assert @webmanifest.keys.include?('name')
+    end
+
+    it 'should append icons webmanifest' do
+      assert @webmanifest.keys.include?('icons')
+    end
+  end
+
+  describe 'using site with existing configured webmanifest' do
+    before do
+      @options['source'] = fixture 'sites', 'with-custom-webmanifest'
+      @config = Jekyll.configuration @options
+      @site = Jekyll::Site.new @config
+      @site.process
+      @site_manifest_config = @config['favicon']['chrome']['manifest']
+      @target_manifest_path = File.join @options['destination'],
+                                        @site_manifest_config['target']
+    end
+
+    it 'should exists only one manifest' do
+      refute File.file? File.join @options['destination'],
+                                  @site_manifest_config['source']
+      assert File.file? File.join @target_manifest_path
+    end
+
+    it 'should merge attributes from existent webmanifest' do
+      webmanifest = JSON.parse File.read @target_manifest_path
+      assert_includes webmanifest.keys, 'icons'
+      assert_includes webmanifest.keys, 'name'
+      assert_equal webmanifest['name'], 'target.webmanifest'
     end
   end
 end

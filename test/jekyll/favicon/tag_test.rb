@@ -8,7 +8,7 @@ describe Jekyll::Favicon::Tag do
   end
 
   after do
-    FileUtils.remove_entry @site.config['destination']
+    FileUtils.remove_entry @options['destination']
   end
 
   describe 'using minimal configuration' do
@@ -18,21 +18,23 @@ describe Jekyll::Favicon::Tag do
       @site = Jekyll::Site.new @config
       @site.process
       @destination = @options['destination']
+      index_destination = File.join(@destination, 'index.html')
+      @index_document = Nokogiri::Slop File.open(index_destination)
     end
 
-    it 'should generate links and meta' do
-      index_destination = File.join(@destination, 'index.html')
-      ico_destination = File.join @destination,
-                                  Jekyll::Favicon.config['ico']['path'],
-                                  'favicon.ico'
-      assert File.exist? index_destination
-      assert File.exist? ico_destination
-      index_document = Nokogiri::Slop File.open(index_destination)
-      refute_empty index_document.css('link')
-      favicon_path = File.join @site.baseurl, Jekyll::Favicon.config['ico']['path'],
-                               'favicon.ico'
-      css_selector = 'link[href="' + favicon_path + '"]'
-      assert index_document.at_css(css_selector)
+    it 'should generate ico link' do
+      ico_config = Jekyll::Favicon.config['ico']
+      ico_path = File.join @site.baseurl, ico_config['path'], 'favicon.ico'
+      css_selector = 'link[href="' + ico_path + '"]'
+      assert @index_document.at_css(css_selector)
+    end
+
+    it 'should generate webmanifest link' do
+      webmanifest_config = Jekyll::Favicon.config['chrome']['manifest']
+      webmanifest_path = File.join File.join @site.baseurl,
+                                             webmanifest_config['target']
+      css_selector = 'link[href="' + webmanifest_path + '"]'
+      assert @index_document.at_css(css_selector)
     end
   end
 end

@@ -1,1 +1,0 @@
-<%= JSON.pretty_generate icons: Favicon.config['chrome']['sizes'].collect{|size| {src: File.join(prepend_path, Favicon.config['path'], "favicon-#{size}.png"), type: 'png', sizes: size}} %>

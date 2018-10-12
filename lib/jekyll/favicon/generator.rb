@@ -11,6 +11,7 @@ module Jekyll
         if File.exist? favicon_source
           @template = favicon_tempfile
           generate_files Favicon.config['path']
+          build_webmanifest Favicon.config['chrome']['manifest']
         else
           Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
                              " #{Favicon.config['source']}, not generating" \
@@ -34,7 +35,18 @@ module Jekyll
                             'safari-pinned-tab.svg'
         end
         generate_metadata_from 'browserconfig.xml'
-        generate_metadata_from 'manifest.webmanifest'
+      end
+
+      def build_webmanifest(config)
+        source_path = File.join(*[@site.source, config['source']].compact)
+        extra = {}
+        extra = JSON.parse File.read source_path if File.exist? source_path
+        manifest_page = Metadata.new @site,
+                                     File.dirname(config['target']),
+                                     File.basename(config['target']),
+                                     'webmanifest',
+                                     extra
+        @site.pages << manifest_page
       end
 
       def generate_ico_from(source)
@@ -52,7 +64,7 @@ module Jekyll
       end
 
       def generate_metadata_from(template)
-        metadata_page = Metadata.new(@site, @site.source, '', template)
+        metadata_page = Metadata.new(@site, '', 'browserconfig.xml', template)
         @site.pages << metadata_page
       end
 

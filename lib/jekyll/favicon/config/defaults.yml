@@ -25,7 +25,9 @@ favicon:
       - 192x192
       - 96x96
       - 48x48
-    manifest-path: /
+    manifest:
+      source: manifest.webmanifest
+      target: manifest.webmanifest
   classic:
     sizes:
       - 16x16

@@ -1,0 +1,6 @@
+baseurl: /jekyll-favicon-example
+favicon:
+  chrome:
+    manifest:
+      source: data/source.json
+      target: data/target.webmanifest
