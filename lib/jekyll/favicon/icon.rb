@@ -49,6 +49,8 @@ module Jekyll
         options = {}
         options[:background] = Favicon.config['background']
         ico_sizes = Favicon.config['ico']['sizes'].join ','
+        options[:alpha] = 'off'
+        options[:resize] = Favicon.config['ico']['sizes'].first
         options[:define] = "icon:auto-resize=#{ico_sizes}"
         options
       end
