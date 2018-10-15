@@ -2,15 +2,16 @@ require 'test_helper'
 
 describe Jekyll::Favicon::Generator do
   before do
-    @options = YAML.load_file fixture '_test.yml'
-    @options['destination'] = Dir.mktmpdir
+    @options = {
+      'destination' => Dir.mktmpdir
+    }
   end
 
   after do
     FileUtils.remove_entry @options['destination']
   end
 
-  describe 'using empty site' do
+  describe 'when site source is empty' do
     before do
       @options['source'] = fixture 'sites', 'empty'
       @config = Jekyll.configuration @options
@@ -23,12 +24,13 @@ describe Jekyll::Favicon::Generator do
         @site.process
         Jekyll.logger.log_level = :error
       end
+      refute File.exist? File.join @options['destination'], 'favicon.ico'
     end
   end
 
-  describe 'using site with default favicon' do
+  describe 'when site uses default SVG favicon' do
     before do
-      @options['source'] = fixture 'sites', 'with-svg-favicon'
+      @options['source'] = fixture 'sites', 'minimal'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
@@ -36,23 +38,34 @@ describe Jekyll::Favicon::Generator do
       @defaults = Jekyll::Favicon::DEFAULTS
     end
 
-    it 'should generate favicons and metadata' do
+    it 'should create ICO favicon' do
       assert File.exist? File.join(@destination, 'favicon.ico')
+    end
 
+    it 'should create PNG favicons' do
       generated_files = Dir.glob File.join(@destination, '**', '*.png')
-      @options['favicon']['sizes'].each do |size|
+      options = ['classic', 'ie', 'chrome', 'apple-touch-icon']
+      sizes = options.collect { |option| option['sizes'] }.compact.uniq
+      sizes.each do |size|
         icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
         assert_includes generated_files, icon
       end
+    end
 
-      assert File.exist? File.join(@destination, 'manifest.webmanifest')
-      assert File.exist? File.join(@destination, 'browserconfig.xml')
+    it 'should create a webmanifest' do
+      assert File.exist? File.join @destination,
+                                   @defaults['chrome']['manifest']['target']
+    end
+
+    it 'should create a broswerconfig' do
+      assert File.exist? File.join @destination,
+                                   @defaults['ie']['browserconfig']['target']
     end
   end
 
-  describe 'using site with PNG favicon' do
+  describe 'when site uses default PNG favicon' do
     before do
-      @options['source'] = fixture 'sites', 'with-png-favicon'
+      @options['source'] = fixture 'sites', 'minimal-png-source'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
@@ -60,23 +73,34 @@ describe Jekyll::Favicon::Generator do
       @defaults = Jekyll::Favicon::DEFAULTS
     end
 
-    it 'should generate favicons and metadata' do
+    it 'should create ICO favicon' do
       assert File.exist? File.join(@destination, 'favicon.ico')
+    end
 
+    it 'should create PNG favicons' do
       generated_files = Dir.glob File.join(@destination, '**', '*.png')
-      @options['favicon']['sizes'].each do |size|
+      options = ['classic', 'ie', 'chrome', 'apple-touch-icon']
+      sizes = options.collect { |option| option['sizes'] }.compact.uniq
+      sizes.each do |size|
         icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
         assert_includes generated_files, icon
       end
+    end
 
-      assert File.exist? File.join(@destination, 'manifest.webmanifest')
-      assert File.exist? File.join(@destination, 'browserconfig.xml')
+    it 'should create a webmanifest' do
+      assert File.exist? File.join @destination,
+                                   @defaults['chrome']['manifest']['target']
+    end
+
+    it 'should create a broswerconfig' do
+      assert File.exist? File.join @destination,
+                                   @defaults['ie']['browserconfig']['target']
     end
   end
 
-  describe 'using site with existing default webmanifest' do
+  describe 'when site has an existing webmanifest at default location' do
     before :all do
-      @options['source'] = fixture 'sites', 'with-default-webmanifest'
+      @options['source'] = fixture 'sites', 'minimal-default-webmanifest'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
@@ -97,9 +121,9 @@ describe Jekyll::Favicon::Generator do
     end
   end
 
-  describe 'using site with existing configured webmanifest' do
+  describe 'when site has an existing webmanifest at custom location' do
     before do
-      @options['source'] = fixture 'sites', 'with-custom-webmanifest'
+      @options['source'] = fixture 'sites', 'minimal-custom-webmanifest'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process

@@ -19,7 +19,9 @@ favicon:
       - 270x270
       - 558x270
       - 558x558
-    browserconfig-path: /
+    browserconfig:
+      source: browserconfig.xml
+      target: browserconfig.xml
   chrome:
     sizes:
       - 192x192

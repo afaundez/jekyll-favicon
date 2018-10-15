@@ -10,8 +10,7 @@ module Jekyll
         @site = site
         if File.exist? favicon_source
           @template = favicon_tempfile
-          generate_files Favicon.config['path']
-          build_webmanifest Favicon.config['chrome']['manifest']
+          build_favicons_and_files
         else
           Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
                              " #{Favicon.config['source']}, not generating" \
@@ -27,14 +26,23 @@ module Jekyll
 
       private
 
-      def generate_files(prefix)
-        generate_ico_from @template.path
-        generate_png_from @template.path, prefix
-        if File.extname(favicon_source) == '.svg'
-          generate_svg_from favicon_source, prefix,
-                            'safari-pinned-tab.svg'
-        end
-        generate_metadata_from 'browserconfig.xml'
+      def build_favicons_and_files
+        build_ico_favicon @template.path
+        build_png_favicons @template.path, Favicon.config['path']
+        build_browserconfig Favicon.config['ie']['browserconfig']
+        build_webmanifest Favicon.config['chrome']['manifest']
+      end
+
+      def build_browserconfig(config)
+        source_path = File.join(*[@site.source, config['source']].compact)
+        extra = {}
+        extra = File.read source_path if File.exist? source_path
+        browserconfig_page = Metadata.new @site,
+                                          File.dirname(config['target']),
+                                          File.basename(config['target']),
+                                          'browserconfig',
+                                          extra
+        @site.pages << browserconfig_page
       end
 
       def build_webmanifest(config)
@@ -49,28 +57,18 @@ module Jekyll
         @site.pages << manifest_page
       end
 
-      def generate_ico_from(source)
+      def build_ico_favicon(source)
         ico_favicon = Icon.new(@site, '', 'favicon.ico', source)
         @site.static_files << ico_favicon
       end
 
-      def generate_png_from(source, prefix)
+      def build_png_favicons(source, prefix)
         ['classic', 'ie', 'chrome', 'apple-touch-icon'].each do |template|
           Favicon.config[template]['sizes'].each do |size|
             png_favicon = Icon.new(@site, prefix, "favicon-#{size}.png", source)
             @site.static_files << png_favicon
           end
         end
-      end
-
-      def generate_metadata_from(template)
-        metadata_page = Metadata.new(@site, '', 'browserconfig.xml', template)
-        @site.pages << metadata_page
-      end
-
-      def generate_svg_from(source, prefix, name)
-        svg_favicon = Icon.new(@site, prefix, name, source)
-        @site.static_files << svg_favicon
       end
 
       def favicon_source
