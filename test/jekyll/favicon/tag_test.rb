@@ -2,13 +2,13 @@ require 'test_helper'
 require 'nokogiri'
 
 describe Jekyll::Favicon::Tag do
-  before do
+  before :all do
     @options = {
       'destination' => Dir.mktmpdir
     }
   end
 
-  after do
+  after :all do
     FileUtils.remove_entry @options['destination']
   end
 

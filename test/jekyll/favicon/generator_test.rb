@@ -1,18 +1,18 @@
 require 'test_helper'
 
 describe Jekyll::Favicon::Generator do
-  before do
+  before :all do
     @options = {
       'destination' => Dir.mktmpdir
     }
   end
 
-  after do
+  after :all do
     FileUtils.remove_entry @options['destination']
   end
 
   describe 'when site source is empty' do
-    before do
+    before :all do
       @options['source'] = fixture 'sites', 'empty'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
@@ -29,7 +29,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   describe 'when site uses default SVG favicon' do
-    before do
+    before :all do
       @options['source'] = fixture 'sites', 'minimal'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
@@ -64,7 +64,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   describe 'when site uses default PNG favicon' do
-    before do
+    before :all do
       @options['source'] = fixture 'sites', 'minimal-png-source'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
@@ -122,7 +122,7 @@ describe Jekyll::Favicon::Generator do
   end
 
   describe 'when site has an existing webmanifest at custom location' do
-    before do
+    before :all do
       @options['source'] = fixture 'sites', 'minimal-custom-webmanifest'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config

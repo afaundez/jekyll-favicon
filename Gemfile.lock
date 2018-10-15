@@ -48,6 +48,8 @@ GEM
     mini_magick (4.9.2)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    minitest-hooks (1.5.0)
+      minitest (> 5.3)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     parallel (1.12.1)
@@ -86,6 +88,7 @@ DEPENDENCIES
   bundler (~> 1.16)
   jekyll-favicon!
   minitest (~> 5.0)
+  minitest-hooks (~> 1.4, >= 1.4.2)
   nokogiri (~> 1.8)
   rake (~> 10.0)
   rubocop (~> 0.54.0, >= 0.54.0)
