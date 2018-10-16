@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module Jekyll
   module Favicon
     # Extended generator that creates all the stastic icons and metadata files
@@ -19,7 +21,7 @@ module Jekyll
       end
 
       def clean
-        return unless @tempfile
+        return unless @template
         @template.close
         @template.unlink
       end
@@ -27,48 +29,88 @@ module Jekyll
       private
 
       def build_favicons_and_files
-        build_ico_favicon @template.path
-        build_png_favicons @template.path, Favicon.config['path']
-        build_browserconfig Favicon.config['ie']['browserconfig']
-        build_webmanifest Favicon.config['chrome']['manifest']
+        @site.static_files.push build_ico_favicon
+        @site.static_files.push(*build_png_favicons)
+        @site.pages.push build_browserconfig
+        @site.pages.push build_webmanifest
       end
 
-      def build_browserconfig(config)
+      def build_browserconfig
+        config = Favicon.config['ie']['browserconfig']
         source_path = File.join(*[@site.source, config['source']].compact)
-        extra = {}
-        extra = File.read source_path if File.exist? source_path
+
+        document = REXML::Document.new
+        document = REXML::Document.new File.read source_path if File.exist? source_path
+        browserconfig = document.elements['browserconfig']
+        browserconfig ||= document.elements.add('browserconfig')
+        msapplication = browserconfig.elements['msapplication']
+        msapplication ||= browserconfig.elements.add('msapplication')
+        tile = msapplication.elements['tile']
+        tile ||= msapplication.elements.add('tile')
+        favicon_path = File.join (@site.baseurl || ''), Favicon.config['path']
+        [
+          ['square310x310logo', { 'src' => File.join(favicon_path, 'favicon-558x558.png') }],
+          ['wide310x150logo', { 'src' => File.join(favicon_path, 'favicon-558x270.png') }],
+          ['square150x150logo', { 'src' => File.join( favicon_path, 'favicon-270x270.png') }],
+          ['square70x70logo', { 'src' => File.join(favicon_path, 'favicon-128x128.png') }]
+        ].each do |element, attributes|
+          tile.elements[element] = REXML::Element.new element
+          attributes.each do |key, value|
+            tile.elements[element].add_attribute key, value
+          end
+        end
+        tile.elements['TileColor'] = REXML::Element.new('TileColor')
+        tile.elements['TileColor'].add_text(Favicon.config['ie']['tile-color'])
+        formatter = REXML::Formatters::Pretty.new(2)
+        formatter.compact = true
+        output = ''
+        formatter.write(document, output)
+
         browserconfig_page = Metadata.new @site,
+                                          @site.source,
                                           File.dirname(config['target']),
-                                          File.basename(config['target']),
-                                          'browserconfig',
-                                          extra
-        @site.pages << browserconfig_page
+                                          File.basename(config['target'])
+        browserconfig_page.content = output
+        browserconfig_page.data = { 'layout' => nil }
+        browserconfig_page
       end
 
-      def build_webmanifest(config)
+      def build_webmanifest
+        config = Favicon.config['chrome']['manifest']
         source_path = File.join(*[@site.source, config['source']].compact)
         extra = {}
         extra = JSON.parse File.read source_path if File.exist? source_path
-        manifest_page = Metadata.new @site,
-                                     File.dirname(config['target']),
-                                     File.basename(config['target']),
-                                     'webmanifest',
-                                     extra
-        @site.pages << manifest_page
-      end
-
-      def build_ico_favicon(source)
-        ico_favicon = Icon.new(@site, '', 'favicon.ico', source)
-        @site.static_files << ico_favicon
-      end
-
-      def build_png_favicons(source, prefix)
-        ['classic', 'ie', 'chrome', 'apple-touch-icon'].each do |template|
-          Favicon.config[template]['sizes'].each do |size|
-            png_favicon = Icon.new(@site, prefix, "favicon-#{size}.png", source)
-            @site.static_files << png_favicon
+        favicon_path = File.join (@site.baseurl || ''), Favicon.config['path']
+        output = JSON.pretty_generate extra.merge(
+          icons: Favicon.config['chrome']['sizes'].collect do |size|
+            {
+              src: File.join(favicon_path, "favicon-#{size}.png"),
+              type: 'png',
+              sizes: size
+            }
           end
-        end
+        )
+        manifest_page = Metadata.new @site,
+                                     @site.source,
+                                     File.dirname(config['target']),
+                                     File.basename(config['target'])
+        manifest_page.content = output
+        manifest_page.data = { 'layout' => nil }
+        manifest_page
+      end
+
+      def build_ico_favicon
+        Icon.new @site, '', 'favicon.ico', @template.path
+      end
+
+      def build_png_favicons
+        source = @template.path
+        prefix = Favicon.config['path']
+        ['classic', 'ie', 'chrome', 'apple-touch-icon'].collect do |template|
+          Favicon.config[template]['sizes'].collect do |size|
+            Icon.new @site, prefix, "favicon-#{size}.png", source
+          end
+        end.flatten
       end
 
       def favicon_source

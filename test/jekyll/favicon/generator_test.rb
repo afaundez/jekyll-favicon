@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'rexml/document'
 
 describe Jekyll::Favicon::Generator do
   before :all do
@@ -57,7 +58,7 @@ describe Jekyll::Favicon::Generator do
                                    @defaults['chrome']['manifest']['target']
     end
 
-    it 'should create a broswerconfig' do
+    it 'should create a browserconfig' do
       assert File.exist? File.join @destination,
                                    @defaults['ie']['browserconfig']['target']
     end
@@ -92,7 +93,7 @@ describe Jekyll::Favicon::Generator do
                                    @defaults['chrome']['manifest']['target']
     end
 
-    it 'should create a broswerconfig' do
+    it 'should create a browserconfig' do
       assert File.exist? File.join @destination,
                                    @defaults['ie']['browserconfig']['target']
     end
@@ -121,28 +122,54 @@ describe Jekyll::Favicon::Generator do
     end
   end
 
-  describe 'when site has an existing webmanifest at custom location' do
+  describe 'when site has an existing custom configuration' do
     before :all do
-      @options['source'] = fixture 'sites', 'minimal-custom-webmanifest'
+      @options['source'] = fixture 'sites', 'custom-config'
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
-      @site_manifest_config = @config['favicon']['chrome']['manifest']
-      @target_manifest_path = File.join @options['destination'],
-                                        @site_manifest_config['target']
+      @custom_config = YAML.load_file File.join @options['source'], '_config.yml'
+      @custom_favicon_config = @custom_config['favicon']
     end
 
     it 'should exists only one manifest' do
-      refute File.file? File.join @options['destination'],
-                                  @site_manifest_config['source']
-      assert File.file? File.join @target_manifest_path
+      source_webmanifest_path = File.join @options['destination'],
+                                          @custom_favicon_config['chrome']['manifest']['source']
+      refute File.file? source_webmanifest_path
+      target_webmanifest_path = File.join @options['destination'],
+                                       @custom_favicon_config['chrome']['manifest']['target']
+      assert File.file? File.join target_webmanifest_path
     end
 
     it 'should merge attributes from existent webmanifest' do
-      webmanifest = JSON.parse File.read @target_manifest_path
+      target_webmanifest_path = File.join @options['destination'],
+                                          @custom_favicon_config['chrome']['manifest']['target']
+      webmanifest = JSON.parse File.read target_webmanifest_path
       assert_includes webmanifest.keys, 'icons'
       assert_includes webmanifest.keys, 'name'
       assert_equal webmanifest['name'], 'target.webmanifest'
+    end
+
+    it 'should exists only one browserconfig' do
+      source_browserconfig_path = File.join @options['destination'],
+                                            @custom_favicon_config['ie']['browserconfig']['source']
+      refute File.file? source_browserconfig_path
+      target_browserconfig_path = File.join @options['destination'],
+                                            @custom_favicon_config['ie']['browserconfig']['target']
+      assert File.file? File.join target_browserconfig_path
+    end
+
+    it 'should merge and override attributes from existent webmanifest' do
+      target_browserconfig_path = File.join @options['destination'],
+                                            @custom_favicon_config['ie']['browserconfig']['target']
+      browserconfig = REXML::Document.new File.read target_browserconfig_path
+      msapplication = browserconfig.elements['/browserconfig/msapplication']
+      tiles = msapplication.elements['tile']
+      assert msapplication.elements['tile']
+      assert_equal 1, tiles.get_elements('square70x70logo').size
+      assert_equal 1, tiles.get_elements('TileColor').size
+      assert_equal tiles.elements['square70x70logo'].attributes['src'], '/assets/images/favicon-128x128.png'
+      assert msapplication.elements['notification'].has_elements?
     end
   end
 end

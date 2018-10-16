@@ -3,3 +3,7 @@ favicon:
     manifest:
       source: data/source.json
       target: data/target.webmanifest
+  ie:
+    browserconfig:
+      source: data/source.xml
+      target: data/browserconfig.xml
