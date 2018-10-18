@@ -3,6 +3,8 @@
 require 'jekyll'
 require 'mini_magick'
 require_relative 'string'
+require_relative 'browserconfig'
+require_relative 'webmanifest'
 require_relative 'jekyll/favicon'
 require_relative 'jekyll/favicon/version'
 require_relative 'jekyll/favicon/hooks'

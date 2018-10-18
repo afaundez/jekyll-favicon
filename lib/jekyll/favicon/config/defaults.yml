@@ -30,6 +30,10 @@ favicon:
     manifest:
       source: manifest.webmanifest
       target: manifest.webmanifest
+      sizes:
+        - 192x192
+        - 96x96
+        - 48x48
   classic:
     sizes:
       - 16x16

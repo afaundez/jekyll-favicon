@@ -128,22 +128,25 @@ describe Jekyll::Favicon::Generator do
       @config = Jekyll.configuration @options
       @site = Jekyll::Site.new @config
       @site.process
-      @custom_config = YAML.load_file File.join @options['source'], '_config.yml'
+      @custom_config = YAML.load_file File.join @options['source'],
+                                                '_config.yml'
       @custom_favicon_config = @custom_config['favicon']
+      @webmanifest_config = @custom_favicon_config['chrome']['manifest']
+      @browserconfig_config = @custom_favicon_config['ie']['browserconfig']
     end
 
     it 'should exists only one manifest' do
       source_webmanifest_path = File.join @options['destination'],
-                                          @custom_favicon_config['chrome']['manifest']['source']
+                                          @webmanifest_config['source']
       refute File.file? source_webmanifest_path
       target_webmanifest_path = File.join @options['destination'],
-                                       @custom_favicon_config['chrome']['manifest']['target']
+                                          @webmanifest_config['target']
       assert File.file? File.join target_webmanifest_path
     end
 
     it 'should merge attributes from existent webmanifest' do
       target_webmanifest_path = File.join @options['destination'],
-                                          @custom_favicon_config['chrome']['manifest']['target']
+                                          @webmanifest_config['target']
       webmanifest = JSON.parse File.read target_webmanifest_path
       assert_includes webmanifest.keys, 'icons'
       assert_includes webmanifest.keys, 'name'
@@ -152,23 +155,23 @@ describe Jekyll::Favicon::Generator do
 
     it 'should exists only one browserconfig' do
       source_browserconfig_path = File.join @options['destination'],
-                                            @custom_favicon_config['ie']['browserconfig']['source']
+                                            @browserconfig_config['source']
       refute File.file? source_browserconfig_path
       target_browserconfig_path = File.join @options['destination'],
-                                            @custom_favicon_config['ie']['browserconfig']['target']
+                                            @browserconfig_config['target']
       assert File.file? File.join target_browserconfig_path
     end
 
     it 'should merge and override attributes from existent webmanifest' do
       target_browserconfig_path = File.join @options['destination'],
-                                            @custom_favicon_config['ie']['browserconfig']['target']
+                                            @browserconfig_config['target']
       browserconfig = REXML::Document.new File.read target_browserconfig_path
       msapplication = browserconfig.elements['/browserconfig/msapplication']
       tiles = msapplication.elements['tile']
-      assert msapplication.elements['tile']
       assert_equal 1, tiles.get_elements('square70x70logo').size
       assert_equal 1, tiles.get_elements('TileColor').size
-      assert_equal tiles.elements['square70x70logo'].attributes['src'], '/assets/images/favicon-128x128.png'
+      assert_equal '/assets/images/favicon-128x128.png',
+                   tiles.elements['square70x70logo'].attributes['src']
       assert msapplication.elements['notification'].has_elements?
     end
   end
