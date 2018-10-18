@@ -26,7 +26,7 @@ describe Jekyll::Favicon::Tag do
 
     it 'should generate ico link' do
       ico_config = Jekyll::Favicon.config['ico']
-      ico_path = File.join @site_baseurl, ico_config['path'], 'favicon.ico'
+      ico_path = File.join @site_baseurl, ico_config['target']
       css_selector = 'link[href="' + ico_path + '"]'
       assert @index_document.at_css(css_selector)
     end

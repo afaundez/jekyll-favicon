@@ -5,19 +5,16 @@ module Jekyll
       priority :high
 
       attr_accessor :template
-      attr_accessor :source
 
       def generate(site)
         @site = site
-        @source = File.join(*[@site.source, Favicon.config['source']].compact)
-        if File.exist? @source
-          @template = favicon_tempfile
-          generate_icons
-          generate_metadata
+        if File.file? source_path Favicon.config['source']
+          @template = favicon_tempfile source_path Favicon.config['source']
+          generate_icons && generate_metadata
         else
-          Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
-                             " #{Favicon.config['source']}, not generating" \
-                             ' favicons.'
+          Jekyll.logger.warn 'Jekyll::Favicon: Missing ' \
+                             "#{Favicon.config['source']}, not generating " \
+                             'favicons.'
         end
       end
 
@@ -29,19 +26,48 @@ module Jekyll
 
       private
 
+      def source_path(path = nil)
+        File.join(*[@site.source, path].compact)
+      end
+
+      def favicon_tempfile(source)
+        tempfile = Tempfile.new(['favicon-template', '.png'])
+        options = { background: 'none' }
+        if source.svg?
+          options[:density] = Favicon.config['svg']['density']
+          options[:resize] = Favicon.config['svg']['dimensions']
+        elsif source.png?
+          options[:resize] = Favicon.config['png']['dimensions']
+        end
+        Image.convert source, tempfile.path, options
+        tempfile
+      end
+
       def generate_icons
-        @site.static_files.push build_ico_favicon
-        @site.static_files.push(*build_png_favicons)
+        @site.static_files.push ico_icon
+        @site.static_files.push(*png_icons)
+      end
+
+      def ico_icon
+        target = Favicon.config['ico']['target']
+        Icon.new @site, Favicon.config['source'], @template.path, target
+      end
+
+      def png_icons
+        Favicon.config.deep_find('sizes').uniq.collect do |size|
+          target = File.join Favicon.config['path'], "favicon-#{size}.png"
+          Icon.new @site, Favicon.config['source'], @template.path, target
+        end
       end
 
       def generate_metadata
-        @site.pages.push metadata_page Browserconfig.new,
-                                       Favicon.config['ie']['browserconfig']
-        @site.pages.push metadata_page Webmanifest.new,
-                                       Favicon.config['chrome']['manifest']
+        @site.pages.push metadata Browserconfig.new,
+                                  Favicon.config['ie']['browserconfig']
+        @site.pages.push metadata Webmanifest.new,
+                                  Favicon.config['chrome']['manifest']
       end
 
-      def metadata_page(document, config)
+      def metadata(document, config)
         page = Metadata.new @site, @site.source,
                             File.dirname(config['target']),
                             File.basename(config['target'])
@@ -50,49 +76,6 @@ module Jekyll
         page.content = document.dump
         page.data = { 'layout' => nil }
         page
-      end
-
-      def source_path(path = nil)
-        File.join(*[@site.source, path].compact)
-      end
-
-      def build_ico_favicon
-        Icon.new @site, '', 'favicon.ico', @template.path
-      end
-
-      def build_png_favicons
-        source = @template.path
-        prefix = Favicon.config['path']
-        ['classic', 'ie', 'chrome', 'apple-touch-icon'].collect do |template|
-          Favicon.config[template]['sizes'].collect do |size|
-            Icon.new @site, prefix, "favicon-#{size}.png", source
-          end
-        end.flatten
-      end
-
-      def favicon_tempfile
-        tempfile = Tempfile.new(['favicon_template', '.png'])
-        convert @source, tempfile.path, Favicon.config
-        tempfile
-      end
-
-      def convert(source, output, options = {})
-        MiniMagick::Tool::Convert.new do |convert|
-          options_for convert, source, options
-          convert << source
-          convert << output
-        end
-      end
-
-      def options_for(convert, source, options)
-        convert.flatten
-        convert.background 'none'
-        if source.svg?
-          convert.density options['svg']['density']
-          convert.resize options['svg']['dimensions']
-        elsif source.png?
-          convert.resize options['png']['dimensions']
-        end
       end
     end
   end
