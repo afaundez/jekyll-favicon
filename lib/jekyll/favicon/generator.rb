@@ -8,86 +8,74 @@ module Jekyll
 
       def generate(site)
         @site = site
-        if File.exist? favicon_source
-          @template = favicon_tempfile
-          generate_files Favicon.config['path']
+        if File.file? source_path Favicon.config['source']
+          @template = favicon_tempfile source_path Favicon.config['source']
+          generate_icons && generate_metadata
         else
-          Jekyll.logger.warn 'Jekyll::Favicon: Missing' \
-                             " #{Favicon.config['source']}, not generating" \
-                             ' favicons.'
+          Jekyll.logger.warn 'Jekyll::Favicon: Missing ' \
+                             "#{Favicon.config['source']}, not generating " \
+                             'favicons.'
         end
       end
 
       def clean
-        return unless @tempfile
+        return unless @template
         @template.close
         @template.unlink
       end
 
       private
 
-      def generate_files(prefix)
-        generate_ico_from @template.path
-        generate_png_from @template.path, prefix
-        if File.extname(favicon_source) == '.svg'
-          generate_svg_from favicon_source, prefix,
-                            'safari-pinned-tab.svg'
+      def source_path(path = nil)
+        File.join(*[@site.source, path].compact)
+      end
+
+      def favicon_tempfile(source)
+        tempfile = Tempfile.new(['favicon-template', '.png'])
+        options = { background: 'none' }
+        if source.svg?
+          options[:density] = Favicon.config['svg']['density']
+          options[:resize] = Favicon.config['svg']['dimensions']
+        elsif source.png?
+          options[:resize] = Favicon.config['png']['dimensions']
         end
-        generate_metadata_from 'browserconfig.xml'
-        generate_metadata_from 'manifest.webmanifest'
-      end
-
-      def generate_ico_from(source)
-        ico_favicon = Icon.new(@site, '', 'favicon.ico', source)
-        @site.static_files << ico_favicon
-      end
-
-      def generate_png_from(source, prefix)
-        ['classic', 'ie', 'chrome', 'apple-touch-icon'].each do |template|
-          Favicon.config[template]['sizes'].each do |size|
-            png_favicon = Icon.new(@site, prefix, "favicon-#{size}.png", source)
-            @site.static_files << png_favicon
-          end
-        end
-      end
-
-      def generate_metadata_from(template)
-        metadata_page = Metadata.new(@site, @site.source, '', template)
-        @site.pages << metadata_page
-      end
-
-      def generate_svg_from(source, prefix, name)
-        svg_favicon = Icon.new(@site, prefix, name, source)
-        @site.static_files << svg_favicon
-      end
-
-      def favicon_source
-        File.join(*[@site.source, Favicon.config['source']].compact)
-      end
-
-      def favicon_tempfile
-        tempfile = Tempfile.new(['favicon_template', '.png'])
-        convert favicon_source, tempfile.path, Favicon.config
+        Image.convert source, tempfile.path, options
         tempfile
       end
 
-      def convert(source, output, options = {})
-        MiniMagick::Tool::Convert.new do |convert|
-          options_for convert, source, options
-          convert << favicon_source
-          convert << output
+      def generate_icons
+        @site.static_files.push ico_icon
+        @site.static_files.push(*png_icons)
+      end
+
+      def ico_icon
+        target = Favicon.config['ico']['target']
+        Icon.new @site, Favicon.config['source'], @template.path, target
+      end
+
+      def png_icons
+        Favicon.config.deep_find('sizes').uniq.collect do |size|
+          target = File.join Favicon.config['path'], "favicon-#{size}.png"
+          Icon.new @site, Favicon.config['source'], @template.path, target
         end
       end
 
-      def options_for(convert, source, options)
-        convert.flatten
-        convert.background 'none'
-        if source.svg?
-          convert.density options['svg']['density']
-          convert.resize options['svg']['dimensions']
-        elsif source.png?
-          convert.resize options['png']['dimensions']
-        end
+      def generate_metadata
+        @site.pages.push metadata Browserconfig.new,
+                                  Favicon.config['ie']['browserconfig']
+        @site.pages.push metadata Webmanifest.new,
+                                  Favicon.config['chrome']['manifest']
+      end
+
+      def metadata(document, config)
+        page = Metadata.new @site, @site.source,
+                            File.dirname(config['target']),
+                            File.basename(config['target'])
+        favicon_path = File.join (@site.baseurl || ''), Favicon.config['path']
+        document.load source_path(config['source']), config, favicon_path
+        page.content = document.dump
+        page.data = { 'layout' => nil }
+        page
       end
     end
   end

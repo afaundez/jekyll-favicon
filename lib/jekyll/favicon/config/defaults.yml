@@ -1,6 +1,7 @@
 favicon:
   source: favicon.svg
   path: /assets/images
+  background: white
   apple-touch-icon:
     background: white
     sizes:
@@ -19,13 +20,21 @@ favicon:
       - 270x270
       - 558x270
       - 558x558
-    browserconfig-path: /
+    browserconfig:
+      source: browserconfig.xml
+      target: browserconfig.xml
   chrome:
     sizes:
       - 192x192
       - 96x96
       - 48x48
-    manifest-path: /
+    manifest:
+      source: manifest.webmanifest
+      target: manifest.webmanifest
+      sizes:
+        - 192x192
+        - 96x96
+        - 48x48
   classic:
     sizes:
       - 16x16
@@ -38,8 +47,8 @@ favicon:
   png:
     dimensions: 558x558
   ico:
-    path: /
+    target: favicon.ico
     sizes:
-      - 48
-      - 32
-      - 16
+      - 48x48
+      - 32x32
+      - 16x16

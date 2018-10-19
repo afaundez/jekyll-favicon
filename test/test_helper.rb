@@ -2,6 +2,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'jekyll-favicon'
 
 require 'minitest/autorun'
+require 'minitest/hooks/default'
 
 def root(*subdirs)
   File.expand_path File.join('..', *subdirs), __dir__
