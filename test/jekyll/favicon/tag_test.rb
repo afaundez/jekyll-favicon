@@ -46,5 +46,35 @@ describe Jekyll::Favicon::Tag do
       css_selector = 'meta[content="' + browserconfig_path + '"]'
       assert @index_document.at_css(css_selector)
     end
+
+    it 'should include safari pinned tag' do
+      pinned_path = File.join @site_baseurl,
+                              Jekyll::Favicon.config['path'],
+                              'safari-pinned-tab.svg'
+      css_selector = 'link[ rel="mask-icon"][href="' + pinned_path + '"]'
+      assert @index_document.at_css(css_selector)
+      assert pinned_path, @index_document.css(css_selector).attribute('href')
+    end
+  end
+
+  describe 'when site uses default PNG favicon' do
+    before :all do
+      @options['source'] = fixture 'sites', 'minimal-png-source'
+      @config = Jekyll.configuration @options
+      @site = Jekyll::Site.new @config
+      @site.process
+      @destination = @options['destination']
+      index_destination = File.join(@destination, 'index.html')
+      @index_document = Nokogiri::Slop File.open(index_destination)
+      @site_baseurl = @site.baseurl || ''
+    end
+
+    it 'should skip safari pinned tag' do
+      pinned_path = File.join @site_baseurl,
+                              Jekyll::Favicon.config['path'],
+                              'safari-pinned-tab.svg'
+      css_selector = 'link[ rel="mask-icon"][href="' + pinned_path + '"]'
+      refute @index_document.at_css(css_selector)
+    end
   end
 end
