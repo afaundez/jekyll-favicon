@@ -6,6 +6,8 @@ rvm:
   - 2.3.6
   - 2.2.9
   - 2.1.10
+before_install:
+  - if ! [[ `ruby -v | cut -d' ' -f2` > "2.3" ]]; then gem install bundler -v '< 2'; fi;
 addons:
   apt:
     config:
