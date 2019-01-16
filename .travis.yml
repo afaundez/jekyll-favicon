@@ -1,11 +1,13 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.5.0
-  - 2.4.3
-  - 2.3.6
-  - 2.2.9
+  - 2.6.0
+  - 2.5.3
+  - 2.4.5
+  - 2.3.8
+  - 2.2.10
   - 2.1.10
+  - 2.1.0
 before_install:
   - if ! [[ `ruby -v | cut -d' ' -f2` > "2.3" ]]; then gem install bundler -v '< 2'; fi;
 addons:
