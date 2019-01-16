@@ -9,11 +9,9 @@ This [Jekyll](https://jekyllrb.com) plugin adds:
   - a [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29)
 - a tag to generate all the corresponding links and metadata needed in the head tag
 
-
-
 ## Prerequisites
 
-Before using this plugin your system must have installed [ImageMagick](http://www.imagemagick.org) (or [GraphicsMagick](http://www.graphicsmagick.org/)).
+Before using this plugin your system must have installed [ImageMagick](http://www.imagemagick.org) ~~(or [GraphicsMagick](http://www.graphicsmagick.org/))~~.
 
 Check if it is already installed by running:
 
@@ -31,7 +29,7 @@ Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.4', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.5', group: :jekyll_plugins
 ```
 
 ## Usage
