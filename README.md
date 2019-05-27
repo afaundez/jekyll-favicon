@@ -24,12 +24,18 @@ Features: Cipher DPC HDRI Modules
 Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
 ```
 
+If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
+
+```sh
+sudo apt install librsvg2-bin
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.5', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.6', group: :jekyll_plugins
 ```
 
 ## Usage
