@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Set default background back to none
+- Restore safari-pinned-tab
 ### Changed
 - Update README outdated stuff
 - Correct typos on README

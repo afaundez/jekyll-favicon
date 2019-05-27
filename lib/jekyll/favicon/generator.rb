@@ -46,6 +46,7 @@ module Jekyll
       def generate_icons
         @site.static_files.push ico_icon
         @site.static_files.push(*png_icons)
+        @site.static_files.push(*svg_icons)
       end
 
       def ico_icon
@@ -57,6 +58,15 @@ module Jekyll
         Favicon.config.deep_find('sizes').uniq.collect do |size|
           target = File.join Favicon.config['path'], "favicon-#{size}.png"
           Icon.new @site, Favicon.config['source'], @template.path, target
+        end
+      end
+
+      def svg_icons
+        return [] unless Favicon.config['source'].svg?
+        source = Favicon.config['source']
+        %w[safari-pinned-tab.svg].collect do |name|
+          target = File.join Favicon.config['path'], name
+          Icon.new @site, source, source_path(source), target
         end
       end
 
