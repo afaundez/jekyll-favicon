@@ -17,11 +17,11 @@ Check if it is already installed by running:
 
 ```sh
 $ convert --version
-Version: ImageMagick 7.0.7-27 Q16 x86_64 2018-03-18 http://www.imagemagick.org
-Copyright: © 1999-2018 ImageMagick Studio LLC
-License: http://www.imagemagick.org/script/license.php
-Features: Cipher DPC HDRI Modules
-Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
+Version: ImageMagick 7.0.8-46 Q16 x86_64 2019-05-19 https://imagemagick.org
+Copyright: © 1999-2019 ImageMagick Studio LLC
+License: https://imagemagick.org/script/license.php
+Features: Cipher DPC HDRI Modules OpenMP(3.1)
+Delegates (built-in): bzlib freetype heic jng jp2 jpeg lcms ltdl lzma openexr png tiff webp xml zlib
 ```
 
 If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
