@@ -48,7 +48,7 @@ As [Github Pages](https://pages.github.com) build doesn't load custom plugins, t
 
 By installing the plugin, it will be automatically active. It will search for the file `/favicon.svg` and generate set of files in `/assets/images` and few more items at the site's root. It also will exclude the original sources from being copied as a regular static file.
 
-You can override whit your sites's `_config.yml`:
+You can override these settings in your sites's `_config.yml`:
 
 ```yaml
 favicon:
