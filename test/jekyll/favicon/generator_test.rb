@@ -53,6 +53,14 @@ describe Jekyll::Favicon::Generator do
       end
     end
 
+    it 'will create SVG icon identical to the source' do
+      target = File.join @destination, @defaults['path'],
+                         'safari-pinned-tab.svg'
+      assert File.exist? target
+      source = File.join @site.source, 'favicon.svg'
+      assert_equal File.read(target), File.read(source)
+    end
+
     it 'should honor SVG colors' do
       img = MiniMagick::Image.open File.join @options['destination'], 'assets',
                                              'images',
@@ -128,6 +136,11 @@ describe Jekyll::Favicon::Generator do
         icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
         assert_includes generated_files, icon
       end
+    end
+
+    it 'will not create SVG icon' do
+      path = File.join @destination, @defaults['path'], 'safari-pinned-tab.svg'
+      refute File.exist? path
     end
 
     it 'should create a webmanifest' do
