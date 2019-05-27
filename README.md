@@ -11,7 +11,7 @@ This is an example of a Jekyll site using [Jekyll Favicon Plugin](https://github
 Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon-example/blob/master/Gemfile) and bundle!
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.3', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.7', group: :jekyll_plugins
 ```
 
 ## Second: the favicon template
