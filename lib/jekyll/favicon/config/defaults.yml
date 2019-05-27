@@ -1,9 +1,9 @@
 favicon:
   source: favicon.svg
   path: /assets/images
-  background: white
+  background: none
   apple-touch-icon:
-    background: white
+    background: none
     sizes:
       - 57x57
       - 76x76

@@ -30,6 +30,12 @@ If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-
 sudo apt install librsvg2-bin
 ```
 
+If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
+
+```sh
+sudo apt install librsvg2-bin
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
