@@ -1,3 +1,4 @@
+require 'forwardable'
 require 'jekyll/static_file'
 
 module Jekyll
