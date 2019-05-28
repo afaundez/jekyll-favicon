@@ -19,25 +19,39 @@ describe Jekyll::Favicon::Generator do
       let(:source) { fixture 'sites', 'empty' }
 
       it "should not create any resource's names in config" do
-        # Jekyll::Favicon.config['assets'].each do |name, _|
-        #   path = File.join destination, name
-        #   File.file?(path).must_equal false
-        # end
-        ''.must_equal ''
+        paths = Dir.glob File.join(site.dest, '**', '*.{svg,ico,png}')
+        paths.must_be_empty
       end
     end
 
     describe 'when the site uses all default configs' do
       let(:source) { fixture 'sites', 'minimal' }
 
-      it "creates all assets' names and files in config" do
-        # Jekyll::Favicon.config['assets'].each do |name, _|
-        #   static_files_names = site.static_files.collect(&:name)
-        #   static_files_names.must_include name
-        #   dest_path = File.join destination, name
-        #   File.file?(dest_path).must_equal true
-        # end
-        ''.must_equal ''
+      it 'creates one ICO favicon' do
+        paths = Dir.glob File.join(site.dest, '**', '*.ico')
+        paths.wont_be_empty
+        paths.size.must_equal 1
+        File.basename(paths.first).must_equal 'favicon.ico'
+      end
+
+      it 'creates PNG favicons' do
+        paths = Dir.glob File.join(site.dest, '**', '*.png')
+        names = paths.collect { |path| File.basename path }
+        assets = Jekyll::Favicon.assets site
+        assets = assets.select { |asset| '.png'.eql? asset.extname }
+        assets.each do |asset|
+          names.must_include asset.name
+        end
+      end
+
+      it 'creates one SVG favicon' do
+        paths = Dir.glob File.join(site.dest, '**', '*.svg')
+        paths.wont_be_empty
+        paths.size.must_equal 1
+        path = paths.first
+        File.basename(path).must_equal 'safari-pinned-tab.svg'
+        content = File.read path
+        content.must_equal File.read File.join site.source, 'favicon.svg'
       end
 
       it 'creates a valid JSON Webmanifest' do
@@ -68,18 +82,26 @@ describe Jekyll::Favicon::Generator do
     describe 'when the site uses default PNG favicon' do
       let(:source) { fixture 'sites', 'minimal-png-source' }
 
-      it 'creates an ICO favicon' do
-        File.file?(File.join(site.dest, 'favicon.ico')).must_equal true
+      it 'creates one ICO favicon' do
+        paths = Dir.glob File.join(site.dest, '**', '*.ico')
+        paths.wont_be_empty
+        paths.size.must_equal 1
+        File.basename(paths.first).must_equal 'favicon.ico'
       end
 
-      it 'creates a PNG favicons' do
-        png_paths = Dir.glob File.join(site.dest, '**', '*.png')
-        png_names = png_paths.collect { |path| File.basename path }
+      it 'creates PNG favicons' do
+        paths = Dir.glob File.join(site.dest, '**', '*.png')
+        names = paths.collect { |path| File.basename path }
         assets = Jekyll::Favicon.assets site
-        png_assets = assets.select { |asset| '.png'.eql? asset.extname }
-        png_assets.each do |asset|
-          png_names.must_include asset.name
+        assets = assets.select { |asset| '.png'.eql? asset.extname }
+        assets.each do |asset|
+          names.must_include asset.name
         end
+      end
+
+      it "won't create any SVG favicon" do
+        paths = Dir.glob File.join(site.dest, '**', '*.svg')
+        paths.must_be_empty
       end
 
       it 'creates a Webmanifest' do
