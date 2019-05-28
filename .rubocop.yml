@@ -1,8 +1,10 @@
 Metrics/BlockLength:
   Exclude:
     - Rakefile
-    - '**/*.rake'
-    - test/**/*.rb
+    - !ruby/regexp /_test\.rb$/
+Metrics/ModuleLength:
+  Exclude:
+    - !ruby/regexp /_test\.rb$/
 Naming/FileName:
   Exclude:
     - lib/jekyll-favicon.rb

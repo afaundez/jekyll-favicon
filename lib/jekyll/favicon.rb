@@ -13,7 +13,7 @@ module Jekyll
         DEFAULT_GLOBAL_ATTRIBUTES.key? attribute
       end
       global_attributes = DEFAULT_GLOBAL_ATTRIBUTES.merge user_global_attributes
-      user_assets = user_config.fetch('assets', {}) || {}
+      user_assets = user_config.fetch 'assets', {}
       assets_customizations = if user_config['override'] then user_assets
                               else Utils.merge DEFAULT_ASSETS, user_assets
                               end
