@@ -81,6 +81,10 @@ module Jekyll
 
       def resize(options)
         return unless options['resize']
+        if 'auto'.eql? options['resize']
+          yield :resize, @sizes.first
+          return
+        end
         weight, height = options['resize'].split 'x'
         yield :resize, options['resize']
         return if weight == height

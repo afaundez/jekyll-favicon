@@ -18,6 +18,7 @@ output:
   .ico:
     <<: *defaults
     alpha: off
+    resize: auto
     define:
       icon:
         auto-resize: auto
