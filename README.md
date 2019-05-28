@@ -17,11 +17,23 @@ Check if it is already installed by running:
 
 ```sh
 $ convert --version
-Version: ImageMagick 7.0.7-27 Q16 x86_64 2018-03-18 http://www.imagemagick.org
-Copyright: © 1999-2018 ImageMagick Studio LLC
-License: http://www.imagemagick.org/script/license.php
-Features: Cipher DPC HDRI Modules
-Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
+Version: ImageMagick 7.0.8-46 Q16 x86_64 2019-05-19 https://imagemagick.org
+Copyright: © 1999-2019 ImageMagick Studio LLC
+License: https://imagemagick.org/script/license.php
+Features: Cipher DPC HDRI Modules OpenMP(3.1)
+Delegates (built-in): bzlib freetype heic jng jp2 jpeg lcms ltdl lzma openexr png tiff webp xml zlib
+```
+
+If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
+
+```sh
+sudo apt install librsvg2-bin
+```
+
+If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
+
+```sh
+sudo apt install librsvg2-bin
 ```
 
 ## Installation
@@ -29,20 +41,20 @@ Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.5', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.7', group: :jekyll_plugins
 ```
 
 ## Usage
 
-If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [running example](https://afaundez.gitlab.io/jekyll-favicon-example/) hosted by [GitLab](https://about.gitlab.com/features/pages/).
+If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [this running example](https://afaundez.gitlab.io/jekyll-favicon-example/) hosted by [GitLab](https://about.gitlab.com/features/pages/).
 
 As [Github Pages](https://pages.github.com) build doesn't load custom plugins, this plugin won't work. As an alternative, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
 
 ### Generator
 
-By installing the plugin, it will be automatically active. It will search for the file `/favicon.svg` and generate set of files in `/assets/images` and few more items at the site's root. It also will exclude the original sources from being copied as a regular static file.
+By installing the plugin, it will be automatically activated. It will search for the file `/favicon.svg` and generate a set of files in `/assets/images` and few more items at the site's root. It also will exclude the original sources from being copied as a regular static file.
 
-You can override whit your sites's `_config.yml`:
+You can override these settings in your sites's `_config.yml`:
 
 ```yaml
 favicon:

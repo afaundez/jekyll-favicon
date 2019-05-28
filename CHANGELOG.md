@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.7] - 2019-05-27
+### Fixed
+- Set default background back to none
+- Restore safari-pinned-tab
+### Changed
+- Update README outdated stuff
+- Correct typos on README
+
+## [0.2.6] - 2019-03-23
+### Added
+- Readme troubleshooting for librsvg2-bin package missing
+### Fixed
+- ICO convert uses background config
+
 ## [0.2.5] - 2019-01-16
 ### Changed
 - Strike GraphicsMagick at Readme because it's compatible a this moment
