@@ -2,18 +2,18 @@
 
 This [Jekyll](https://jekyllrb.com) plugin adds:
 
-- a generator for
+- a [custom generator](https://jekyllrb.com/docs/plugins/generators/) for
   - a `favicon.ico`
-  - multiple `favicon-[width]x[height].png`
-  - a [webmanifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
-  - a [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29)
-- a tag to generate all the corresponding links and metadata needed in the head tag
+  - apple touch icons
+  - a [webmanifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) and its icons
+  - a [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29) and its icons
+- a [custom tag](https://jekyllrb.com/docs/plugins/tags/) for the links and metadata needed in the head tag
 
 ## Prerequisites
 
-Before using this plugin your system must have installed [ImageMagick](http://www.imagemagick.org) ~~(or [GraphicsMagick](http://www.graphicsmagick.org/))~~.
+Before using this plugin your system must have installed [ImageMagick](http://www.imagemagick.org).
 
-Check if it is already installed by running:
+You can check if it's already installed by running:
 
 ```sh
 $ convert --version
@@ -30,37 +30,114 @@ If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-
 sudo apt install librsvg2-bin
 ```
 
-If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
-
-```sh
-sudo apt install librsvg2-bin
-```
-
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.7', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 1.0.0', group: :jekyll_plugins
 ```
 
 ## Usage
 
+If you are running Jekyll on your own, the Gemfile line is all you need.
+
 If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [this running example](https://afaundez.gitlab.io/jekyll-favicon-example/) hosted by [GitLab](https://about.gitlab.com/features/pages/).
 
-As [Github Pages](https://pages.github.com) build doesn't load custom plugins, this plugin won't work. As an alternative, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
+If you are using [Github Pages](https://pages.github.com) this plugin won't work as they don't load external plugins. As an alternative, you can build your site and push all files generated (for example, build to `docs`, version it and push it, although this works only for project pages).
 
 ### Generator
 
-By installing the plugin, it will be automatically activated. It will search for the file `/favicon.svg` and generate a set of files in `/assets/images` and few more items at the site's root. It also will exclude the original sources from being copied as a regular static file.
+By installing the plugin, it will be automatically activated. It will search for the file `/favicon.svg` and generate a full set of files in the root of your site, excluding the original sources from being copied as a regular static file.
 
-You can override these settings in your sites's `_config.yml`:
+You can override defaults favicon settings adding the following block mapping in your sites's `_config.yml`:
 
 ```yaml
 favicon:
-  source: custom-favicon-png-or.svg
-  path: /assets/img
+  attribute: new-value
 ```
+
+#### favicon attributes
+
+| Attribute | Values | Type | Default |
+| - | - | - | - |
+| source | Path to favicon SVG or PNG relative to site's source | string | `favicon.svg` |
+| dir | Prepend path relative to site's destination | string |  |
+| background | Background to use in case of transparency | string | `none` |
+| assets | Asset(s) that must be generated. | array \| hash \| string | [assets](#assets-attributes) |
+| assets_override | Set true if user assets should override default assets, otherwise the assets will be merged | boolean | false |
+
+##### assets attributes
+
+A single assets has the following attributes:
+
+| Attribute | Values | Type |
+| - | - | - |
+| name | Basename of the asset created | string |
+| sizes | List of sizes to convert source | array |
+| source | Path to favicon SVG or PNG relative to site's source | string |
+| dir | Prepend path relative to site's destination | string |
+
+The final form of the assets is a block sequence:
+
+```yaml
+assets:
+  - name: favicon-64x64.png,
+    sizes:
+      - 64x64
+    source: favicon.svg
+    dir: ''
+  - name: favicon.png,
+    sizes:
+      - 16x16
+    source: favicon.svg
+    dir: ''
+  - name: favicon-32x32.png,
+    dir: assets/images
+    sizes:
+      - 32x32
+    source: favicon.svg
+    dir: ''
+```
+
+This config would generate the files:
+
+```sh
+/favicon-64x64.png
+/favicon.png
+/assets/images/favicon-32x32.png
+```
+
+There are DRY versions of the assets list:
+
+###### assets attributes as a hash
+
+```yaml
+assets:
+  favicon-64x64.png:
+  favicon.png:
+    sizes: 16x16
+  favicon-32x32.png:
+    dir: assets/images
+```
+
+- Every key will be used the name.
+- If attribute `size` is not present and the name match the suffix `-WEIGHTxHEIGHT.EXTENSION`, for example  `favicon-16x32.png`, the size will be set `[ '16x32' ]`.
+- If atributtes `source` and `dir` are not present, they will be set with favicon's attributes.
+
+###### assets attributes as a string
+
+```yaml
+assets: favicon-64x64.png
+```
+
+is equivalent to
+
+```yaml
+assets:
+  favicon-64x64.png:
+```
+
 
 This plugin works best if you use an SVG with a square viewbox as the source, but you can also use a PNG instead (at least 558x588). Check [favicon.svg](/test/fixtures/sites/minimal/favicon.svg) as an example.
 
