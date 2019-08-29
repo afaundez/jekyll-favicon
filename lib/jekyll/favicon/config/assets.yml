@@ -90,13 +90,13 @@ favicon.ico:
     - rel: shortcut icon
     - sizes: auto
 manifest.webmanifest:
-  path: ''
+  dir: ''
   source: manifest.webmanifest
   meta:
     - name: application-name
       content: auto
 browserconfig.xml:
-  path: ''
+  dir: ''
   source: browserconfig.xml
   meta:
     - name: msapplication-config
