@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.54.0', '>= 0.54.0'
 
   spec.add_runtime_dependency 'jekyll', '~> 3.0'
-  spec.add_runtime_dependency 'mini_magick', '~> 4.5'
+  spec.add_runtime_dependency 'mini_magick', '>= 4.9.4'
 end
