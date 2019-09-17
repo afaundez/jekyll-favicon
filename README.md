@@ -66,7 +66,7 @@ This plugin works best if you use an SVG with a square viewbox as the source, bu
 
 ### Favicon tag
 
-To get the links and meta, just add the favicon tag `{{ favicon }}`. For example, on your `index.html`
+To get the links and meta, just add the favicon tag `{% favicon %}`. For example, on your `index.html`
 
 ```html
 ---
