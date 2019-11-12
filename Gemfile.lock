@@ -3,7 +3,7 @@ PATH
   specs:
     jekyll-favicon (0.2.8)
       jekyll (>= 3.0, < 5.0)
-      mini_magick (>= 4.9.4)
+      mini_magick (~> 4.9, >= 4.9.4)
 
 GEM
   remote: https://rubygems.org/
