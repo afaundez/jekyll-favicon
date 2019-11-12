@@ -92,9 +92,8 @@ favicon.ico:
 manifest.webmanifest:
   dir: ''
   source: manifest.webmanifest
-  meta:
-    - name: application-name
-      content: auto
+  link:
+    - rel: manifest
 browserconfig.xml:
   dir: ''
   source: browserconfig.xml
