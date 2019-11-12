@@ -35,7 +35,7 @@ sudo apt install librsvg2-bin
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 1.0.0', group: :jekyll_plugins
+gem 'jekyll-favicon', github: 'afaundez/jekyll-favicon', branch: '1.0.0.pre.alpha', group: :jekyll_plugins
 ```
 
 ## Usage

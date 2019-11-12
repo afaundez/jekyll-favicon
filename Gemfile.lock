@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll-favicon (0.2.8)
+    jekyll-favicon (1.0.0.pre.alpha)
       jekyll (>= 3.0, < 5.0)
       mini_magick (~> 4.9, >= 4.9.4)
 

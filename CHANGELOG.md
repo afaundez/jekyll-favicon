@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Refactor generator and tag
+- Replace user config structure (breaks backward compatibility)
+- Match attributes names with Jekyll's
+- Set new favicons default
 
 ## [0.2.8] - 2019-09-11
 ### Changed
