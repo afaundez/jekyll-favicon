@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.8] - 2019-09-11
+### Changed
+- Upgrade mini_magick 4.9.4 in gemspec for security fix
+- Update gemspec to support Jekyll 4.0
+
 ## [0.2.7] - 2019-05-27
 ### Fixed
 - Set default background back to none

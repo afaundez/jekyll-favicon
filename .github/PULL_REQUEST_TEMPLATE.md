@@ -1,14 +1,16 @@
 # PR Template
 
-Include at least this concepts:
+- Tell us...
+  - what you wanted to achieve
+  - how you did it (use Markdown and screenshots if needed)
 
-- Explain what you wanted to achieve
+- Did you...
+  - [ ] update the Readme? (if needed)
+  - [ ] update the Changelog? (if needed)
+  - [ ] update the tests?
+  - [ ] run the tests?
+  - [ ] check rubocop?
 
-- Explain what you did
+Don't forget to visit [travis-ci](https://travis-ci.org/afaundez/jekyll-favicon/pull_requests) after creating the PR.
 
-  - use markdown
-  - include screenshots if helps to explain
- 
-- Explain how to test it
-
-Thanks for contrubuting!
+Thanks for contributing!
