@@ -52,7 +52,7 @@ module Jekyll
           end
 
           describe 'when sourceabilized with existing source' do
-            let(:source) { fixture 'sites', 'minimal', 'favicon.svg' }
+            let(:source) { fixture 'sites', 'minimal-generator', 'favicon.svg' }
 
             it 'returns true' do
               subject.sourceable?.must_equal true

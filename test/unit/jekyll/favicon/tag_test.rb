@@ -3,19 +3,8 @@ require 'test_helper'
 module Jekyll
   module Favicon
     describe Tag do
-      let(:config) do
-        {
-          'source' => fixture('sites', 'minimal'),
-          'destination' => '/dev/null',
-          'favicon' => {
-            'override' => favicon_override,
-            'assets' => favicon_assets
-          }
-        }
-      end
-      let(:site) { Jekyll::Site.new Jekyll.configuration config }
-      let(:context) { Liquid::Context.new({}, {}, site: site) }
-      let(:tag) { Tag.parse text, nil, nil, Liquid::ParseContext.new }
+      let(:tag) { Tag.parse '', nil, nil, Liquid::ParseContext.new }
+      subject { tag.render context }
 
       describe '.render' do
         around :all do |&block|
@@ -23,8 +12,19 @@ module Jekyll
           super(&block)
         end
 
-        let(:text) { '{% favicon %}' }
-        subject { tag.render context }
+        let(:config) do
+          {
+            'source' => fixture('sites', 'minimal-generator'),
+            'destination' => '/dev/null',
+            'favicon' => {
+              'override' => favicon_override,
+              'assets' => favicon_assets
+            }
+          }
+        end
+
+        let(:site) { Jekyll::Site.new Jekyll.configuration config }
+        let(:context) { Liquid::Context.new({}, {}, site: site) }
 
         describe 'when the site does not have assets' do
           let(:favicon_override) { true }
@@ -46,11 +46,11 @@ module Jekyll
 
         describe 'when the site has a custom asset' do
           let(:favicon_override) { true }
-          let(:favicon_assets) { { 'favicon-128x128.ico' => { 'link' => {} } } }
+          let(:favicon_assets) { { 'favicon-16x16.ico' => { 'link' => {} } } }
 
-          it 'render something' do
+          it 'render the custom asset' do
             element = REXML::Element.new 'link'
-            element.add_attributes 'href' => '/favicon-128x128.ico',
+            element.add_attributes 'href' => '/favicon-16x16.ico',
                                    'rel' => 'icon',
                                    'type' => 'image/x-icon'
             subject.wont_be_empty
