@@ -8,15 +8,15 @@ This is an example of a Jekyll site using [Jekyll Favicon Plugin](https://github
 
 ## First: the favicon gem
 
-Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon/blob/master/Gemfile) and bundle!
+Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon/blob/gl-pages/Gemfile) and bundle!
 
 ```ruby
-gem 'jekyll-favicon', '~> 0.2.7', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 0.2.8', group: :jekyll_plugins
 ```
 
 ## Second: the favicon template
 
-Put an SVG like [<img src='https://github.com/afaundez/jekyll-favicon/raw/master/favicon.svg?sanitize=1' alt='Favicon SVG' width='14' style='vertical-align: baseline;'>](https://github.com/afaundez/jekyll-favicon/blob/master/favicon.svg) at the root of your project and name it `favicon.svg`.
+Put an SVG like [<img src='https://github.com/afaundez/jekyll-favicon/raw/gl-pages/favicon.svg?sanitize=1' alt='Favicon SVG' width='14' style='vertical-align: baseline;'>](https://github.com/afaundez/jekyll-favicon/blob/gl-pages/favicon.svg) at the root of your project and name it `favicon.svg`.
 
 Jekyll Favicon will generate favicons in `assets/images` like these ones:
 

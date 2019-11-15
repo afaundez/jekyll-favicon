@@ -16,8 +16,8 @@ test:
   artifacts:
     paths:
     - test
-  except:
-  - master
+  only:
+  - gl-pages
 
 pages:
   stage: deploy
