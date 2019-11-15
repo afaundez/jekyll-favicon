@@ -8,7 +8,7 @@ This is an example of a Jekyll site using [Jekyll Favicon Plugin](https://github
 
 ## First: the favicon gem
 
-Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon/blob/gl-pages/Gemfile) and bundle!
+Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon/blob/gl-pages/Gemfile#L7) and bundle!
 
 ```ruby
 gem 'jekyll-favicon', '~> 0.2.8', group: :jekyll_plugins
