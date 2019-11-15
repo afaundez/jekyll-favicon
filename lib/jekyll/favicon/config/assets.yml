@@ -31,8 +31,14 @@ apple-touch-icon-76x76.png:
     skip: root
     rel: apple-touch-icon
     sizes: auto
-apple-touch-icon.png:
+apple-touch-icon-57x57.png:
   sizes: 57x57
+  link:
+    skip: root
+    rel: apple-touch-icon
+    sizes: auto
+apple-touch-icon.png:
+  sizes: 180x180
   link:
     skip: root
     rel: apple-touch-icon
