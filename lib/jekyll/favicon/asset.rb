@@ -15,6 +15,17 @@ module Jekyll
         taggabilize attributes['link'], attributes['meta']
         referencialize attributes['webmanifest'], attributes['browserconfig']
       end
+
+      def self.build(site, attributes)
+        return if attributes['skip']
+        asset = case File.extname attributes['name']
+                when *Data::MAPPINGS.values.flatten then Data
+                when *Image::MAPPINGS.values.flatten then Image
+                when *Markup::MAPPINGS.values.flatten then Markup
+                else return nil
+                end
+        asset.new site, attributes
+      end
     end
   end
 end

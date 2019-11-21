@@ -17,7 +17,7 @@ module Jekyll
             'source' => fixture('sites', 'minimal-generator'),
             'destination' => '/dev/null',
             'favicon' => {
-              'override' => favicon_override,
+              'assets_override' => favicon_override,
               'assets' => favicon_assets
             }
           }

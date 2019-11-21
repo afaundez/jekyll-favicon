@@ -21,7 +21,7 @@ describe 'favicon tag execution' do
         'source' => fixture('sites', 'minimal-tag'),
         'destination' => destination,
         'favicon' => {
-          'override' => favicon_override,
+          'assets_override' => favicon_override,
           'assets' => favicon_assets
         }
       }
