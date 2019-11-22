@@ -2,6 +2,10 @@ module Jekyll
   module Favicon
     # provide common functionality methods
     module Utils
+      def self.extract_sizes_from(name)
+        name[/.*-(\d+x\d+).[a-zA-Z]+/, 1] if name.respond_to? :match
+      end
+
       def self.merge(base, custom, override: false)
         return base unless custom
         return base.merge custom if override

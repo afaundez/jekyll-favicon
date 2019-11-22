@@ -11,10 +11,8 @@ module Jekyll
 
       def initialize(site, attributes)
         super site, attributes
-        convertialize sizes: attributes['sizes'],
-                      name: attributes['name'],
-                      background: attributes['background'],
-                      convert_user_options: attributes['convert']
+        convertialize attributes['sizes'], attributes['background'],
+                      attributes['convert']
       end
 
       def generable?
@@ -22,7 +20,7 @@ module Jekyll
       end
 
       def generate(dest_path)
-        convert path, dest_path, convert_options
+        convert path, dest_path
       end
 
       def mime_type
