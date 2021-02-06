@@ -82,6 +82,16 @@ To get the links and meta, just add the favicon tag `{% favicon %}`. For example
 </html>
 ```
 
+#### Unusual situations
+
+If your site is deployed in an unusual way, such as behind HTTP Basic Auth, it might be necessary to specify a `crossorigin` attribute for the webmanifest `<link>` tag:
+
+```yaml
+favicon:
+  chrome:
+    crossorigin: "use-credentials"
+```
+
 ## Development
 
 If you want to add something, just make a PR. There is a lot to do:
