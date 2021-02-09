@@ -35,6 +35,7 @@ favicon:
         - 192x192
         - 96x96
         - 48x48
+      crossorigin: false
   classic:
     sizes:
       - 16x16

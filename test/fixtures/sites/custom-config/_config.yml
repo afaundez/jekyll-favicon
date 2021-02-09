@@ -3,6 +3,7 @@ favicon:
     manifest:
       source: data/source.json
       target: data/target.webmanifest
+    crossorigin: use-credentials
   ie:
     browserconfig:
       source: data/source.xml
