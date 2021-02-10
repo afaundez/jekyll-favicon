@@ -60,7 +60,7 @@ GEM
     powerpack (0.1.2)
     public_suffix (3.1.1)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (12.3.3)
     rb-fsevent (0.10.4)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -90,7 +90,7 @@ DEPENDENCIES
   minitest (~> 5.0)
   minitest-hooks (~> 1.4, >= 1.4.2)
   nokogiri (~> 1.8)
-  rake (~> 10.0)
+  rake (~> 12.3)
   rubocop (~> 0.54.0, >= 0.54.0)
 
 BUNDLED WITH
