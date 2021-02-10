@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'minitest-hooks', '~> 1.4', '>= 1.4.2'
   spec.add_development_dependency 'nokogiri', '~> 1.8'
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rubocop', '~> 0.54.0', '>= 0.54.0'
 
   spec.add_runtime_dependency 'jekyll', '>= 3.0', '< 5.0'
