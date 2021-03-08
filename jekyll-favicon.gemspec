@@ -24,11 +24,11 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.5.0'
 
-  spec.add_development_dependency 'minitest', '~> 5.0'
-  spec.add_development_dependency 'minitest-hooks', '~> 1.4', '>= 1.4.2'
-  spec.add_development_dependency 'nokogiri', '~> 1.8'
+  spec.add_development_dependency 'minitest', '~> 5.8'
+  spec.add_development_dependency 'minitest-hooks', '~> 1.5'
+  spec.add_development_dependency 'nokogiri', '~> 1.11'
   spec.add_development_dependency 'rake', '~> 12.3'
 
   spec.add_runtime_dependency 'jekyll', '>= 3.0', '< 5.0'
-  spec.add_runtime_dependency 'mini_magick', '>= 4.9.4'
+  spec.add_runtime_dependency 'mini_magick', '~> 4.11'
 end

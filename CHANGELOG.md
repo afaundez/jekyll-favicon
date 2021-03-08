@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove bundler and rubocop gemspec's development dependencies
 ### Changed
 - Move supported ruby versions to 2.5
+- Update nokogiri, minitest, and minitest-hooks gemspec's development dependencies
+- Update mini_magick gemspec's runtime dependencies
 ### Added
 - gitignore Gemfile.lock
 
