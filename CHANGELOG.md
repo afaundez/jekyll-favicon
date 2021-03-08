@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Delete .ruby-version
 - Remove unsupported versions from travis config
 - Remove bundler and rubocop gemspec's development dependencies
+- Remove graphicmagick from travis config
 ### Changed
 - Move supported ruby versions to 2.5
 - Update nokogiri, minitest, and minitest-hooks gemspec's development dependencies

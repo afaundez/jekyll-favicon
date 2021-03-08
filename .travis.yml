@@ -13,4 +13,3 @@ addons:
       - imagemagick
       - libmagickcore-dev
       - libmagickwand-dev
-      - graphicsmagick
