@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Delete Gemfile.lock
 - Delete .ruby-version
 - Remove unsupported versions from travis config
+- Remove bundler and rubocop gemspec's development dependencies
 ### Changed
 - Move supported ruby versions to 2.5
 ### Added
