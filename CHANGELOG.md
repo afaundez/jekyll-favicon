@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+- Delete Gemfile.lock
+### Added
+- gitignore Gemfile.lock
+
 ## [0.2.9] - 2021-02-10
 ### Added
 - Optional `crossorigin` attribute for Chrome manifest
