@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - Delete Gemfile.lock
+- Delete .ruby-version
+- Remove unsupported versions from travis config
+### Changed
+- Move supported ruby versions to 2.5
 ### Added
 - gitignore Gemfile.lock
 
