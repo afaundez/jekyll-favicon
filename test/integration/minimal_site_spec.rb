@@ -3,12 +3,6 @@
 require 'test_helper'
 
 describe 'minimal site' do
-  context site: :minimal do
-    it "doesn't warn missing source" do
-      _(proc { @site.process }).must_be_silent
-    end
-  end
-
   context site: :minimal, process: true do
     it 'creates an ICO file' do
       favicon_path = @destination.join 'favicon.ico'
