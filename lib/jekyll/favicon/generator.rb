@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Jekyll
   module Favicon
-    # Extended generator that creates all the stastic icons and metadata files
+    # New generator that creates all the stastic icons and metadata files
     class Generator < Jekyll::Generator
       priority :high
 
@@ -20,6 +22,7 @@ module Jekyll
 
       def clean
         return unless @template
+
         @template.close
         @template.unlink
       end
@@ -32,6 +35,11 @@ module Jekyll
 
       def favicon_tempfile(source)
         tempfile = Tempfile.new(['favicon-template', '.png'])
+        Image.convert source, tempfile.path, tempfile_options(source)
+        tempfile
+      end
+
+      def tempfile_options(source)
         options = { background: 'none' }
         if source.svg?
           options[:density] = Favicon.config['svg']['density']
@@ -39,8 +47,7 @@ module Jekyll
         elsif source.png?
           options[:resize] = Favicon.config['png']['dimensions']
         end
-        Image.convert source, tempfile.path, options
-        tempfile
+        options
       end
 
       def generate_icons
@@ -63,6 +70,7 @@ module Jekyll
 
       def svg_icons
         return [] unless Favicon.config['source'].svg?
+
         source = Favicon.config['source']
         %w[safari-pinned-tab.svg].collect do |name|
           target = File.join Favicon.config['path'], name

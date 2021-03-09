@@ -1,6 +1,6 @@
 <!-- Chrome -->
-<%- @crossorigin = Favicon.config['chrome']['crossorigin'] -%>
-<%- Favicon.config['chrome']['sizes'].each do |size| -%>
-  <link rel="icon" sizes="<%= size %>" href="<%= File.join prepend_path, Favicon.config['path'], "favicon-#{size}.png" %>">
+<%- @crossorigin = Jekyll::Favicon.config['chrome']['crossorigin'] -%>
+<%- Jekyll::Favicon.config['chrome']['sizes'].each do |size| -%>
+  <link rel="icon" sizes="<%= size %>" href="<%= File.join prepend_path, Jekyll::Favicon.config['path'], "favicon-#{size}.png" %>">
 <%- end -%>
-<link rel="manifest" href="<%= File.join prepend_path, Favicon.config['chrome']['manifest']['target'] %>"<%= " crossorigin=\"#{@crossorigin}\"" if @crossorigin %>>
+<link rel="manifest" href="<%= File.join prepend_path, Jekyll::Favicon.config['chrome']['manifest']['target'] %>"<%= " crossorigin=\"#{@crossorigin}\"" if @crossorigin %>>
