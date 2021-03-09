@@ -1,12 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe Jekyll::Favicon do
-  it 'should have a version number' do
-    refute_nil Jekyll::Favicon::VERSION
-  end
-
-  it 'should have a config paramenter' do
-    refute_empty Jekyll::Favicon.config
+  it 'has config paramenters' do
     refute_empty Jekyll::Favicon.config['source']
     refute_empty Jekyll::Favicon.config['path']
     refute_empty Jekyll::Favicon.config['classic']
