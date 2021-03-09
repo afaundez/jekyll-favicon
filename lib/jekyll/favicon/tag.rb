@@ -14,12 +14,22 @@ module Jekyll
         head = "<!-- Begin Jekyll Favicon tag v#{Favicon::VERSION} -->"
         body = %w[classic safari chrome ie].collect do |template|
           template_path = File.join Favicon.templates, "#{template}.html.erb"
-          ERB.new(File.read(template_path), nil, '-')
-             .result_with_hash(prepend_path: (site.baseurl || ''))
-             .strip
-        end
+          template = read_template template_path
+          template.result_with_hash(prepend_path: (site.baseurl || '')).strip
+        end.join("\n")
         foot = '<!-- End Jekyll Favicon tag -->'
-        [head, body.join("\n"), foot].join("\n")
+        [head, body, foot].join("\n")
+      end
+
+      private
+
+      def read_template(path)
+        str = File.read path
+        if ERB.instance_method(:initialize).parameters.assoc(:key) # Ruby 2.6+
+          ERB.new(str, trim_mode: '-', eoutvar: '@output_buffer')
+        else
+          ERB.new(str, nil, '-', '@output_buffer')
+        end
       end
     end
   end
