@@ -7,7 +7,7 @@ module Jekyll
     class TestGenerator < Minitest::Test
       def setup
         @site = Jekyll::Site.new Jekyll.configuration
-        @generator = Jekyll::Favicon::Generator.new
+        @generator = Generator.new
       end
 
       def test_generator_has_generate_method

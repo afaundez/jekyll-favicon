@@ -8,7 +8,7 @@ module Jekyll
       def setup
         site = Jekyll::Site.new Jekyll.configuration
         context = Liquid::Context.new({}, {}, site: site)
-        @tag = Jekyll::Favicon::Tag.parse '', nil, nil, Liquid::ParseContext.new
+        @tag = Tag.parse '', nil, nil, Liquid::ParseContext.new
         @rendered_tags = @tag.render context
       end
 
