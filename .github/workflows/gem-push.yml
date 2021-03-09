@@ -1,4 +1,4 @@
-name: Ruby Gem
+name: Gem Push
 
 on:
   release:
