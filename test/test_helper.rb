@@ -33,6 +33,8 @@ Minitest::Spec::DSL.class_eval do
         @site = build_site fixture, process, @destination.to_s, site_overrides
         super(&block)
       end
+
+      Jekyll::Commands::Clean.process @site.config
     end
   end
 end
