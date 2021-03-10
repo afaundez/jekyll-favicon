@@ -39,45 +39,6 @@ describe Jekyll::Favicon::Generator do
     end
   end
 
-  describe 'when site uses default PNG favicon' do
-    before :all do
-      @options['source'] = fixture 'sites', 'minimal-png-source'
-      @config = Jekyll.configuration @options
-      @site = Jekyll::Site.new @config
-      @site.process
-      @destination = @options['destination']
-      @defaults = Jekyll::Favicon::DEFAULTS
-    end
-
-    it 'should create ICO favicon' do
-      assert File.exist? File.join(@destination, 'favicon.ico')
-    end
-
-    it 'should create PNG favicons' do
-      generated_files = Dir.glob File.join(@destination, '**', '*.png')
-      options = ['classic', 'ie', 'chrome', 'apple-touch-icon']
-      sizes = options.collect { |option| option['sizes'] }.compact.uniq
-      sizes.each do |size|
-        icon = File.join @destination, @defaults['path'], "favicon-#{size}.png"
-        assert_includes generated_files, icon
-      end
-    end
-
-    it 'will not create SVG icon' do
-      path = File.join @destination, @defaults['path'], 'safari-pinned-tab.svg'
-      refute File.exist? path
-    end
-
-    it 'should create a webmanifest' do
-      assert File.exist? File.join @destination,
-                                   @defaults['chrome']['manifest']['target']
-    end
-
-    it 'should create a browserconfig' do
-      assert File.exist? File.join @destination,
-                                   @defaults['ie']['browserconfig']['target']
-    end
-  end
 
   describe 'when site has an existing webmanifest at default location' do
     before :all do
