@@ -17,7 +17,7 @@ describe 'empty site' do
 
     it "doesn't create favicon files" do
       favicon_path = @destination.join 'favicon.ico'
-      _(File.exist?(favicon_path)).must_equal false
+      _(favicon_path).path_wont_exist
     end
   end
 end

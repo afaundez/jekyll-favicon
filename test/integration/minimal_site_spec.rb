@@ -9,7 +9,7 @@ describe 'minimal site' do
   describe 'generates default files' do
     it 'creates an ICO file' do
       favicon_path = @destination.join 'favicon.ico'
-      _(favicon_path.exist?).must_equal true
+      _(favicon_path).path_must_exist
     end
 
     it 'creates PNG files' do
@@ -18,24 +18,24 @@ describe 'minimal site' do
       default_path = defaults['path'][1..-1]
       options_sizes.flatten.compact.uniq.each do |size|
         favicon_path = @destination.join default_path, "favicon-#{size}.png"
-        _(favicon_path.exist?).must_equal true
+        _(favicon_path).path_must_exist
       end
     end
 
     it 'creates a webmanifest' do
       favicon_path = @destination.join defaults['chrome']['manifest']['target']
-      _(File.exist?(favicon_path)).must_equal true
+      _(favicon_path).path_must_exist
     end
 
     it 'creates a browserconfig' do
       favicon_path = @destination.join defaults['ie']['browserconfig']['target']
-      _(File.exist?(favicon_path)).must_equal true
+      _(favicon_path).path_must_exist
     end
 
     it 'creates SVG icon identical to the source' do
       default_path = defaults['path'][1..-1]
       favicon_path = @destination.join default_path, 'safari-pinned-tab.svg'
-      _(favicon_path.exist?).must_equal true
+      _(favicon_path).path_must_exist
       favicon_document = File.read favicon_path
       source_path = File.join @site.source, 'favicon.svg'
       _(favicon_document).must_equal File.read(source_path)
