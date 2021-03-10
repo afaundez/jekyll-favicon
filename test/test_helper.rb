@@ -3,7 +3,6 @@
 require 'minitest/autorun'
 require 'minitest/hooks/default'
 
-$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'jekyll-favicon'
 
 def root(*subdirs)
@@ -14,26 +13,26 @@ def fixture(*subdirs)
   root 'test', 'fixtures', *subdirs
 end
 
-def build_site(fixture, destination:)
-  options = { destination: destination }
-  options['source'] = fixture 'sites', fixture.to_s if fixture
-  config = Jekyll.configuration options
-  Jekyll::Site.new config
+def build_site(fixture, process, destination, site_overrides)
+  site_overrides[:destination] = destination
+  site_overrides[:source] = fixture 'sites', fixture.to_s if fixture
+  config = Jekyll.configuration site_overrides
+  site = Jekyll::Site.new config
+  site.process if process
+  site
 end
 
 Minitest::Spec::DSL.class_eval do
-  def context(process: false, fixture: nil, &block)
+  def context(fixture: nil, process: false)
     let(:defaults) { Jekyll::Favicon::DEFAULTS }
 
-    around :all do |&around_block|
+    around(:all) do |&block|
       Dir.mktmpdir do |tmpdir|
+        site_overrides ||= {}
         @destination = Pathname.new tmpdir
-        @site = build_site fixture, destination: @destination.to_s
-        @site.process if process
-        super(&around_block)
+        @site = build_site fixture, process, @destination.to_s, site_overrides
+        super(&block)
       end
     end
-
-    block.call
   end
 end
