@@ -14,26 +14,26 @@ def fixture(*subdirs)
   root 'test', 'fixtures', *subdirs
 end
 
-def build_site(site, destination:)
+def build_site(fixture, destination:)
   options = { destination: destination }
-  options['source'] = fixture 'sites', site.to_s if site
+  options['source'] = fixture 'sites', fixture.to_s if fixture
   config = Jekyll.configuration options
-  site = Jekyll::Site.new config
-  [site, options]
+  Jekyll::Site.new config
 end
 
 Minitest::Spec::DSL.class_eval do
-  def context(process: false, site: nil, verbose: false, &block)
-    Dir.mktmpdir do |tmpdir|
-      before :all do
-        puts "context site: #{site}, tmpdir: #{tmpdir}" if verbose
-        @site, @options = build_site site, destination: tmpdir
-        @site.process if process
-        @destination = Pathname.new @options[:destination]
-        @defaults = Jekyll::Favicon::DEFAULTS
-      end
+  def context(process: false, fixture: nil, &block)
+    let(:defaults) { Jekyll::Favicon::DEFAULTS }
 
-      block.call
+    around :all do |&around_block|
+      Dir.mktmpdir do |tmpdir|
+        @destination = Pathname.new tmpdir
+        @site = build_site fixture, destination: @destination.to_s
+        @site.process if process
+        super(&around_block)
+      end
     end
+
+    block.call
   end
 end
