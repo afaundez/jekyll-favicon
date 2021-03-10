@@ -49,7 +49,7 @@ describe 'minimal site with custom PNG source' do
       tag_config = Jekyll::Favicon.config['path']
       tag_href = File.join baseurl, tag_config, 'safari-pinned-tab.svg'
       tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
-      refute index_document.at_css(tag_selector)
+      _(index_document.at_css(tag_selector)).must_be_nil
     end
   end
 end

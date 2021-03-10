@@ -60,32 +60,32 @@ describe 'minimal site' do
       tag_config = Jekyll::Favicon.config['ico']
       tag_href = File.join baseurl, tag_config['target']
       tag_selector = %(link[href="#{tag_href}"])
-      assert index_document.at_css(tag_selector)
+      _(index_document.at_css(tag_selector)).wont_be_nil
     end
 
     it 'adds a webmanifest link' do
       tag_config = Jekyll::Favicon.config['chrome']['manifest']
       tag_href = File.join baseurl, tag_config['target']
       tag_selector = %(link[href="#{tag_href}"])
-      assert index_document.at_css(tag_selector)
+      _(index_document.at_css(tag_selector)).wont_be_nil
     end
 
     it 'adds a browserconfig link' do
       tag_config = Jekyll::Favicon.config['ie']['browserconfig']
       tag_content = File.join baseurl, tag_config['target']
       tag_selector = %(meta[content="#{tag_content}"])
-      assert index_document.at_css(tag_selector)
+      _(index_document.at_css(tag_selector)).wont_be_nil
     end
 
     it 'add a safari pinned tag' do
       tag_config = Jekyll::Favicon.config['path']
       tag_href = File.join baseurl, tag_config, 'safari-pinned-tab.svg'
       tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
-      assert index_document.at_css(tag_selector)
+      _(index_document.at_css(tag_selector)).wont_be_nil
     end
 
     it 'does not add a crossorigin attribute to link tag' do
-      refute index_document.at_css('link[crossorigin]')
+      _(index_document.at_css('link[crossorigin]')).must_be_nil
     end
   end
 end
