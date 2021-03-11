@@ -5,16 +5,27 @@ require 'test_helper'
 describe 'favicon config' do
   subject { Jekyll::Favicon.config }
 
-  it 'has default global source attribute' do
-    source_attribute = subject['source']
-    _(source_attribute).wont_be_nil
-    _(source_attribute).must_be_kind_of String
+  it 'has default global background attribute' do
+    background_attribute = subject['background']
+    _(background_attribute).wont_be_nil
+    _(background_attribute).must_be_kind_of String
   end
 
   it 'has default global path attribute' do
     path_attribute = subject['path']
     _(path_attribute).wont_be_nil
     _(path_attribute).must_be_kind_of String
+  end
+
+  it 'does not have default global sizes attribute' do
+    sizes_attribute = subject['sizes']
+    _(sizes_attribute).must_be_nil
+  end
+
+  it 'has default global source attribute' do
+    source_attribute = subject['source']
+    _(source_attribute).wont_be_nil
+    _(source_attribute).must_be_kind_of String
   end
 
   describe 'targets' do
