@@ -25,6 +25,7 @@ end
 Minitest::Spec::DSL.class_eval do
   def context(fixture: nil, process: false)
     let(:defaults) { Jekyll::Favicon::DEFAULTS }
+    let(:site_overrides) { {} }
 
     around(:all) do |&block|
       Dir.mktmpdir do |tmpdir|
