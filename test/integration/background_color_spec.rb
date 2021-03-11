@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+
+describe 'user can change background color' do
+  describe 'when source is an SVG' do
+    context fixture: :minimal, process: true
+    let(:site_overrides) { { favicon: { 'background' => 'red' } } }
+    let(:img_path) { @destination.join 'assets/images', 'favicon-16x16.png' }
+    subject { MiniMagick::Image.open img_path }
+
+    it 'changes PNG background' do
+      pixels = subject.get_pixels
+      assert_equal [255, 0, 0], pixels[0][0]
+      assert_equal [220, 20, 60], pixels[8][8]
+    end
+  end
+end

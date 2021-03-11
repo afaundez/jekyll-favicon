@@ -12,34 +12,6 @@ describe Jekyll::Favicon::Generator do
     FileUtils.remove_entry @options['destination']
   end
 
-  describe 'when site uses default SVG favicon and changes background color' do
-    before :all do
-      @options['source'] = fixture 'sites', 'minimal'
-      @options['favicon'] = { 'background' => 'red' }
-      @config = Jekyll.configuration @options
-      @site = Jekyll::Site.new @config
-      @site.process
-      @destination = @options['destination']
-      @defaults = Jekyll::Favicon::DEFAULTS
-    end
-
-    it 'should honor SVG colors' do
-      img = MiniMagick::Image.open File.join @options['destination'], 'assets',
-                                             'images',
-                                             'favicon-16x16.png'
-      pixels = img.get_pixels
-      assert_equal [255, 0, 0], pixels[0][0]
-      assert_equal [220, 20, 60], pixels[8][8]
-      img = MiniMagick::Image.open File.join @options['destination'], 'assets',
-                                             'images',
-                                             'favicon-57x57.png'
-      pixels = img.get_pixels
-      assert_equal [255, 0, 0], pixels[0][0]
-      assert_equal [220, 20, 60], pixels[26][26]
-    end
-  end
-
-
   describe 'when site has an existing webmanifest at default location' do
     before :all do
       @options['source'] = fixture 'sites', 'minimal-default-webmanifest'
