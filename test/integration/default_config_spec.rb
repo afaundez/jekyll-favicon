@@ -34,6 +34,13 @@ describe 'favicon config' do
       _(chrome_config).wont_be_nil
       _(chrome_config).must_be_kind_of Hash
       _(chrome_config['sizes']).must_be_kind_of Array
+      manifest_attributes = chrome_config['manifest']
+      _(manifest_attributes).wont_be_nil
+      _(manifest_attributes).must_be_kind_of Hash
+      _(manifest_attributes['crossorigin']).must_be_kind_of FalseClass
+      _(manifest_attributes['sizes']).must_be_kind_of Array
+      _(manifest_attributes['source']).must_be_kind_of String
+      _(manifest_attributes['target']).must_be_kind_of String
     end
 
     it 'has default classic config' do
