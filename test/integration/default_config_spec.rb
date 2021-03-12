@@ -55,6 +55,12 @@ describe 'favicon config' do
       _(ie_config).wont_be_nil
       _(ie_config).must_be_kind_of Hash
       _(ie_config['sizes']).must_be_kind_of Array
+      _(ie_config['tile-color']).must_be_kind_of String
+      browserconfig_attributes = ie_config['browserconfig']
+      _(browserconfig_attributes).wont_be_nil
+      _(browserconfig_attributes).must_be_kind_of Hash
+      _(browserconfig_attributes['source']).must_be_kind_of String
+      _(browserconfig_attributes['target']).must_be_kind_of String
     end
 
     it 'has default safari config' do
@@ -63,6 +69,36 @@ describe 'favicon config' do
       _(safari_config).must_be_kind_of Hash
       _(safari_config['background']).must_be_kind_of String
       _(safari_config['sizes']).must_be_kind_of Array
+    end
+
+    it 'has default safari-pinned-tab config' do
+      safari_config = subject['safari-pinned-tab']
+      _(safari_config).wont_be_nil
+      _(safari_config).must_be_kind_of Hash
+      _(safari_config['mask-icon-color']).must_be_kind_of String
+    end
+
+    it 'has default SVG config' do
+      svg_config = subject['svg']
+      _(svg_config).wont_be_nil
+      _(svg_config).must_be_kind_of Hash
+      _(svg_config['density']).must_be_kind_of Integer
+      _(svg_config['dimensions']).must_be_kind_of String
+    end
+
+    it 'has default PNG config' do
+      png_config = subject['png']
+      _(png_config).wont_be_nil
+      _(png_config).must_be_kind_of Hash
+      _(png_config['dimensions']).must_be_kind_of String
+    end
+
+    it 'has default ICO config' do
+      ico_config = subject['ico']
+      _(ico_config).wont_be_nil
+      _(ico_config).must_be_kind_of Hash
+      _(ico_config['target']).must_be_kind_of String
+      _(ico_config['sizes']).must_be_kind_of Array
     end
   end
 end
