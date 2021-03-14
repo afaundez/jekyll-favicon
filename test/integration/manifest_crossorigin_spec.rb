@@ -4,7 +4,7 @@ require 'test_helper'
 require 'nokogiri'
 
 describe 'when site defines chrome crossorigin value' do
-  context fixture: 'custom-config', process: true
+  context fixture: 'custom-config', action: :process
 
   let(:index_document) { Nokogiri::Slop File.open(index_destination) }
   let(:index_destination) { @context.destination 'index.html' }

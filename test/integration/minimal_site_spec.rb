@@ -4,7 +4,7 @@ require 'test_helper'
 require 'nokogiri'
 
 describe 'minimal site' do
-  context fixture: :minimal, process: true
+  context fixture: :minimal, action: :process
 
   describe 'generates default files' do
     it 'creates an ICO file' do

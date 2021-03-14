@@ -4,7 +4,7 @@ require 'test_helper'
 require 'rexml/document'
 
 describe 'when site has an existing custom configuration' do
-  context fixture: 'custom-config', process: true
+  context fixture: 'custom-config', action: :process
 
   let(:subject_keys) { %w[favicon chrome manifest target] }
   let(:subject_attribute) { @context.config.dig(*subject_keys) }

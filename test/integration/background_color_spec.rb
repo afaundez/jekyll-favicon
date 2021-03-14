@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe 'user can change background color' do
   describe 'when source is an SVG' do
-    context fixture: :minimal, process: true
+    context fixture: :minimal, action: :process
     let(:site_override) { { favicon: { 'background' => 'red' } } }
 
     subject do

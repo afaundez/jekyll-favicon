@@ -4,7 +4,7 @@ require 'test_helper'
 require 'nokogiri'
 
 describe 'minimal site with custom PNG source' do
-  context fixture: 'minimal-png-source', process: true
+  context fixture: 'minimal-png-source', action: :process
   let(:site_override) { { favicon: { 'source' => 'favicon.png' } } }
 
   describe 'generates default files' do

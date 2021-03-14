@@ -4,7 +4,7 @@ require 'test_helper'
 require 'rexml/document'
 
 describe 'when site overrides source browserconfig' do
-  context fixture: 'custom-config', process: true
+  context fixture: 'custom-config', action: :process
 
   let(:subject_keys) { %w[favicon ie browserconfig target] }
   let(:subject_attribute) { @context.config.dig(*subject_keys) }

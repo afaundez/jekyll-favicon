@@ -14,7 +14,7 @@ def fixture(*subdirs)
 end
 
 # struct for easier expectations
-Context = Struct.new(:site, :defaults) do
+Context = Struct.new(:site, :favicon_defaults) do
   def destination(*path)
     Pathname.new(site.config['destination'])
             .join(*path)
@@ -36,7 +36,7 @@ Context = Struct.new(:site, :defaults) do
   end
 
   def defaults(*keys)
-    defaults.dig(*keys)
+    favicon_defaults.dig(*keys)
   end
 
   def config
@@ -44,7 +44,9 @@ Context = Struct.new(:site, :defaults) do
   end
 
   def clean
+    Jekyll.logger.log_level = :error
     Jekyll::Commands::Clean.process site.config
+    Jekyll.logger.log_level = :warn
   end
 end
 
@@ -68,33 +70,27 @@ def parse_context_options(fixture_key = nil, **kwrds)
   options.merge kwrds
 end
 
+def execute(context, actions)
+  actions.each { |action| context.send action }
+end
+
 Minitest::Spec::DSL.class_eval do
-  def processed_context(options)
+  def tmp_context(options, actions)
     around :all do |&block|
-      lazy_override = site_override || {}
+      override = site_override || {}
+      overriden = Jekyll::Utils.deep_merge_hashes options, override
       Dir.mktmpdir do |tmpdir|
-        merge_options = Jekyll::Utils.deep_merge_hashes options, lazy_override
-        @context = setup_site merge_options.merge(destination: tmpdir)
-        @context.process and super(&block)
+        @context = setup_site overriden.merge(destination: tmpdir)
+        execute @context, actions
+        super(&block)
       end
       @context.clean
     end
   end
 
-  def unprocessed_context(options)
-    around :all do |&block|
-      lazy_override = site_override || {}
-      merge_options = Jekyll::Utils.deep_merge_hashes options, lazy_override
-      @context = setup_site merge_options
-      super(&block) and @context.clean
-    end
-  end
-
-  def context(fixture: nil, process: false, **kwrds)
+  def context(fixture: nil, action: [], **kwrds)
     let(:site_override) { {} }
     options = parse_context_options fixture, **kwrds
-    return processed_context options if process
-
-    unprocessed_context options
+    tmp_context options, [action].flatten
   end
 end

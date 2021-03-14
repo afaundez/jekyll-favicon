@@ -13,7 +13,7 @@ describe 'empty site' do
   end
 
   describe 'after processing' do
-    context fixture: :empty, process: true
+    context fixture: :empty, action: :process
 
     it "doesn't create favicon files" do
       favicon_path = @context.destination 'favicon.ico'

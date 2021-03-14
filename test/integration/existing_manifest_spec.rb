@@ -4,7 +4,7 @@ require 'test_helper'
 require 'rexml/document'
 
 describe 'when site overrides source  manifest' do
-  context fixture: 'minimal-default-webmanifest', process: true
+  context fixture: 'minimal-default-webmanifest', action: :process
 
   subject do
     target_attribute = @context.defaults 'chrome', 'manifest', 'target'
