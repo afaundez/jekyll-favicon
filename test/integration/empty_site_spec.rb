@@ -8,7 +8,7 @@ describe 'empty site' do
 
     it 'warns missing source' do
       expected_pattern = /Jekyll::Favicon: Missing favicon.svg/
-      _(proc { @context.process }).must_output nil, expected_pattern
+      _(proc { @context.execute :process, log_level: :warn }).must_output nil, expected_pattern
     end
   end
 

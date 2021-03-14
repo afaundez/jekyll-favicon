@@ -5,12 +5,26 @@ require 'minitest/hooks/default'
 
 require 'jekyll-favicon'
 
-def root(*subdirs)
+def jekyll_execute(log_level: :error, &block)
+  logger = Jekyll.logger
+  initial_level = logger.level
+  logger.log_level = log_level
+  block.call
+  logger.log_level = initial_level
+end
+
+def source(key)
+  return '/dev/null' unless key
+
+  subdirs = [:test, :fixtures, :sites, key]
   File.expand_path File.join('..', *subdirs.collect(&:to_s)), __dir__
 end
 
-def fixture(*subdirs)
-  root 'test', 'fixtures', *subdirs
+def setup_site(override = {})
+  jekyll_execute do
+    config = Jekyll.configuration override
+    return Jekyll::Site.new config
+  end
 end
 
 # struct for easier expectations
@@ -31,10 +45,6 @@ Context = Struct.new(:site, :favicon_defaults) do
             .join(*path)
   end
 
-  def process
-    site.process
-  end
-
   def defaults(*keys)
     favicon_defaults.dig(*keys)
   end
@@ -44,53 +54,36 @@ Context = Struct.new(:site, :favicon_defaults) do
   end
 
   def clean
-    Jekyll.logger.log_level = :error
-    Jekyll::Commands::Clean.process site.config
-    Jekyll.logger.log_level = :warn
+    jekyll_execute { Jekyll::Commands::Clean.process site.config }
   end
-end
 
-def setup_site(override = {})
-  config = Jekyll.configuration override
-  site = Jekyll::Site.new config
-  Context.new site, Jekyll::Favicon::DEFAULTS
-end
-
-def fixture_source(key)
-  return '/dev/null' unless key
-
-  fixture :sites, key
-end
-
-def parse_context_options(fixture_key = nil, **kwrds)
-  options = {
-    destination: '/dev/null',
-    source: fixture_source(fixture_key)
-  }
-  options.merge kwrds
-end
-
-def execute(context, actions)
-  actions.each { |action| context.send action }
+  def execute(actions, log_level: :error)
+    [actions].flatten.each do |action|
+      jekyll_execute(log_level: log_level) { site.send action }
+    end
+  end
 end
 
 Minitest::Spec::DSL.class_eval do
   def tmp_context(options, actions)
     around :all do |&block|
-      override = site_override || {}
-      overriden = Jekyll::Utils.deep_merge_hashes options, override
+      override = Jekyll::Utils.deep_merge_hashes options, (site_override || {})
       Dir.mktmpdir do |tmpdir|
-        @context = setup_site overriden.merge(destination: tmpdir)
-        execute @context, actions
+        @context = Context.new setup_site(override.merge(destination: tmpdir)),
+                               Jekyll::Favicon::DEFAULTS
+        @context.execute actions
         super(&block)
       end
       @context.clean
     end
   end
 
-  def context(fixture: nil, action: [], **kwrds)
+  def context(fixture: nil, action: [])
     let(:site_override) { {} }
-    options = parse_context_options fixture, **kwrds
+    options = {
+      destination: '/dev/null',
+      source: source(fixture)
+    }
     tmp_context options, [action].flatten
   end
 end
