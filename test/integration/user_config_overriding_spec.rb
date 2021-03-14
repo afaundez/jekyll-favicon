@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'spec_helper'
 
 describe 'user favicon config overrides favicon defaults' do
   context fixture: :config

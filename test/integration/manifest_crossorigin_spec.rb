@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'spec_helper'
 require 'nokogiri'
 
 describe 'when site defines chrome crossorigin value' do

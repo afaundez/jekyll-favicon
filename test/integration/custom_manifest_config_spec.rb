@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'spec_helper'
 require 'rexml/document'
 
 describe 'when site has an existing custom configuration' do

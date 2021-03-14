@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'unit_helper'
 
 module Jekyll
   class TestFavicon < Minitest::Test

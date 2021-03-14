@@ -1,13 +1,21 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'unit_helper'
 
 module Jekyll
   module Favicon
+    # test favicon tag
     class TestTag < Minitest::Test
+      include Minitest::Hooks
+
+      def around
+        @site = setup_site
+        super
+        jekyll_execute { Jekyll::Commands::Clean.process @site.config }
+      end
+
       def setup
-        site = Jekyll::Site.new Jekyll.configuration
-        context = Liquid::Context.new({}, {}, site: site)
+        context = Liquid::Context.new({}, {}, site: @site)
         @tag = Tag.parse '', nil, nil, Liquid::ParseContext.new
         @rendered_tags = @tag.render context
       end

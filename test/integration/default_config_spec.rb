@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'spec_helper'
 
 describe 'favicon config' do
   subject { Jekyll::Favicon.config }
