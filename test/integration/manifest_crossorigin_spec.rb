@@ -7,7 +7,7 @@ describe 'when site defines chrome crossorigin value' do
   context fixture: 'custom-config', process: true
 
   let(:index_document) { Nokogiri::Slop File.open(index_destination) }
-  let(:index_destination) { File.join @destination, 'index.html' }
+  let(:index_destination) { @context.destination 'index.html' }
 
   it 'should add crossorigin attribute to link tag' do
     tag_attribute = Jekyll::Favicon.config.dig 'chrome', 'crossorigin'

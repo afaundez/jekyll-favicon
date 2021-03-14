@@ -7,8 +7,8 @@ describe 'when site overrides source  manifest' do
   context fixture: 'minimal-default-webmanifest', process: true
 
   subject do
-    target_attribute = defaults.dig 'chrome', 'manifest', 'target'
-    webmanifest_path = @destination.join target_attribute
+    target_attribute = @context.defaults 'chrome', 'manifest', 'target'
+    webmanifest_path = @context.destination target_attribute
     JSON.parse File.read(webmanifest_path)
   end
 

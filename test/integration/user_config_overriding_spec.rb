@@ -4,8 +4,8 @@ require 'test_helper'
 
 describe 'user favicon config overrides favicon defaults' do
   context fixture: :config
-  subject { @site.config['favicon'] }
-  let(:user_config_path) { File.join @site.source, '_config.yml' }
+  subject { @context.config['favicon'] }
+  let(:user_config_path) { @context.source '_config.yml' }
   let(:user_config) { YAML.load_file(user_config_path)['favicon'] }
 
   it 'overrides default config attributes' do

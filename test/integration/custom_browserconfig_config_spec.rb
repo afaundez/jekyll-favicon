@@ -7,9 +7,9 @@ describe 'when site overrides source browserconfig' do
   context fixture: 'custom-config', process: true
 
   let(:subject_keys) { %w[favicon ie browserconfig target] }
-  let(:subject_attribute) { @site.config.dig(*subject_keys) }
-  let(:source_path) { File.join @site.source, subject_attribute }
-  let(:subject_path) { @destination.join subject_attribute }
+  let(:subject_attribute) { @context.config.dig(*subject_keys) }
+  let(:source_path) { @context.source subject_attribute }
+  let(:subject_path) { @context.destination subject_attribute }
   subject { REXML::Document.new File.read(subject_path) }
 
   it 'should exists only one browserconfig' do

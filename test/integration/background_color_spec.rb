@@ -5,9 +5,12 @@ require 'test_helper'
 describe 'user can change background color' do
   describe 'when source is an SVG' do
     context fixture: :minimal, process: true
-    let(:site_overrides) { { favicon: { 'background' => 'red' } } }
-    let(:img_path) { @destination.join 'assets/images', 'favicon-16x16.png' }
-    subject { MiniMagick::Image.open img_path }
+    let(:site_override) { { favicon: { 'background' => 'red' } } }
+
+    subject do
+      img_path = @context.destination 'assets/images', 'favicon-16x16.png'
+      MiniMagick::Image.open img_path
+    end
 
     it 'changes PNG background' do
       pixels = subject.get_pixels

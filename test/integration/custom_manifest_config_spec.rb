@@ -7,9 +7,9 @@ describe 'when site has an existing custom configuration' do
   context fixture: 'custom-config', process: true
 
   let(:subject_keys) { %w[favicon chrome manifest target] }
-  let(:subject_attribute) { @site.config.dig(*subject_keys) }
-  let(:source_path) { File.join @site.source, subject_attribute }
-  let(:subject_path) { @destination.join subject_attribute }
+  let(:subject_attribute) { @context.config.dig(*subject_keys) }
+  let(:source_path) { File.join @context.source, subject_attribute }
+  let(:subject_path) { @context.destination subject_attribute }
   subject { JSON.parse File.read subject_path }
 
   it 'should exists only one manifest' do
