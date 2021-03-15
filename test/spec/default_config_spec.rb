@@ -5,6 +5,10 @@ require 'spec_helper'
 describe 'favicon config' do
   subject { Jekyll::Favicon.config }
 
+  it 'is the default config' do
+    _(subject).must_equal Jekyll::Favicon::DEFAULTS
+  end
+
   it 'has default global background attribute' do
     background_attribute = subject['background']
     _(background_attribute).wont_be_nil

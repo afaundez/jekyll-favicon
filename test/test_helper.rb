@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-
+require 'minitest/reporters'
 require 'jekyll-favicon'
+
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 def jekyll_execute(log_level: :error, &block)
   logger = Jekyll.logger

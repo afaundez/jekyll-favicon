@@ -30,6 +30,7 @@ Context = Struct.new(:site, :favicon_defaults) do
   end
 
   def clean
+    Jekyll::Favicon.merge({})
     jekyll_execute { Jekyll::Commands::Clean.process site.config }
   end
 

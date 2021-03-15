@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 module Jekyll
@@ -9,18 +11,18 @@ module Jekyll
     defaults_path = File.join PROJECT_ROOT, 'config', 'defaults.yml'
     DEFAULTS = YAML.load_file(defaults_path)['favicon']
 
-    # rubocop:disable  Style/ClassVars
-    def self.merge(overrides)
-      @@config = Jekyll::Utils.deep_merge_hashes DEFAULTS, (overrides || {})
-    end
+    class << self
+      def merge(override)
+        @config = Jekyll::Utils.deep_merge_hashes DEFAULTS, (override || {})
+      end
 
-    def self.config
-      @@config ||= DEFAULTS
-    end
-    # rubocop:enable  Style/ClassVars
+      def config
+        @config ||= DEFAULTS
+      end
 
-    def self.templates
-      File.join PROJECT_ROOT, 'templates'
+      def templates
+        File.join PROJECT_ROOT, 'templates'
+      end
     end
   end
 end
