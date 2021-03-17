@@ -1,33 +1,29 @@
+# frozen_string_literal: true
+
+require 'mini_magick'
+
 # Build browserconfig XML
 module Image
   def self.convert(source, output, options = {})
     MiniMagick::Tool::Convert.new do |convert|
-      options_for convert, options
+      if source.svg? && options.key?('background')
+        if options['background'] == 'transparent'
+          convert.background 'none' 
+          options.delete 'background'
+        else
+          convert.background options.delete('background')
+        end
+      end
       convert << source
+      options_for convert, options
       convert << output
     end
   end
 
   def self.options_for(convert, options)
     convert.flatten
-    basic_options convert, options
-    resize_options convert, options
-    odd_options convert, options
-  end
-
-  def self.basic_options(convert, options)
-    convert.background options[:background] if options[:background]
-    convert.define options[:define] if options[:define]
-    convert.density options[:density] if options[:density]
-    convert.alpha options[:alpha] if options[:alpha]
-  end
-
-  def self.resize_options(convert, options)
-    convert.resize options[:resize] if options[:resize]
-  end
-
-  def self.odd_options(convert, options)
-    convert.gravity 'center' if options[:odd]
-    convert.extent options[:resize] if options[:odd] && options[:resize]
+    options.each do |option, value|
+      convert.send option.to_sym, value
+    end
   end
 end

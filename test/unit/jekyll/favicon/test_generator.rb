@@ -25,7 +25,6 @@ module Jekyll
 
       def test_generator_generate
         assert_output { @generator.generate @site }
-        assert_equal @site, @generator.instance_variable_get(:@site)
       end
     end
   end

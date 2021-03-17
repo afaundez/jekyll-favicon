@@ -1,0 +1,41 @@
+---
+taggable:
+  key:
+    link: href
+    meta: content
+  link:
+    defaults: &defaults
+      crossorigin: null
+      href: null
+      hreflang: null
+      media: null
+      rel: null
+      sizes: null
+      type: null
+    .ico:
+      <<: *defaults
+      rel: icon
+      type: image/x-icon
+    .png:
+      <<: *defaults
+      rel: icon
+      sizes: :auto
+      type: image/png
+    .svg:
+      <<: *defaults
+      rel: icon
+      sizes: any
+      type: image/svg+xml
+    .webmanifest: &manifest
+      <<: *defaults
+      rel: manifest
+    .json:
+      <<: *manifest
+  meta:
+    defaults: &defaults
+      charset: null
+      content: null
+      http-equiv: null
+      name: null
+    .xml:
+      <<: *defaults

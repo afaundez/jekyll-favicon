@@ -1,0 +1,34 @@
+---
+defaults: &defaults
+  alpha: null
+  background: null
+  define: null
+  density: null
+  extent: null
+  gravity: null
+  resize: null
+.svg:
+  .png:
+    <<: *defaults
+    density: 2000
+    extent: :auto
+    resize: :auto
+  .ico:
+    <<: *defaults
+    define:
+      icon:
+        auto-resize: :auto
+    density: :max
+    resize: :max
+  .svg:
+    <<: *defaults
+.png:
+  .ico:
+    <<: *defaults
+    define:
+      icon:
+        auto-resize: :auto
+    resize: :max
+  .png:
+    <<: *defaults
+    gravity: center
