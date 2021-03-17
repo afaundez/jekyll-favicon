@@ -24,7 +24,7 @@ module Jekyll
           # p [:mappable_base_user_attributes, mappable_base_user_attributes]
           patched_mappable_base_user_attributes = patch mappable_base_user_attributes
           # p [:patched_mappable_base_user_attributes, patched_mappable_base_user_attributes]
-          patched_mappable_base_user_attributes.deep_compact
+          Jekyll::Favicon::Utils.compact patched_mappable_base_user_attributes
         end
 
         def convertible?

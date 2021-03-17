@@ -6,7 +6,7 @@ require 'mini_magick'
 module Image
   def self.convert(source, output, options = {})
     MiniMagick::Tool::Convert.new do |convert|
-      if source.svg? && options.key?('background')
+      if File.extname(source) == '.svg' && options.key?('background')
         if options['background'] == 'transparent'
           convert.background 'none' 
           options.delete 'background'
