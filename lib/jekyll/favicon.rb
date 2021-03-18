@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'jekyll/favicon/asset/base'
 
 module Jekyll
   # Module for custom configurations and defaults
@@ -11,6 +10,11 @@ module Jekyll
     PROJECT_ROOT = File.join PROJECT_LIB, 'jekyll', 'favicon'
     defaults_path = File.join PROJECT_ROOT, 'config', 'defaults.yml'
     DEFAULTS = YAML.load_file(defaults_path)['favicon']
+
+    def self.defaults(concern)
+      concern_path = File.join PROJECT_ROOT, "config/defaults/#{concern}.yml"
+      YAML.load_file concern_path
+    end
 
     class << self
       def merge(override = {})
@@ -27,18 +31,13 @@ module Jekyll
         File.join PROJECT_ROOT, 'templates'
       end
 
-      # TODO: move this to a include module
-      def defaults(concern)
-        YAML.load File.read(File.join(Jekyll::Favicon::PROJECT_LIB, "jekyll/favicon/config/defaults/#{concern}.yml"))
-      end
-
       def assets(site)
         assets_attributes = %w[classic chrome ie apple-touch-icon].collect do |kind|
           parse_pngs_attributes kind
         end.flatten
         assets_attributes << parsed_ico_attributes
         assets_attributes << parse_svg_attribute
-        assets_attributes.collect { |attributes| Asset::Base.new site, attributes }
+        assets_attributes.collect { |attributes| attributes }
       end
 
       # TODO: parse this in another module

@@ -13,7 +13,7 @@ module Jekyll
             compactable
           end
         end
-  
+
         def find_all(findable, target)
           findable.each_with_object([]) do |(key, value), memo|
             if key == target
@@ -22,6 +22,12 @@ module Jekyll
               memo.push(*find_all(value, target))
             end
           end.compact.flatten
+        end
+
+        def merge(*mergeables)
+          mergeables.inject({}) do |memo, mergeable|
+            Jekyll::Utils.deep_merge_hashes memo, mergeable
+          end
         end
 
         private

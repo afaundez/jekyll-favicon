@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/icon'
+require 'jekyll/favicon/asset/base'
 require 'jekyll/favicon/metadata'
 require 'browserconfig'
 require 'webmanifest'
@@ -18,17 +18,17 @@ module Jekyll
 
       def generate_assets(site)
         site_static_files = site.static_files
-        Favicon.assets(site).each do |asset|
-          warn_not_sourceable(asset) and next unless asset.sourceable?
-          next unless asset.generable?
+        Favicon.assets(site).each do |attributes|
+          asset = Asset::Base.new site, attributes
+          next warn_not_sourceable(asset) unless asset.generable?
 
-          site_static_files.push Icon.new(site, asset)
+          site_static_files.push asset
         end
       end
 
       def warn_not_sourceable(asset)
         Jekyll.logger.warn <<-HEREDOC
-        Jekyll::Favicon: Missing #{asset.source}, not generating favicons."
+        Jekyll::Favicon: Missing #{asset.source['name']}, not generating favicons."
         HEREDOC
       end
 

@@ -3,21 +3,20 @@
 module Jekyll
   module Favicon
     module Asset
-      # Add source reference to a static file
+      # Copy static file with a different extension
       module Mappable
         include Sourceable
 
-        def mappable
-          [
-            File.extname(sourceable['name']),
-            File.extname(@attributes['name'])
-          ]
+        DEFAULTS = Favicon.defaults :mappable
+
+        def mapping
+          source_extname = File.extname source['name']
+          [source_extname, @extname]
         end
 
         def mappable?
-          mappable_defaults = Jekyll::Favicon.defaults :mappable
-          input, output = mappable
-          mappable_defaults.key?(input) && mappable_defaults[input].include?(output)
+          input, output = mapping
+          sourceable? && DEFAULTS.key?(input) && DEFAULTS[input].include?(output)
         end
       end
     end

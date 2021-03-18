@@ -3,32 +3,45 @@
 module Jekyll
   module Favicon
     module Asset
-      # Add source reference to a static file
+      # Create static file based on a source file
       module Convertible
-        include Sourceable
         include Mappable
 
-        def convertible
-          mappable = convertible_mappable
-          base = filter_convertible Jekyll::Favicon.defaults(:base)
-          mappable_base = Jekyll::Utils.deep_merge_hashes mappable, base
-          user = filter_convertible Jekyll::Favicon.config
-          # p [:mappable_base, mappable_base]
-          # p [:user, user]
-          mappable_base_user = Jekyll::Utils.deep_merge_hashes mappable_base, user
-          # p [:mappable_base_user, mappable_base_user]
-          attributes = filter_convertible @attributes['convert']
-          # p [:attributes, attributes]
-          mappable_base_user_attributes = Jekyll::Utils.deep_merge_hashes mappable_base_user, attributes
-          # mappable_base_user_attributes = mappable_base_user
-          # p [:mappable_base_user_attributes, mappable_base_user_attributes]
-          patched_mappable_base_user_attributes = patch mappable_base_user_attributes
-          # p [:patched_mappable_base_user_attributes, patched_mappable_base_user_attributes]
-          Jekyll::Favicon::Utils.compact patched_mappable_base_user_attributes
+        DEFAULTS = Favicon.defaults :convertible
+
+        def convert
+          options = Favicon::Utils.merge base_convert, mappable_convert,
+                                         user_convert, asset_convert
+          options = patch options
+          Favicon::Utils.compact options
         end
 
         def convertible?
-          sourceable? && mappable?
+          mappable?
+        end
+
+        def base_convert
+          filter_convert Base::DEFAULTS
+        end
+
+        def mappable_convert
+          DEFAULTS.dig(*mapping)
+        end
+
+        def user_convert
+          filter_convert Favicon.config
+        end
+
+        def asset_convert
+          filter_convert @attributes['convert']
+        end
+
+        def filter_convert(config)
+          return {} unless config
+
+          convertible_keys = DEFAULTS['defaults'].keys
+          patch_keys = %w[background sizes]
+          config.slice(*(convertible_keys + patch_keys).uniq)
         end
 
         def patch(config)
@@ -88,20 +101,19 @@ module Jekyll
             end
           end
 
-          convert.slice(*Jekyll::Favicon.defaults(:convertible)['defaults'].keys)
+          convert.slice(*DEFAULTS['defaults'].keys)
         end
 
-        def convertible_mappable
-          convertible_defaults = Jekyll::Favicon.defaults :convertible
-          convertible_defaults.dig(*mappable)
-        end
+        private
 
-        def filter_convertible(config)
-          return {} unless config
-
-          convertible_keys = Jekyll::Favicon.defaults(:convertible)['defaults'].keys
-          patch_keys = %w[background sizes]
-          config.slice(*(convertible_keys + patch_keys).uniq)
+        # Jekyll::StaticFile method
+        def copy_file(dest_path)
+          case @extname
+          when '.svg' then FileUtils.cp path, dest_path
+          when '.ico', '.png' then Image.convert path, dest_path, convert
+          else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
+                              " #{dest_path}. Extension not supported."
+          end
         end
       end
     end
