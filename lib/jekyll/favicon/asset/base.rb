@@ -1,29 +1,23 @@
 # frozen_string_literal: true
 
 require 'jekyll/favicon/asset/sourceable'
-require 'jekyll/favicon/asset/mappable'
 require 'jekyll/favicon/asset/convertible'
-require 'image'
 
 module Jekyll
   module Favicon
     module Asset
-      # Base class for assets
+      # Base class for assets, add an extra config variable with attributes
       class Base < Jekyll::StaticFile
         include Sourceable
-        include Mappable
         include Convertible
-
-        attr_reader :attributes
 
         DEFAULTS = Favicon.defaults :base
 
-        def initialize(site, attributes = {})
-          @attributes = attributes
-          # TODO: check if this should be done when creating the assets
-          @attributes['dir'] = File.dirname @attributes['name'] unless @attributes.key? 'dir'
+        attr_reader :config
 
-          super site, site.source, @attributes['dir'], @attributes['name']
+        def initialize(site, config = {})
+          @config = config
+          super site, site.source, @config['dir'], @config['name']
         end
 
         def generable?

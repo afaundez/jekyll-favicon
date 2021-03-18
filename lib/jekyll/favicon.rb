@@ -31,7 +31,7 @@ module Jekyll
         File.join PROJECT_ROOT, 'templates'
       end
 
-      def assets(site)
+      def assets
         assets_attributes = %w[classic chrome ie apple-touch-icon].collect do |kind|
           parse_pngs_attributes kind
         end.flatten

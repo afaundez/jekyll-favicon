@@ -18,7 +18,7 @@ module Jekyll
 
       def generate_assets(site)
         site_static_files = site.static_files
-        Favicon.assets(site).each do |attributes|
+        Favicon.assets.each do |attributes|
           asset = Asset::Base.new site, attributes
           next warn_not_sourceable(asset) unless asset.generable?
 

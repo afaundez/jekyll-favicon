@@ -18,6 +18,13 @@ module Jekyll
           File.exist? path
         end
 
+        # Jekyll::StaticFile method
+        def path
+          File.join(*[@base, source['dir'], source['name']].compact)
+        end
+
+        private
+
         def base_source
           filter_source Base::DEFAULTS
         end
@@ -28,11 +35,6 @@ module Jekyll
 
         def filter_source(options)
           options.slice 'source'
-        end
-
-        # Jekyll::StaticFile method
-        def path
-          File.join(*[@base, source['dir'], source['name']].compact)
         end
       end
     end

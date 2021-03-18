@@ -1,42 +1,53 @@
 # frozen_string_literal: true
 
+require 'jekyll/favicon/asset/sourceable'
+require 'image'
+
 module Jekyll
   module Favicon
     module Asset
       # Create static file based on a source file
       module Convertible
-        include Mappable
+        include Sourceable
 
         DEFAULTS = Favicon.defaults :convertible
 
         def convert
-          options = Favicon::Utils.merge base_convert, mappable_convert,
-                                         user_convert, asset_convert
+          options = Favicon::Utils.merge defaults_options, users_options,
+                                         configs_options
           options = patch options
           Favicon::Utils.compact options
         end
 
         def convertible?
-          mappable?
+          File.exist?(path) && defaults_options
         end
 
-        def base_convert
-          filter_convert Base::DEFAULTS
+        private
+
+        # Jekyll::StaticFile method
+        def copy_file(dest_path)
+          case @extname
+          when '.svg' then FileUtils.cp path, dest_path
+          when '.ico', '.png' then Image.convert path, dest_path, convert
+          else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
+                              " #{dest_path}. Extension not supported."
+          end
         end
 
-        def mappable_convert
-          DEFAULTS.dig(*mapping)
+        def defaults_options
+          DEFAULTS.dig(File.extname(path), @extname)
         end
 
-        def user_convert
-          filter_convert Favicon.config
+        def users_options
+          filter Favicon.config
         end
 
-        def asset_convert
-          filter_convert @attributes['convert']
+        def configs_options
+          filter @config['convert']
         end
 
-        def filter_convert(config)
+        def filter(config)
           return {} unless config
 
           convertible_keys = DEFAULTS['defaults'].keys
@@ -50,41 +61,33 @@ module Jekyll
           case convert.dig 'define', 'icon', 'auto-resize'
           when :auto
             if (sizes = convert['sizes'])
-              value = sizes.collect{ |size| size.split('x').first }.join(',')
+              value = sizes.collect { |size| size.split('x').first }.join(',')
               convert['define'] = "icon:auto-resize=#{value}"
+            elsif convert['define'].keys.size == 1
+              convert['define'] = nil
             else
-              if convert['define'].keys.size == 1
-                convert['define'] = nil
-              else
-                convert['define']['icon'] = nil
-              end
+              convert['define']['icon'] = nil
             end
           end
 
           case convert['density']
           when :max
-            if (sizes = convert['sizes'])
-              convert['density'] = sizes.collect { |size| size.split }.flatten.max
-            else
-              convert['density'] = nil
-            end
+            convert['density'] = if (sizes = convert['sizes'])
+                                   sizes.collect { |size| size.split }.flatten.max
+                                 end
           end
 
           case convert['resize']
           when :max
-            if (sizes = convert['sizes'])
-              convert['resize'] = sizes.collect { |size| size.split}.flatten.max
-            else
-              convert['resize'] = nil
-            end
+            convert['resize'] = if (sizes = convert['sizes'])
+                                  sizes.collect { |size| size.split }.flatten.max
+                                end
           when :auto
-            if @attributes['name'] && resize = @attributes['name'][/.*-(\d+x\d+).[a-zA-Z]+/, 1]
-              convert['resize'] = resize
-            elsif resize = convert['sizes']
-              convert['resize'] = [resize].flatten.first
-            else
-              convert['resize'] = nil
-            end
+            convert['resize'] = if @config['name'] && resize = @config['name'][/.*-(\d+x\d+).[a-zA-Z]+/, 1]
+                                  resize
+                                elsif resize = convert['sizes']
+                                  [resize].flatten.first
+                                end
           end
 
           if convert['extent'] == :auto && (resize = convert['resize'])
@@ -94,26 +97,12 @@ module Jekyll
 
           case convert['background']
           when :base, :auto, :global
-            if background = @attributes['background']
-              convert['background'] = background
-            else 
-              convert['background'] = nil
-            end
+            convert['background'] = if background = @config['background']
+                                      background
+                                    end
           end
 
           convert.slice(*DEFAULTS['defaults'].keys)
-        end
-
-        private
-
-        # Jekyll::StaticFile method
-        def copy_file(dest_path)
-          case @extname
-          when '.svg' then FileUtils.cp path, dest_path
-          when '.ico', '.png' then Image.convert path, dest_path, convert
-          else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
-                              " #{dest_path}. Extension not supported."
-          end
         end
       end
     end
