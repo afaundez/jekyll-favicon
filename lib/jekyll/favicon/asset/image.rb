@@ -3,7 +3,7 @@
 require 'mini_magick'
 
 # Build browserconfig XML
-module Image
+module Jekyll::Favicon::Asset::Image
   def self.convert(source, output, options = {})
     MiniMagick::Tool::Convert.new do |convert|
       if File.extname(source) == '.svg' && options.key?('background')

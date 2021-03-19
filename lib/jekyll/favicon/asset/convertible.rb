@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'jekyll/favicon/asset/sourceable'
-require 'image'
+require 'jekyll/favicon/asset/image'
 
 module Jekyll
   module Favicon
@@ -29,7 +29,7 @@ module Jekyll
         def copy_file(dest_path)
           case @extname
           when '.svg' then FileUtils.cp path, dest_path
-          when '.ico', '.png' then Image.convert path, dest_path, convert
+          when '.ico', '.png' then Favicon::Asset::Image.convert path, dest_path, convert
           else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
                               " #{dest_path}. Extension not supported."
           end

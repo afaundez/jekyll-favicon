@@ -1,7 +1,7 @@
 require 'rexml/document'
 
 # Build browserconfig XML
-class Browserconfig
+class Jekyll::Favicon::Asset::Browserconfig
   attr_accessor :document
 
   def load(source_path, config, prefix)

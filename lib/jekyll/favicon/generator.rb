@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'jekyll/favicon/asset/base'
-require 'jekyll/favicon/metadata'
-require 'browserconfig'
-require 'webmanifest'
+require 'jekyll/favicon/asset/metadata'
+require 'jekyll/favicon/asset/browserconfig'
+require 'jekyll/favicon/asset/webmanifest'
 
 module Jekyll
   module Favicon
@@ -33,9 +33,9 @@ module Jekyll
       end
 
       def generate_metadata(site)
-        site.pages.push metadata site, Browserconfig.new,
+        site.pages.push metadata site, Favicon::Asset::Browserconfig.new,
                                   Favicon.config['ie']['browserconfig']
-        site.pages.push metadata site, Webmanifest.new,
+        site.pages.push metadata site, Favicon::Asset::Webmanifest.new,
                                   Favicon.config['chrome']['manifest']
       end
 
@@ -44,7 +44,7 @@ module Jekyll
       end
 
       def metadata(site, document, config)
-        page = Metadata.new site, site.source,
+        page = Favicon::Asset::Metadata.new site, site.source,
                             File.dirname(config['target']),
                             File.basename(config['target'])
         favicon_path = File.join (site.baseurl || ''), Favicon.config['path']

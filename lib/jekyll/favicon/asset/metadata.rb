@@ -1,7 +1,7 @@
 module Jekyll
   module Favicon
     # Extended Page that generate files from ERB templates
-    class Metadata < Jekyll::Page
+    class Asset::Metadata < Jekyll::Page
       # rubocop:disable Naming/MemoizedInstanceVariableName
       def read_yaml(*)
         @data ||= {}

@@ -1,5 +1,5 @@
 # Build Webmanifest JSON
-class Webmanifest
+class Jekyll::Favicon::Asset::Webmanifest
   attr_accessor :document
 
   def load(source_path, config, prefix)
