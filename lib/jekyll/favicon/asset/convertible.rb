@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/asset/sourceable'
-
 module Jekyll
   module Favicon
     module Asset
       # Create static file based on a source file
       module Convertible
-        include Sourceable
 
         DEFAULTS = Favicon.defaults :convertible
 

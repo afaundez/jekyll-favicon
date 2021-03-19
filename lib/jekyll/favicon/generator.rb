@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/asset/base'
+require 'jekyll/favicon/asset/graphic'
 require 'jekyll/favicon/asset/metadata'
 require 'jekyll/favicon/asset/browserconfig'
 require 'jekyll/favicon/asset/webmanifest'
@@ -19,7 +19,7 @@ module Jekyll
       def generate_assets(site)
         site_static_files = site.static_files
         Favicon.assets.each do |attributes|
-          asset = Asset::Base.new site, attributes
+          asset = Asset::Graphic.new site, attributes
           next warn_not_sourceable(asset) unless asset.generable?
 
           site_static_files.push asset
