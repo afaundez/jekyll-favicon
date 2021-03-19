@@ -5,14 +5,14 @@ require 'yaml'
 module Jekyll
   # Module for custom configurations and defaults
   module Favicon
-    GEM_ROOT = File.dirname File.dirname __dir__
-    PROJECT_LIB = File.join GEM_ROOT, 'lib'
-    PROJECT_ROOT = File.join PROJECT_LIB, 'jekyll', 'favicon'
-    defaults_path = File.join PROJECT_ROOT, 'config', 'defaults.yml'
-    DEFAULTS = YAML.load_file(defaults_path)['favicon']
+    GEM_ROOT = Pathname.new File.dirname(File.dirname(__dir__))
+    PROJECT_ROOT = GEM_ROOT.join 'lib', 'jekyll', 'favicon'
+    CONFIG_ROOT = PROJECT_ROOT.join 'config'
+    TEMPLATES_ROOT = PROJECT_ROOT.join 'templates'
+    DEFAULTS = YAML.load_file CONFIG_ROOT.join('favicon.yml')
 
     def self.defaults(concern)
-      concern_path = File.join PROJECT_ROOT, "config/defaults/#{concern}.yml"
+      concern_path = CONFIG_ROOT.join 'asset', "#{concern}.yml"
       YAML.load_file concern_path
     end
 
@@ -25,10 +25,6 @@ module Jekyll
 
       def config
         @config ||= DEFAULTS
-      end
-
-      def templates
-        File.join PROJECT_ROOT, 'templates'
       end
 
       def assets

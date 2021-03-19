@@ -1,6 +1,0 @@
----
-.png: [.ico, .png]
-.svg: [.ico, .png, .svg]
-.json: [.json, .webmanifest]
-.webmanifest: [.json, .webmanifest]
-.xml: [.xml]

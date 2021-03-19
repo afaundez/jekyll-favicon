@@ -13,7 +13,7 @@ module Jekyll
         site = context.registers[:site]
         head = "<!-- Begin Jekyll Favicon tag v#{Favicon::VERSION} -->"
         body = %w[classic safari chrome ie].collect do |template|
-          template_path = File.join Favicon.templates, "#{template}.html.erb"
+          template_path = Favicon::TEMPLATES_ROOT.join "#{template}.html.erb"
           template = read_template template_path
           template.result_with_hash(prepend_path: (site.baseurl || '')).strip
         end.join("\n")
