@@ -5,18 +5,17 @@ module Jekyll
     module Asset
       # Create static file based on a source file
       module Convertible
-
         DEFAULTS = Favicon.defaults :convertible
+        KEY = 'convert'
 
         def convert
-          options = Favicon::Utils.merge defaults_options, users_options,
-                                         configs_options
-          options = patch options
-          Favicon::Utils.compact options
+          options = Favicon::Utils.merge convert_defaults, convert_site,
+                                         convert_asset
+          convert_patch options
         end
 
         def convertible?
-          File.exist?(path) && defaults_options
+          File.exist?(path) && convert_defaults
         end
 
         private
@@ -32,74 +31,73 @@ module Jekyll
           end
         end
 
-        def defaults_options
+        def convert_defaults
           DEFAULTS.dig(File.extname(path), @extname)
         end
 
-        def users_options
-          filter Favicon.config
+        def convert_site
+          convert_normalize Favicon.config.slice('background', 'sizes')
         end
 
-        def configs_options
-          filter @config['convert']
+        def convert_asset
+          convert_normalize @config.fetch(KEY, {})
         end
 
-        def filter(config)
-          return {} unless config
+        def convert_normalize(options)
+          return {} unless options
 
-          convertible_keys = DEFAULTS['defaults'].keys
-          patch_keys = %w[background sizes]
-          config.slice(*(convertible_keys + patch_keys).uniq)
+          convert_keys = DEFAULTS['defaults'].keys
+          Favicon::Utils.compact options.slice(*(convert_keys + ['sizes']))
         end
 
-        def patch(config)
+        def convert_patch(config)
           convert = config.dup
+
+          case convert['background']
+          when :auto
+            convert['background'] = @config['background']
+          end
 
           case convert.dig 'define', 'icon', 'auto-resize'
           when :auto
-            if (sizes = convert['sizes'])
-              value = sizes.collect { |size| size.split('x').first }.join(',')
-              convert['define'] = "icon:auto-resize=#{value}"
-            elsif convert['define'].keys.size == 1
-              convert['define'] = nil
-            else
-              convert['define']['icon'] = nil
-            end
+            convert['define'] = if (sizes = config['sizes'])
+                                  value = sizes.collect { |size| size.split('x').max }.join(',')
+                                  "icon:auto-resize=#{value}"
+                                else nil
+                                end
           end
 
           case convert['density']
           when :max
-            convert['density'] = if (sizes = convert['sizes'])
+            convert['density'] = if (sizes = config['sizes'])
                                    sizes.collect { |size| size.split }.flatten.max
+                                 else nil
                                  end
           end
 
           case convert['resize']
+          when :auto
+            convert['resize'] = if (resize = @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1])
+                                  resize
+                                else
+                                  @config['sizes'].flatten.first
+                                end
           when :max
-            convert['resize'] = if (sizes = convert['sizes'])
+            convert['resize'] = if (sizes = config['sizes'])
                                   sizes.collect { |size| size.split }.flatten.max
                                 end
+          end
+
+          case convert['extent']
           when :auto
-            convert['resize'] = if @config['name'] && resize = @config['name'][/.*-(\d+x\d+).[a-zA-Z]+/, 1]
-                                  resize
-                                elsif resize = convert['sizes']
-                                  [resize].flatten.first
+            convert['extent'] = if (resize = convert['resize'])
+                                  w, h = resize.split('x').collect(&:to_i)
+                                  w != h ? resize : nil
+                                else nil
                                 end
           end
-
-          if convert['extent'] == :auto && (resize = convert['resize'])
-            w, h = resize.split('x').collect(&:to_i)
-            convert['extent'] = w != h ? convert['resize'] : nil
-          end
-
-          case convert['background']
-          when :base, :auto, :global
-            convert['background'] = if background = @config['background']
-                                      background
-                                    end
-          end
-
-          convert.slice(*DEFAULTS['defaults'].keys)
+          convert_keys = DEFAULTS['defaults'].keys
+          Favicon::Utils.compact convert.slice(*convert_keys)
         end
       end
     end

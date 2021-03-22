@@ -27,13 +27,17 @@ module Jekyll
         @config ||= DEFAULTS
       end
 
-      def assets
+      def graphics
         assets_attributes = %w[classic chrome ie apple-touch-icon].collect do |kind|
           parse_pngs_attributes kind
         end.flatten
         assets_attributes << parsed_ico_attributes
-        assets_attributes << parse_svg_attribute
+        assets_attributes << parse_svg_attributes
         assets_attributes.collect { |attributes| attributes }
+      end
+
+      def datas
+        [parse_webmanifest_attributes, parse_browserconfig_attributes]
       end
 
       # TODO: parse this in another module
@@ -46,8 +50,7 @@ module Jekyll
       end
 
       def parse_pngs_attributes(kind)
-        convert = config.slice('background')
-        convert.merge! config[kind].slice('background')
+        convert = config[kind].slice('background')
         config.dig(kind, 'sizes').uniq.collect do |size|
           attributes = config.slice 'source'
           attributes.merge! 'name' => "favicon-#{size}.png", 'convert' => convert
@@ -56,13 +59,45 @@ module Jekyll
         end
       end
 
-      def parse_svg_attribute
+      def parse_svg_attributes
         convert = config['safari-pinned-tab'].slice('density')
         name = 'safari-pinned-tab.svg'
         attributes = config.slice 'source'
         attributes.merge! 'name' => name, 'convert' => convert
         attributes['dir'] = config['path'] if config.key? 'path'
         attributes.merge! config.slice('dir')
+      end
+
+      def parse_webmanifest_attributes
+        config = Favicon.config['chrome']['manifest']
+        {
+          'dir' => File.dirname(config['target']),
+          'name' => File.basename(config['target']),
+          'mutate' => {
+            'dir' => File.dirname(config['source']),
+            'name' => File.basename(config['source']),
+          },
+          'source' => {
+            'dir' => File.dirname(Favicon.config['source']),
+            'name' => File.basename(Favicon.config['source'])
+          }
+        }
+      end
+
+      def parse_browserconfig_attributes
+        config = Favicon.config['ie']['browserconfig']
+        {
+          'dir' => File.dirname(config['target']),
+          'name' => File.basename(config['target']),
+          'mutate' => {
+            'dir' => File.dirname(config['source']),
+            'name' => File.basename(config['source']),
+          },
+          'source' => {
+            'dir' => File.dirname(Favicon.config['source']),
+            'name' => File.basename(Favicon.config['source'])
+          }
+        }
       end
     end
   end

@@ -6,12 +6,10 @@ module Jekyll
       # Add source to a static file
       module Sourceable
         DEFAULTS = Favicon.defaults :sourceable
+        KEY = 'source'
 
         def source
-          options = Favicon::Utils.merge base_source, user_source
-          source_dir, source_name = File.split options['source']
-          options = { 'dir' => source_dir, 'name' => source_name }
-          Favicon::Utils.merge DEFAULTS, options
+          Favicon::Utils.merge source_defaults, source_site, source_asset
         end
 
         def sourceable?
@@ -25,16 +23,31 @@ module Jekyll
 
         private
 
-        def base_source
-          filter_source Base::DEFAULTS
+        def source_defaults
+          DEFAULTS
         end
 
-        def user_source
-          filter_source Favicon.config
+        def source_site
+          source_normalize source_filter(Favicon.config)
         end
 
-        def filter_source(options)
-          options.slice 'source'
+        def source_asset
+          source_normalize source_filter(@config)
+        end
+
+        def source_normalize(options)
+          case options
+          when String
+            source_dir, source_name = File.split options
+            { 'dir' => source_dir, 'name' => source_name }
+          when Hash
+            Favicon::Utils.compact options
+          else {}
+          end
+        end
+
+        def source_filter(options)
+          options.fetch KEY, {}
         end
       end
     end

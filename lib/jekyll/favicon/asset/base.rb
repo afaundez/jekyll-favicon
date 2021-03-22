@@ -5,7 +5,6 @@ module Jekyll
     module Asset
       # Base class for assets, add an extra config variable with attributes
       class Base < Jekyll::StaticFile
-
         DEFAULTS = Favicon.defaults :base
 
         attr_reader :config
