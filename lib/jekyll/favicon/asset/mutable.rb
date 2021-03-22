@@ -15,18 +15,20 @@ module Jekyll
         end
 
         def mutable?
-          mutable.any? || mutation.any?
+          mutable || mutation.any?
         end
 
         private
 
         # Jekyll::StaticFile method
         def copy_file(dest_path)
+          return unless mutable || mutation.any?
+          return super dest_path unless mutation.any?
           content = case @extname
                     when '.json', '.webmanifest', '.manifest'
-                      JSON.pretty_generate Jekyll::Favicon::Utils.merge(mutable, mutation)
+                      JSON.pretty_generate Jekyll::Favicon::Utils.merge((mutable || {}), mutation)
                     when '.xml'
-                      mutated = Marshal.load Marshal.dump(mutable)
+                      mutated = Marshal.load Marshal.dump(mutable || REXML::Document.new)
                       browserconfig = mutated.get_elements('browserconfig').first || mutated.add_element('browserconfig')
                       msapplication = browserconfig.get_elements('msapplication').first || browserconfig.add_element('msapplication')
                       tile = msapplication.get_elements('tile').first || msapplication.add_element('tile')
@@ -41,16 +43,25 @@ module Jekyll
           File.write dest_path, content
         end
 
+        def mutable_path
+          File.join(*[@base, mutate['dir'], mutate['name']].compact)
+        end
+
+        def mutable
+          return unless mutable_path && File.file?(mutable_path)
+
+          content = File.read mutable_path
+          case File.extname mutable_path
+          when '.xml' then REXML::Document.new content
+          else JSON.parse content
+          end
+        end
+
         def mutation
           graphics = @site.static_files.select { |sf| sf.is_a? Asset::Graphic }
-          case @extname
-          when '.json', '.webmanifest', '.manifest'
-            return {} if graphics.empty?
+          return {} if graphics.empty?
 
-            icons = graphics.each_with_object([]) do |graphic, memo|
-              memo << { src: graphic.relative_path }
-            end
-            { icons: icons }
+          case @extname
           when '.xml'
             tile = graphics.each_with_object({}) do |graphic, memo|
               if graphic.extname == '.png'
@@ -63,51 +74,12 @@ module Jekyll
               end
             end
             { browserconfig: { msapplication: { tile: tile } } }
+          else
+            icons = graphics.each_with_object([]) do |graphic, memo|
+              memo << { src: graphic.relative_path }
+            end
+            { icons: icons }
           end
-        end
-
-        def mutable
-          mutable_exists = mutable_path && File.file?(mutable_path)
-          case File.extname mutable_path
-          when '.json', '.webmanifest', '.manifest'
-            mutable_exists ? JSON.parse(File.read(mutable_path)) : {}
-          when '.xml'
-            mutable_exists ? REXML::Document.new(File.read(mutable_path)) : REXML::Document.new
-          end
-        end
-
-        def mutable_path
-          File.join(*[@base, mutate['dir'], mutate['name']].compact)
-        end
-
-        # def add(document, path, element, attributes = {}, text = nil)
-        #   parent = document.elements[path]
-        #   parent.elements[element] = REXML::Element.new element
-        #   attributes.each do |key, value|
-        #     parent.elements[element].add_attribute key, value
-        #   end
-        #   parent.add_text text if text
-        #   document
-        # end
-
-        # def add_browserconfig_schema(document)
-        #   browserconfig = document.elements['browserconfig']
-        #   browserconfig ||= document.add_element 'browserconfig'
-        #   msapplication = browserconfig.elements['msapplication']
-        #   msapplication ||= browserconfig.add_element 'msapplication'
-        #   tile = msapplication.elements['tile']
-        #   msapplication.add_element 'tile' unless tile
-        #   document
-        # end
-
-        def add_browserconfig_elements(document, config, prefix = '')
-          path = 'browserconfig/msapplication/tile'
-          pathname = Pathname.new prefix
-          document = add document, path, 'square70x70logo', 'src' => pathname.join('favicon-128x128.png')
-          document = add document, path, 'square150x150logo', 'src' => pathname.join('favicon-270x270.png')
-          document = add document, path, 'wide310x150logo', 'src' => pathname.join('favicon-558x270.png')
-          document = add document, path, 'square310x310logo', 'src' => pathname.join('favicon-558x558.png')
-          add document, path, 'TileColor', {}, config['tile-color']
         end
       end
     end

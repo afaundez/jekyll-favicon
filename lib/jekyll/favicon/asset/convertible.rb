@@ -23,7 +23,7 @@ module Jekyll
         # Jekyll::StaticFile method
         def copy_file(dest_path)
           case @extname
-          when '.svg' then FileUtils.cp path, dest_path
+          when '.svg' then super(dest_path)
           when '.ico', '.png'
             Favicon::Utils.convert path, dest_path, convert
           else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
