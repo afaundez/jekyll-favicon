@@ -9,9 +9,8 @@ module Jekyll
       class << self
         def convert(input, output, options = {})
           MiniMagick::Tool::Convert.new do |convert|
-            options = convert_svg_options input, convert, options
-            convert << input
             convert_options convert, options
+            convert << input
             convert << output
           end
         end
@@ -35,29 +34,51 @@ module Jekyll
           end.compact.flatten
         end
 
-        def merge(*mergeables)
-          mergeables.inject({}) do |memo, mergeable|
-            Jekyll::Utils.deep_merge_hashes memo, mergeable
+        def merge_pair_hash(left, right)
+          left.merge(right) do |_, left_value, right_value|
+            merge left_value, right_value
           end
+        end
+
+        def merge_pair_array(left, right)
+          (left + right).group_by { |map| map.is_a?(Hash) ? map.values_at('name', 'dir') : [] }
+                        .collect { |group, values| group.first ? merge(*values) : values }
+                        .flatten
+        end
+
+        def merge_pair(left, right)
+          return right if !left || !right || !left.instance_of?(right.class)
+
+          case right
+          when Hash then merge_pair_hash left, right
+          when Array then merge_pair_array left, right
+          else right
+          end
+        end
+
+        def merge(left = nil, *right_and_or_rest)
+          return left if right_and_or_rest.empty?
+
+          right, *rest = right_and_or_rest
+          merged = merge_pair left, right
+          return merged if rest.empty?
+
+          merge(merged, *rest)
         end
 
         private
 
         def convert_options(convert, options)
           convert.flatten
+          if (resize = options.delete 'resize')
+            convert.resize resize
+          end
+          if (scale = options.delete 'scale')
+            convert.scale scale
+          end
           options.each do |option, value|
             convert.send option.to_sym, value
           end
-        end
-
-        def convert_svg_options(input, convert, options)
-          return options unless File.extname(input) == '.svg'
-
-          return options unless (backgound = options.delete('background'))
-
-          backgound = 'none' if backgound == 'transparent'
-          convert.background backgound
-          options
         end
 
         def deep_compact(compactable)

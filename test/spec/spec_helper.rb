@@ -30,7 +30,6 @@ Context = Struct.new(:site, :favicon_defaults) do
   end
 
   def clean
-    Jekyll::Favicon.merge({})
     jekyll_execute { Jekyll::Commands::Clean.process site.config }
   end
 
@@ -48,7 +47,7 @@ Minitest::Spec::DSL.class_eval do
       Dir.mktmpdir do |tmpdir|
         tmp_override = { destination: tmpdir }
         site = setup_site(context_override, lazy_override, tmp_override)
-        @context = Context.new site, Jekyll::Favicon::DEFAULTS
+        @context = Context.new site, Jekyll::Favicon::Configuration.defaults
         @context.execute actions
         super(&block)
       end
@@ -56,7 +55,7 @@ Minitest::Spec::DSL.class_eval do
     end
   end
 
-  def context(fixture: nil, action: [])
+  def context(fixture: :empty, action: [])
     let(:site_override) { {} }
     override = { source: source(fixture) }
     tmp_context override, [action].flatten

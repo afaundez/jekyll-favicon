@@ -18,7 +18,11 @@ module Jekyll
 
         # Jekyll::StaticFile method
         def path
-          File.join(*[@base, source['dir'], source['name']].compact)
+          File.join(*[@base, source_relative_path].compact)
+        end
+
+        def source_relative_path
+          Pathname.new(File.join(*[source['dir'], source['name']].compact)).cleanpath.to_s
         end
 
         private
@@ -28,11 +32,11 @@ module Jekyll
         end
 
         def source_site
-          source_normalize source_filter(Favicon.config)
+          source_normalize source_filter(Favicon::Configuration.merged(@site))
         end
 
         def source_asset
-          source_normalize source_filter(@config)
+          source_normalize source_filter(config)
         end
 
         def source_normalize(options)

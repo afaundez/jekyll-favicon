@@ -1,8 +1,0 @@
-<!-- Safari -->
-<%- favicon_path = File.join prepend_path, Jekyll::Favicon.config['path'] -%>
-<%- Jekyll::Favicon.config['apple-touch-icon']['sizes'].each do |size| -%>
-  <link rel="apple-touch-icon" sizes="<%= size %>" href="<%= File.join favicon_path, "favicon-#{size}.png" %>">
-<%- end -%>
-<% if  File.extname(Jekyll::Favicon.config['source']) == '.svg' %>
-<link rel="mask-icon" color="<%= Jekyll::Favicon.config['safari-pinned-tab']['mask-icon-color'] %>" href="<%= File.join favicon_path, 'safari-pinned-tab.svg' %>">
-<% end %>

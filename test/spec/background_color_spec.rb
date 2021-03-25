@@ -8,14 +8,15 @@ describe 'user can change background color' do
     let(:site_override) { { favicon: { 'background' => 'red' } } }
 
     subject do
-      img_path = @context.destination 'assets/images', 'favicon-16x16.png'
+      img_path = @context.destination 'favicon.png'
       MiniMagick::Image.open img_path
     end
 
     it 'changes PNG background' do
       pixels = subject.get_pixels
       assert_equal [255, 0, 0], pixels[0][0]
-      assert_equal [220, 20, 60], pixels[8][8]
+      half_size = pixels.size / 2
+      assert_equal [220, 20, 60], pixels[half_size][half_size]
     end
   end
 end

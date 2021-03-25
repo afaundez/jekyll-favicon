@@ -1,0 +1,76 @@
+---
+source:
+  name: favicon.svg
+assets:
+- name: favicon.ico
+  convert:
+    define: 'icon:auto-resize=36,24,16'
+- name: favicon.png
+  convert:
+    resize: 196x196
+# chrome
+- name: android-chrome-192x192.png
+  convert:
+    resize: 192x192
+  references:
+  - webmanifest:
+    icon:
+      src: :relative_path
+- name: android-chrome-512x512.png
+  convert:
+    resize: 512x512
+  references:
+  - webmanifest:
+    icon:
+      src: :relative_path
+# ms
+- name: mstile-icon-128x128.png
+  convert:
+    resize: 70x70
+  references:
+  - browserconfig:
+      msapplication:
+        tile:
+          TileColor:
+            __text: :background
+          square70x70logo:
+            _src: :relative_path
+- name: mstile-icon-270x270.png
+  convert:
+    resize: 270x270
+  references:
+  - browserconfig:
+      msapplication:
+        tile:
+          TileColor:
+            __text: :background
+          square150x150logo:
+            _src: :relative_path
+- name: mstile-icon-558x270.png
+  convert:
+    resize: 558x270
+  references:
+  - browserconfig:
+      msapplication:
+        tile:
+          TileColor: :background
+          wide310x150logo:
+            _src: :relative_path
+
+- name: mstile-icon-558x558.png
+  convert:
+    resize: 558x558
+  references:
+  - browserconfig:
+      msapplication:
+        tile:
+          TileColor:
+            __text: :background
+          square310x310logo:
+            _src: :relative_path
+
+# safari
+- name: apple-touch-icon.png
+  convert:
+    resize: 180x180
+- name: safari-pinned-tab.svg

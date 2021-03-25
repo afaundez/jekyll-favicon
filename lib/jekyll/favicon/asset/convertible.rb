@@ -36,11 +36,11 @@ module Jekyll
         end
 
         def convert_site
-          convert_normalize Favicon.config.slice('background', 'sizes')
+          convert_normalize Favicon::Configuration.merged(@site).slice('background', 'sizes')
         end
 
         def convert_asset
-          convert_normalize @config.fetch(KEY, {})
+          convert_normalize config.fetch(KEY, {})
         end
 
         def convert_normalize(options)
@@ -50,54 +50,59 @@ module Jekyll
           Favicon::Utils.compact options.slice(*(convert_keys + ['sizes']))
         end
 
+        def convert_patch_resize(resize, define)
+          case resize
+          when :auto then @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1]
+          when :max
+            if define && (max = define.split('=').last.split(',').max)
+              [max, max].join 'x'
+            end
+          else resize
+          end
+        end
+
+        def convert_patch_scale(scale, *args)
+          resize, define = args
+          case scale
+          when :auto then resize || @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1]
+          when :max
+            if define && (max = define.split('=').last.split(',').max)
+              [max, max].join 'x'
+            end
+          else scale
+          end
+        end
+
+        def convert_patch_density(density, *args)
+          resize, scale, define = args
+          case density
+          when :max
+            length = if (size = resize || scale) then size.split('x').max.to_i
+                     elsif define then define.split('=').last.split(',').max.to_i
+                     end
+            length * 3
+          else density
+          end
+        end
+
+        def convert_patch_extent(extent, *args)
+          scale, resize = args
+          case extent
+          when :auto
+            if (dimensions = resize || scale)
+              width, height = dimensions.split('x')
+              dimensions if width != height
+            end
+          else extent
+          end
+        end
+
         def convert_patch(config)
-          convert = config.dup
-
-          case convert['background']
-          when :auto
-            convert['background'] = @config['background']
-          end
-
-          case convert.dig 'define', 'icon', 'auto-resize'
-          when :auto
-            convert['define'] = if (sizes = config['sizes'])
-                                  value = sizes.collect { |size| size.split('x').max }.join(',')
-                                  "icon:auto-resize=#{value}"
-                                else nil
-                                end
-          end
-
-          case convert['density']
-          when :max
-            convert['density'] = if (sizes = config['sizes'])
-                                   sizes.collect { |size| size.split }.flatten.max
-                                 else nil
-                                 end
-          end
-
-          case convert['resize']
-          when :auto
-            convert['resize'] = if (resize = @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1])
-                                  resize
-                                else
-                                  @config['sizes'].flatten.first
-                                end
-          when :max
-            convert['resize'] = if (sizes = config['sizes'])
-                                  sizes.collect { |size| size.split }.flatten.max
-                                end
-          end
-
-          case convert['extent']
-          when :auto
-            convert['extent'] = if (resize = convert['resize'])
-                                  w, h = resize.split('x').collect(&:to_i)
-                                  w != h ? resize : nil
-                                else nil
-                                end
-          end
-          convert_keys = DEFAULTS['defaults'].keys
-          Favicon::Utils.compact convert.slice(*convert_keys)
+          config.merge! 'resize' => convert_patch_resize(*config.values_at('resize', 'define'))
+          config.merge! 'scale' => convert_patch_scale(*config.values_at('scale', 'resize', 'define'))
+          config.merge! 'density' => convert_patch_density(*config.values_at('density', 'scale', 'resize', 'define'))
+          config.merge! 'extent' => convert_patch_extent(*config.values_at('extent', 'scale', 'resize'))
+          Favicon::Utils.compact config.slice(*DEFAULTS['defaults'].keys)
         end
       end
     end

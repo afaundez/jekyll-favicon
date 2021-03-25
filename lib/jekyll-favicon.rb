@@ -2,6 +2,7 @@
 
 require 'jekyll'
 require 'jekyll/favicon'
+require 'jekyll/favicon/configuration'
 require 'jekyll/favicon/version'
 require 'jekyll/favicon/utils'
 require 'jekyll/favicon/generator'

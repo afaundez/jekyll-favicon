@@ -7,28 +7,40 @@ defaults: &defaults
   extent: null
   gravity: null
   resize: null
+  scale: null
 .svg:
   .png:
     <<: *defaults
-    density: 2000
+    background: :background
+    density: :max
     extent: :auto
-    resize: :auto
+    gravity: center
+    scale: :auto
   .ico:
     <<: *defaults
+    background: :background
     define:
       icon:
         auto-resize: :auto
     density: :max
-    resize: :max
+    extent: :auto
+    gravity: center
+    scale: :max
   .svg:
     <<: *defaults
 .png:
   .ico:
     <<: *defaults
+    background: :background
     define:
       icon:
         auto-resize: :auto
+    extent: :auto
+    gravity: center
     resize: :max
   .png:
     <<: *defaults
+    background: :background
+    extent: :auto
     gravity: center
+    resize: :max

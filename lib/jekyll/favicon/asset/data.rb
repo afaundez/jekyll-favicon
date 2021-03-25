@@ -13,7 +13,7 @@ module Jekyll
         include Mutable
 
         def generable?
-          sourceable? && mutable?
+          sourceable? || mutable?
         end
       end
     end

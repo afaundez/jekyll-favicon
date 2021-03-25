@@ -1,8 +1,0 @@
-<!-- Classic -->
-<%- favicon_ico_path = File.join prepend_path, Jekyll::Favicon.config['ico']['target'] -%>
-<link rel="shortcut icon" href="<%= favicon_ico_path %>">
-<link rel="icon" sizes="<%= Jekyll::Favicon.config['ico']['sizes'].join ' ' %>" href="<%= favicon_ico_path %>">
-<%- favicon_path = File.join prepend_path, Jekyll::Favicon.config['path'] -%>
-<%- Jekyll::Favicon.config['classic']['sizes'].each do |size| -%>
-  <link rel="icon" sizes="<%= size %>" type="image/png" href="<%= File.join favicon_path, "favicon-#{size}.png" %>">
-<%- end -%>

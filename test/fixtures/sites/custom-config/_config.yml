@@ -1,10 +1,12 @@
 favicon:
-  chrome:
-    manifest:
-      source: data/source.json
-      target: data/target.webmanifest
-    crossorigin: use-credentials
-  ie:
-    browserconfig:
-      source: data/source.xml
-      target: data/browserconfig.xml
+  assets:
+    - name: manifest.webmanifest
+      source:
+        name: data/source.json
+      mutate:
+        name: manifest.webmanifest
+    - name: browserconfig.xml
+      source:
+        name: data/source.xml
+      mutate:
+        name: browserconfig.xml

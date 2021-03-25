@@ -8,47 +8,123 @@ describe 'minimal site with custom PNG source' do
   let(:site_override) { { favicon: { 'source' => 'favicon.png' } } }
 
   describe 'generates default files' do
-    it 'creates an ICO file' do
+    it 'creates an ICO file for legacy browsers' do
       favicon_path = @context.destination 'favicon.ico'
       _(favicon_path).path_must_exist
     end
 
-    it 'creates PNG files' do
-      options = %w[classic ie chrome apple-touch-icon]
-      options_sizes = options.collect { |option| @context.defaults option, 'sizes' }
-      default_path = @context.defaults('path')[1..-1]
-      options_sizes.flatten.compact.uniq.each do |size|
-        favicon_path = @context.destination default_path, "favicon-#{size}.png"
-        _(favicon_path).path_must_exist
-      end
+    it 'creates a PNG file for HTML 5 standard' do
+      favicon_path = @context.destination 'favicon.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 196, image[:width]
+      assert_equal 196, image[:height]
+    end
+
+    it 'creates a PNG file for apple touch' do
+      favicon_path = @context.destination 'apple-touch-icon.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 180, image[:width]
+      assert_equal 180, image[:height]
+    end
+
+    it 'creates an SVG file for safari pinned tab' do
+      favicon_path = @context.destination 'safari-pinned-tab.svg'
+      _(favicon_path).path_wont_exist
+    end
+
+    it 'creates a medium PNG file for webmanifest' do
+      favicon_path = @context.destination 'android-chrome-192x192.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 192, image[:width]
+      assert_equal 192, image[:height]
+    end
+
+    it 'creates a large PNG file for webmanifest' do
+      favicon_path = @context.destination 'android-chrome-512x512.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 512, image[:width]
+      assert_equal 512, image[:height]
+    end
+
+    it 'creates a small PNG files for browserconfig' do
+      favicon_path = @context.destination 'mstile-icon-128x128.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 128, image[:width]
+      assert_equal 128, image[:height]
+    end
+
+    it 'creates a medium PNG files for browserconfig-tiles' do
+      favicon_path = @context.destination 'mstile-icon-270x270.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 270, image[:width]
+      assert_equal 270, image[:height]
+    end
+
+    it 'creates a wide PNG files for browserconfig' do
+      favicon_path = @context.destination 'mstile-icon-558x270.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 558, image[:width]
+      assert_equal 270, image[:height]
+    end
+
+    it 'creates a large PNG files for browserconfig' do
+      favicon_path = @context.destination 'mstile-icon-558x558.png'
+      _(favicon_path).path_must_exist
+      image = MiniMagick::Image.open favicon_path
+      assert_equal 558, image[:width]
+      assert_equal 558, image[:height]
     end
 
     it 'creates a webmanifest' do
-      favicon_path = @context.destination @context.defaults 'chrome', 'manifest', 'target'
-      _(favicon_path).path_must_exist
+      data_path = @context.destination 'manifest.webmanifest'
+      _(data_path).path_must_exist
+      data = JSON.parse File.read(data_path)
+      _(data).wont_be_nil
+      _(data).must_include 'icons'
+      icons = data['icons']
+      _(icons).must_be_kind_of Array
+      icon = icons.find { |value| value['src'] == '/android-chrome-192x192.png' }
+      _(icon).wont_be_nil
+      icon = icons.find { |value| value['src'] == '/android-chrome-512x512.png' }
+      _(icon).wont_be_nil
     end
 
     it 'creates a browserconfig' do
-      favicon_path = @context.destination @context.defaults 'ie', 'browserconfig', 'target'
-      _(favicon_path).path_must_exist
+      data_path = @context.destination 'browserconfig.xml'
+      _(data_path).path_must_exist
+      data = REXML::Document.new File.read(data_path)
+      _(data).wont_be_nil
+      tiles = data.get_elements('/browserconfig/msapplication/tile')
+      _(tiles).wont_be_empty
+      _(tiles.size).must_equal 1
+      tile = tiles.first
     end
 
-    it 'does not create a SVG icon' do
-      default_path = @context.defaults('path')[1..-1]
-      favicon_path = @context.destination default_path, 'safari-pinned-tab.svg'
-      _(favicon_path).path_wont_exist
-    end
-  end
-
-  describe 'when using the favicon tag' do
-    let(:index_document) { Nokogiri::Slop File.open(index_path) }
-    let(:index_path) { File.join @context.destination, 'index.html' }
-
-    it 'does not a create safari pinned tag' do
-      tag_config = Jekyll::Favicon.config['path']
-      tag_href = @context.baseurl.join tag_config, 'safari-pinned-tab.svg'
-      tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
-      _(index_document.at_css(tag_selector)).must_be_nil
+    it 'keeps PNG colors' do
+      favicon_path = @context.destination 'favicon.png'
+      favicon_image = MiniMagick::Image.open favicon_path
+      favicon_pixels = favicon_image.get_pixels
+      _(favicon_pixels[0][0]).must_equal [0, 0, 0]
+      _(favicon_pixels[98][98]).must_equal [0, 0, 0]
     end
   end
+
+  # describe 'when using the favicon tag' do
+  #   let(:index_document) { Nokogiri::Slop File.open(index_path) }
+  #   let(:index_path) { File.join @context.destination, 'index.html' }
+
+  #   it 'does not a create safari pinned tag' do
+  #     tag_config = Jekyll::Favicon.config['path']
+  #     tag_href = @context.baseurl.join tag_config, 'safari-pinned-tab.svg'
+  #     tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
+  #     _(index_document.at_css(tag_selector)).must_be_nil
+  #   end
+  # end
 end

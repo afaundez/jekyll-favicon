@@ -16,14 +16,14 @@ def jekyll_execute(log_level: :error, &block)
 end
 
 def source(key)
-  return '/dev/null' unless key
+  return '/dev/null/jekyll-favicon' unless key
 
   subdirs = [:test, :fixtures, :sites, key]
   File.expand_path File.join('..', *subdirs.collect(&:to_s)), __dir__
 end
 
 def setup_site(context_override = {}, lazy_override = {}, tmp_override = {})
-  override = { destination: '/dev/null' }
+  override = { destination: '/dev/null/jekyll-favicon' }
   override = Jekyll::Utils.deep_merge_hashes override, context_override
   override = Jekyll::Utils.deep_merge_hashes override, lazy_override
   override = Jekyll::Utils.deep_merge_hashes override, tmp_override
