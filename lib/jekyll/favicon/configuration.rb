@@ -8,10 +8,6 @@ module Jekyll
     module Configuration
       CONFIG_ROOT = Favicon::GEM_ROOT.join 'lib', 'jekyll', 'favicon', 'config'
 
-      # def self.defaults
-      #   YAML.load_file CONFIG_ROOT.join('favicon.yml')
-      # end
-
       def self.custom(site)
         site&.config&.fetch 'favicon', {}
       end

@@ -14,6 +14,10 @@ module Jekyll
         def generable?
           sourceable? || mutable?
         end
+
+        def warn_not_generable
+          warn_not_sourceable unless sourceable?
+        end
       end
     end
   end

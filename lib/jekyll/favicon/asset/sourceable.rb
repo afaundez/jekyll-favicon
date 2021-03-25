@@ -16,6 +16,14 @@ module Jekyll
           File.exist? path
         end
 
+        def warn_not_sourceable
+          return if sourceable?
+
+          Jekyll.logger.warn(Favicon) do
+            "Missing #{source['name']}, not generating favicons."
+          end
+        end
+
         # Jekyll::StaticFile method
         def path
           File.join(*[@base, source_relative_path].compact)
