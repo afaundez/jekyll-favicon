@@ -105,6 +105,7 @@ describe 'minimal site with custom PNG source' do
       _(tiles).wont_be_empty
       _(tiles.size).must_equal 1
       tile = tiles.first
+      _(tile).wont_be_nil
     end
 
     it 'keeps PNG colors' do

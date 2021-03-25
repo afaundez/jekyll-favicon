@@ -52,7 +52,7 @@ module Jekyll
 
       def test_utils_finds_all_when_deep_nested
         assert_equal [1, 2, 3],
-                     Favicon::Utils.find_all({a: 1, b: { a: 2, c: { a: 3 } } }, :a)
+                     Favicon::Utils.find_all({ a: 1, b: { a: 2, c: { a: 3 } } }, :a)
       end
 
       def test_utils_has_merge
@@ -77,8 +77,6 @@ module Jekyll
       def test_utils_merges_deep_nested
         assert_equal Hash[a: { b: :d }], Favicon::Utils.merge({ a: { b: :c } }, { a: { b: :d } })
         assert_equal Hash[a: %i[b c]], Favicon::Utils.merge({ a: [:b] }, { a: [:c] })
-        assert_equal Hash['alpha' => nil, 'background' => 'transparent', 'define' => nil, 'density' => :max, 'extent' => :auto, 'gravity' => nil, 'resize' => '196x196', 'scale' => :auto],
-                     Favicon::Utils.merge({"alpha"=>nil, "background"=>:background, "define"=>nil, "density"=>:max, "extent"=>:auto, "gravity"=>nil, "resize"=>nil, "scale"=>:auto}, {"background"=>"transparent"}, {"resize"=>"196x196"})
       end
 
       def test_utils_merges_overwriting_when_types_do_not_match
@@ -91,7 +89,8 @@ module Jekyll
       end
 
       def test_utils_merges_arrays_elements
-        assert_equal [{ 'name' => :a, b: :c, d: :f }], Favicon::Utils.merge([{'name' => :a, b: :c, d: :e}], [{ 'name' => :a, b: :c, d: :f }])
+        assert_equal [{ 'name' => :a, b: :c, d: :f }],
+                     Favicon::Utils.merge([{ 'name' => :a, b: :c, d: :e }], [{ 'name' => :a, b: :c, d: :f }])
       end
     end
   end

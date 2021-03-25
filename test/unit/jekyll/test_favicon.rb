@@ -3,6 +3,7 @@
 require 'unit_helper'
 
 module Jekyll
+  # test version lib
   class TestFavicon < Minitest::Test
     def test_favicon_has_version
       assert Favicon.const_defined?(:VERSION)

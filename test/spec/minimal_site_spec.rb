@@ -40,7 +40,7 @@ describe 'minimal site' do
       assert_equal 192, image[:width]
       assert_equal 192, image[:height]
     end
-    
+
     it 'creates a large PNG file for webmanifest' do
       favicon_path = @context.destination 'android-chrome-512x512.png'
       _(favicon_path).path_must_exist
@@ -104,6 +104,7 @@ describe 'minimal site' do
       _(tiles).wont_be_empty
       _(tiles.size).must_equal 1
       tile = tiles.first
+      _(tile).wont_be_nil
     end
 
     it 'keeps SVG colors' do

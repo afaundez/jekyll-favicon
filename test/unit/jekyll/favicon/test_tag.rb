@@ -34,8 +34,8 @@ module Jekyll
       end
 
       def test_tag_render_with_assets
-        asset = Favicon.assets(@site).find { |asset| asset.name == 'favicon.ico' }
-        @site.static_files << asset
+        favicon = Favicon.assets(@site).find { |asset| asset.name == 'favicon.ico' }
+        @site.static_files << favicon
         context = Liquid::Context.new({}, {}, site: @site)
         render = @tag.render context
         refute_nil render
@@ -45,7 +45,7 @@ module Jekyll
         refute_nil tags
         assert_equal 1, tags.children.size
         tag = tags.children.first
-        assert_equal asset.name, tag['href']
+        assert_equal favicon.name, tag['href']
       end
     end
   end
