@@ -47,7 +47,7 @@ Minitest::Spec::DSL.class_eval do
       Dir.mktmpdir do |tmpdir|
         tmp_override = { destination: tmpdir }
         site = setup_site(context_override, lazy_override, tmp_override)
-        @context = Context.new site, Jekyll::Favicon::Configuration.defaults
+        @context = Context.new site, Jekyll::Favicon::DEFAULTS
         @context.execute actions
         super(&block)
       end

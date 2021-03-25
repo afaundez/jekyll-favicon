@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/asset/base'
 require 'jekyll/favicon/asset/sourceable'
 require 'jekyll/favicon/asset/mutable'
 
@@ -8,7 +7,7 @@ module Jekyll
   module Favicon
     module Asset
       # StaticFile extension for data exchange formats
-      class Data < Base
+      class Data < Favicon::StaticFile
         include Sourceable
         include Mutable
 

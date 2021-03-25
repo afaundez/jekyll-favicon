@@ -12,7 +12,7 @@ module Jekyll
       def render(context)
         site = context.registers[:site]
         static_files = site.static_files
-        static_files.select { |static_file| static_file.is_a? Asset::Base }
+        static_files.select { |static_file| static_file.is_a? Favicon::StaticFile }
                     .collect { |asset| new_element 'link', 'href' => asset.url }
                     .join("\n")
       end

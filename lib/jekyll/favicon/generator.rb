@@ -18,9 +18,9 @@ module Jekyll
       private
 
       def warn_not_generable(asset)
-        Jekyll.logger.warn <<~HEREDOC
-          Jekyll::Favicon: Missing #{asset.source['name']}, not generating favicons."
-        HEREDOC
+        Jekyll.logger.warn(Favicon) do
+          "Missing #{asset.source['name']}, not generating favicons."
+        end
       end
     end
   end

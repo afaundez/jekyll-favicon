@@ -7,7 +7,7 @@ describe 'empty site' do
     context fixture: :empty
 
     it 'warns missing source' do
-      expected_pattern = /Jekyll::Favicon: Missing favicon.svg/
+      expected_pattern = /Jekyll::Favicon: Missing favicon.svg, not generating favicons./
       _(proc { @context.execute :process, log_level: :warn }).must_output nil, expected_pattern
     end
   end

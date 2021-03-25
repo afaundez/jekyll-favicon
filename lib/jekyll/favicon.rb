@@ -6,16 +6,15 @@ module Jekyll
   # Module for custom configurations and defaults
   module Favicon
     GEM_ROOT = Pathname.new File.dirname(File.dirname(__dir__))
-    PROJECT_ROOT = GEM_ROOT.join 'lib', 'jekyll', 'favicon'
-    CONFIG_ROOT = PROJECT_ROOT.join 'config'
-    DEFAULTS = YAML.load_file CONFIG_ROOT.join('favicon.yml')
+    CONFIG_ROOT = GEM_ROOT.join 'config'
+    DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon.yml')
 
     def self.configuration(site = nil)
       Configuration.merge site
     end
 
     def self.defaults(concern)
-      concern_path = CONFIG_ROOT.join 'asset', "#{concern}.yml"
+      concern_path = CONFIG_ROOT.join 'jekyll', 'favicon', 'asset', "#{concern}.yml"
       YAML.load_file concern_path
     end
 
