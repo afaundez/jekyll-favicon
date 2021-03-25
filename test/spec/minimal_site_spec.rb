@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'nokogiri'
 
 describe 'minimal site' do
   context fixture: :minimal, action: :process
@@ -116,40 +115,31 @@ describe 'minimal site' do
     end
   end
 
-  # describe 'when using the favicon tag' do
-  #   let(:index_document) { Nokogiri::Slop File.open(index_destination) }
-  #   let(:index_destination) { @context.destination 'index.html' }
+  describe 'when using the favicon tag' do
+    subject { File.read @context.destination('index.html') }
 
-  #   it 'adds an ico link' do
-  #     tag_config = Jekyll::Favicon.config['ico']
-  #     tag_href = @context.baseurl.join tag_config['target']
-  #     tag_selector = %(link[href="#{tag_href}"])
-  #     _(index_document.at_css(tag_selector)).wont_be_nil
-  #   end
+    it 'adds a favicon.ico link' do
+      element = REXML::Element.new 'link'
+      element.add_attributes 'href' => 'favicon.ico'
+      _(subject).must_include element.to_s
+    end
 
-  #   it 'adds a webmanifest link' do
-  #     tag_config = Jekyll::Favicon.config['chrome']['manifest']
-  #     tag_href = @context.baseurl.join tag_config['target']
-  #     tag_selector = %(link[href="#{tag_href}"])
-  #     _(index_document.at_css(tag_selector)).wont_be_nil
-  #   end
+    it 'adds a favicon.png link' do
+      element = REXML::Element.new 'link'
+      element.add_attributes 'href' => 'favicon.png'
+      _(subject).must_include element.to_s
+    end
 
-  #   it 'adds a browserconfig link' do
-  #     tag_config = Jekyll::Favicon.config['ie']['browserconfig']
-  #     tag_content = @context.baseurl.join tag_config['target']
-  #     tag_selector = %(meta[content="#{tag_content}"])
-  #     _(index_document.at_css(tag_selector)).wont_be_nil
-  #   end
+    it 'adds a safari pinned tab link' do
+      element = REXML::Element.new 'link'
+      element.add_attributes 'href' => 'safari-pinned-tab.svg'
+      _(subject).must_include element.to_s
+    end
 
-  #   it 'add a safari pinned tag' do
-  #     tag_config = Jekyll::Favicon.config['dir']
-  #     tag_href = @context.baseurl.join tag_config, 'safari-pinned-tab.svg'
-  #     tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
-  #     _(index_document.at_css(tag_selector)).wont_be_nil
-  #   end
-
-  #   it 'does not add a crossorigin attribute to link tag' do
-  #     _(index_document.at_css('link[crossorigin]')).must_be_nil
-  #   end
-  # end
+    it 'adds a webmanifest link' do
+      element = REXML::Element.new 'link'
+      element.add_attributes 'href' => 'manifest.webmanifest'
+      _(subject).must_include element.to_s
+    end
+  end
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'nokogiri'
 
 describe 'minimal site with custom PNG source' do
   context fixture: 'minimal-png-source', action: :process
@@ -116,16 +115,4 @@ describe 'minimal site with custom PNG source' do
       _(favicon_pixels[98][98]).must_equal [0, 0, 0]
     end
   end
-
-  # describe 'when using the favicon tag' do
-  #   let(:index_document) { Nokogiri::Slop File.open(index_path) }
-  #   let(:index_path) { File.join @context.destination, 'index.html' }
-
-  #   it 'does not a create safari pinned tag' do
-  #     tag_config = Jekyll::Favicon.config['path']
-  #     tag_href = @context.baseurl.join tag_config, 'safari-pinned-tab.svg'
-  #     tag_selector = %(link[rel="mask-icon"][href="#{tag_href}"])
-  #     _(index_document.at_css(tag_selector)).must_be_nil
-  #   end
-  # end
 end
