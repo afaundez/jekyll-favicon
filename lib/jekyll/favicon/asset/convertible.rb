@@ -5,13 +5,14 @@ module Jekyll
     module Asset
       # Create static file based on a source file
       module Convertible
-        DEFAULTS = Favicon.defaults :convertible
+        FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
+        CONFIG_ROOT = FAVICON_ROOT.join 'config'
+        DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'asset', 'convertible.yml')
         KEY = 'convert'
 
         def convert
-          options = Favicon::Utils.merge convert_defaults, convert_site,
-                                         convert_asset
-          convert_patch options
+          options = Favicon::Utils.merge convert_defaults, convert_asset
+          base_patch convert_patch options
         end
 
         def convertible?
@@ -35,10 +36,6 @@ module Jekyll
           DEFAULTS.dig(File.extname(path), @extname)
         end
 
-        def convert_site
-          convert_normalize Favicon::Configuration.merged(@site).slice('background', 'sizes')
-        end
-
         def convert_asset
           convert_normalize config.fetch(KEY, {})
         end
@@ -46,35 +43,11 @@ module Jekyll
         def convert_normalize(options)
           return {} unless options
 
-          convert_keys = DEFAULTS['defaults'].keys
-          Favicon::Utils.compact options.slice(*(convert_keys + ['sizes']))
-        end
-
-        def convert_patch_resize(resize, define)
-          case resize
-          when :auto then @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1]
-          when :max
-            if define && (max = define.split('=').last.split(',').max)
-              [max, max].join 'x'
-            end
-          else resize
-          end
-        end
-
-        def convert_patch_scale(scale, *args)
-          resize, define = args
-          case scale
-          when :auto then resize || @name[/.*-(\d+x\d+).[a-zA-Z]+/, 1]
-          when :max
-            if define && (max = define.split('=').last.split(',').max)
-              [max, max].join 'x'
-            end
-          else scale
-          end
+          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
 
         def convert_patch_density(density, *args)
-          resize, scale, define = args
+          scale, resize, define = args
           case density
           when :max
             length = if (size = resize || scale) then size.split('x').max.to_i
@@ -97,12 +70,10 @@ module Jekyll
           end
         end
 
-        def convert_patch(config)
-          config.merge! 'resize' => convert_patch_resize(*config.values_at('resize', 'define'))
-          config.merge! 'scale' => convert_patch_scale(*config.values_at('scale', 'resize', 'define'))
-          config.merge! 'density' => convert_patch_density(*config.values_at('density', 'scale', 'resize', 'define'))
-          config.merge! 'extent' => convert_patch_extent(*config.values_at('extent', 'scale', 'resize'))
-          Favicon::Utils.compact config.slice(*DEFAULTS['defaults'].keys)
+        def convert_patch(options)
+          options.merge! 'density' => convert_patch_density(*options.values_at('density', 'scale', 'resize', 'define'))
+          options.merge! 'extent' => convert_patch_extent(*options.values_at('extent', 'scale', 'resize'))
+          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
       end
     end

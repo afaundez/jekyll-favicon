@@ -1,13 +1,24 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'jekyll/favicon/configuration'
+require 'jekyll/favicon/asset/data'
+require 'jekyll/favicon/asset/graphic'
+
 
 module Jekyll
   # Module for custom configurations and defaults
   module Favicon
-    GEM_ROOT = Pathname.new File.dirname(File.dirname(__dir__))
-    CONFIG_ROOT = GEM_ROOT.join 'config'
-    DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon.yml')
+    # module Constants
+      FAVICON_ROOT = Pathname.new File.dirname(File.dirname(__dir__))
+      CONFIG_ROOT = FAVICON_ROOT.join 'config'
+      DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon.yml')
+    # end
+
+    # def self.included(mod)
+    #   mod.include(Constants)
+    #   mod.extend(Constants)
+    # end
 
     def self.configuration(site = nil)
       Configuration.merge site

@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require 'jekyll/favicon'
+require 'jekyll/favicon/utils'
+
 module Jekyll
   module Favicon
     module Asset
       # Add source to a static file
       module Sourceable
-        DEFAULTS = Favicon.defaults :sourceable
         KEY = 'source'
 
         def source
@@ -36,7 +38,7 @@ module Jekyll
         private
 
         def source_defaults
-          DEFAULTS
+          Favicon.defaults :sourceable
         end
 
         def source_site

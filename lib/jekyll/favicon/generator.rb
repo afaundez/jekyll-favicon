@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/asset/graphic'
-require 'jekyll/favicon/asset/data'
+require 'jekyll/plugin'
+require 'jekyll/generator'
+require 'jekyll/favicon'
 
 module Jekyll
   module Favicon

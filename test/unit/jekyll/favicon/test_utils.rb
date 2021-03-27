@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'unit_helper'
+require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon

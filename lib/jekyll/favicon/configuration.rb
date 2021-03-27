@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'jekyll/favicon'
 
 module Jekyll
   module Favicon
     # Favicon configuration
     module Configuration
-      CONFIG_ROOT = Favicon::GEM_ROOT.join 'lib', 'jekyll', 'favicon', 'config'
-
       def self.custom(site)
         site&.config&.fetch 'favicon', {}
       end
@@ -20,7 +19,8 @@ module Jekyll
       end
 
       def self.asset(concern)
-        concern_path = CONFIG_ROOT.join 'asset', "#{concern}.yml"
+        config_root = Favicon::GEM_ROOT.join 'lib', 'jekyll', 'favicon', 'config'
+        concern_path = config_root.join 'asset', "#{concern}.yml"
         YAML.load_file concern_path
       end
 

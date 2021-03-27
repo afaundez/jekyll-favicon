@@ -8,6 +8,7 @@ assets:
   - name: favicon.ico
     convert:
       define: 'icon:auto-resize=36,24,16'
+      scale: 36x36
     tags:
       - link:
           rel: shortcut icon
