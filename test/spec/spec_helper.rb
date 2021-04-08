@@ -25,10 +25,7 @@ def setup_site(context_override = {}, lazy_override = {}, tmp_override = {})
   override = Jekyll::Utils.deep_merge_hashes override, context_override
   override = Jekyll::Utils.deep_merge_hashes override, lazy_override
   override = Jekyll::Utils.deep_merge_hashes override, tmp_override
-  jekyll_execute do
-    config = Jekyll::Configuration.from override
-    return Jekyll::Site.new config
-  end
+  jekyll_execute { return Jekyll::Site.new Jekyll.configuration(override) }
 end
 
 # struct for easier expectations

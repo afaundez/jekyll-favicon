@@ -6,6 +6,14 @@ module Jekyll
   module Favicon
     # Favicon utils functions
     module Utils
+      def self.except(hash, *keys)
+        hash.reject { |key, _| keys.include? key }
+      end
+
+      def self.pathname(*paths)
+        Pathname.new(File.join(*paths.compact)).cleanpath.to_s
+      end
+
       class << self
         def convert(input, output, options = {})
           MiniMagick::Tool::Convert.new do |convert|

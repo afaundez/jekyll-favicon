@@ -12,7 +12,7 @@ module Jekyll
         liquid_parse_context.expect :line_number, 1
         @tag = Favicon::Tag.parse '', nil, nil, liquid_parse_context
         @site = MiniTest::Mock.new
-        @context= MiniTest::Mock.new
+        @context = MiniTest::Mock.new
         @context.expect :registers, site: @site
         non_asset = MiniTest::Mock.new
         non_asset.expect :is_a?, false, [Object]

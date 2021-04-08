@@ -8,6 +8,9 @@ module Jekyll
     module Asset
       # Add source to a static file
       module Sourceable
+        FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
+        CONFIG_ROOT = FAVICON_ROOT.join 'config'
+        DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'asset', 'sourceable.yml')
         KEY = 'source'
 
         def source
@@ -38,7 +41,7 @@ module Jekyll
         private
 
         def source_defaults
-          Favicon.defaults :sourceable
+          DEFAULTS
         end
 
         def source_site

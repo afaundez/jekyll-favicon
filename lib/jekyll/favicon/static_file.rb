@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
 
@@ -12,12 +13,11 @@ module Jekyll
       CONFIG_ROOT = FAVICON_ROOT.join 'config'
       DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'static_file.yml')
 
-      attr_reader :raw_config
+      attr_reader :attributes
 
-      def initialize(site, config = {})
-        super site, site.source, config['dir'], config['name']
-        @raw_config = config
-        @config = DEFAULTS.merge config
+      def initialize(site, attributes = {})
+        super site, site.source, attributes['dir'], attributes['name']
+        @attributes = attributes
       end
 
       def semi_relative_url
@@ -25,10 +25,14 @@ module Jekyll
       end
 
       def config
-        base_patch @raw_config
+        base_patch @attributes
       end
 
       private
+
+      def base_defaults
+        DEFAULTS.merge Favicon.configuration(@site).slice(*DEFAULTS.keys)
+      end
 
       def base_patch(attribute_or_attributes)
         case attribute_or_attributes
@@ -49,7 +53,7 @@ module Jekyll
 
       def base_patch_string(value)
         case value
-        when :background, :dir then @raw_config[value.to_s] || DEFAULTS[value.to_s]
+        when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url
         else value
         end
