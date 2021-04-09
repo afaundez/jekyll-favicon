@@ -28,8 +28,10 @@ module Jekyll
                       when '.ico', '.png', '.svg' then Asset::Graphic
                       when '.webmanifest', '.json', '.xml' then Asset::Data
                       end
+        next unless asset_class
+
         asset_class.new site, attributes
-      end
+      end.compact
     end
   end
 end
