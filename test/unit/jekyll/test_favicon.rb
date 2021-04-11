@@ -8,6 +8,13 @@ module Jekyll
   class TestFavicon < Minitest::Test
     def setup
       @site = Minitest::Mock.new
+      frontmatter_defaults = Minitest::Mock.new
+      frontmatter_defaults.expect :all, {}, [Object, Object]
+      frontmatter_defaults.expect :all, {}, [Object, Object]
+      frontmatter_defaults.expect :all, {}, [Object, Object]
+      @site.expect :frontmatter_defaults, frontmatter_defaults
+      @site.expect :frontmatter_defaults, frontmatter_defaults
+      @site.expect :frontmatter_defaults, frontmatter_defaults
     end
 
     def test_favicon_has_version
