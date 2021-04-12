@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# require 'jekyll'
 require 'jekyll/favicon'
 require 'jekyll/favicon/configuration'
 require 'jekyll/favicon/version'

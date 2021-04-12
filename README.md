@@ -44,6 +44,11 @@ If you are going to use this plugin in a hosted build/service, be sure that they
 
 As [Github Pages](https://pages.github.com) build doesn't load custom plugins, this plugin won't work. As an alternative, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
 
+Tested with:
+
+- Jekyll 3.6 to 3.7, ruby 2.5 to 2.7
+- Jekyll 3.8 to 4.2, ruby 2.5 to 3.0
+
 ### Generator
 
 By installing the plugin, it will be automatically activated. It will search for the file `/favicon.svg` and generate a set of files in `/assets/images` and few more items at the site's root. It also will exclude the original sources from being copied as a regular static file.
