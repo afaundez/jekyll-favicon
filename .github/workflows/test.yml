@@ -8,11 +8,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        ruby-version: [ 2.5, 2.6, 2.7, '3.0' ]
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+    
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
@@ -22,9 +21,18 @@ jobs:
       with:
         bundler-cache: true
         ruby-version: ${{ matrix.ruby-version }}
-  
-    - name: Install dependencies
-      run: bundle
 
-    - name: Run tests
+    - name: Run tests with ${{ matrix.gemfile }}
       run: bundle exec rake
+
+    strategy:
+      matrix:
+        exclude:
+        - ruby-version: '3.0'
+          gemfile: jekyll36
+        - ruby-version: '3.0'
+          gemfile: jekyll37
+
+        gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41 ]
+        os: [ ubuntu-latest ]
+        ruby-version: [ 2.5, 2.6, 2.7, '3.0' ]
