@@ -27,6 +27,10 @@ jobs:
 
     strategy:
       matrix:
+        exclude:
+        - gemfile: [ jekyll36, jekyll37 ]
+        - ruby-version: [ '3.0' ]
+
         gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41 ]
         os: [ ubuntu-latest ]
         ruby-version: [ 2.5, 2.6, 2.7, '3.0' ]
