@@ -9,19 +9,30 @@ assets:
     convert:
       define: 'icon:auto-resize=36,24,16'
       scale: 36x36
-    tags:
+    tag:
       - link:
+          href: :url
           rel: shortcut icon
+          type: :mime
+          sizes: :sizes
   - name: favicon.png
     convert:
       scale: 196x196
-    tags:
+    tag:
       - link:
+          href: :url
           rel: icon
+          type: :mime
+          sizes: :sizes
   - name: apple-touch-icon.png
     convert:
       scale: 180x180
   - name: safari-pinned-tab.svg
+    tag:
+      - link:
+          color: :background
+          href: :url
+          rel: mask-icon
   - name: android-chrome-192x192.png
     convert:
       scale: 192x192
@@ -47,6 +58,14 @@ assets:
                 __text: :background
               square70x70logo:
                 _src: :url
+    tag:
+      - meta:
+          content: :url
+          name: msapplication-TileImage
+      - meta:
+          content: :background
+          name: msapplication-TileColor
+
   - name: mstile-icon-270x270.png
     convert:
       scale: 270x270
@@ -83,10 +102,14 @@ assets:
   - name: manifest.webmanifest
     source:
       name: manifest.webmanifest
+    tag:
+      - link:
+          href: :url
+          rel: manifest
   - name: browserconfig.xml
     source:
       name: browserconfig.xml
-    tags:
+    tag:
       - meta:
           content: :url
           name: msapplication-config

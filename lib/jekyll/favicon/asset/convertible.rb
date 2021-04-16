@@ -12,11 +12,21 @@ module Jekyll
 
         def convert
           options = Favicon::Utils.merge convert_defaults, convert_asset
-          base_patch convert_patch options
+          convert_patch base_patch options
         end
 
         def convertible?
           File.exist?(path) && convert_defaults
+        end
+
+        def sizes
+          convert_attributes = attributes.fetch KEY, {}
+          if (match = name.match(/^.*-(\d+x\d+)\..*$/)) then [match[1]]
+          elsif (define = convert_attributes['define'])
+            define.split('=').last.split(',').collect { |size| [size, size].join 'x' }
+          elsif (resize = convert_attributes['resize']) then [resize]
+          elsif (scale = convert_attributes['scale']) then [scale]
+          end
         end
 
         private
@@ -46,33 +56,29 @@ module Jekyll
           Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
 
-        def convert_patch_density(density, *args)
-          scale, resize, define = args
+        def convert_patch_density(density)
           case density
           when :max
-            length = if (size = resize || scale) then size.split('x').max.to_i
-                     elsif define then define.split('=').last.split(',').max.to_i
-                     end
+            length = sizes.collect{ |size| size.split('x').max }.max.to_i
             length * 3
           else density
           end
         end
 
-        def convert_patch_extent(extent, *args)
-          scale, resize = args
+        def convert_patch_extent(extent)
           case extent
           when :auto
-            if (dimensions = resize || scale)
-              width, height = dimensions.split('x')
-              dimensions if width != height
+            if (size = sizes.first)
+              width, height = size.split 'x'
+              size if width != height
             end
           else extent
           end
         end
 
         def convert_patch(options)
-          options.merge! 'density' => convert_patch_density(*options.values_at('density', 'scale', 'resize', 'define'))
-          options.merge! 'extent' => convert_patch_extent(*options.values_at('extent', 'scale', 'resize'))
+          options.merge! 'density' => convert_patch_density(options['density'])
+          options.merge! 'extent' => convert_patch_extent(options['extent'])
           Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
       end

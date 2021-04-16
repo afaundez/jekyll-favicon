@@ -13,7 +13,7 @@ module Jekyll
             .select { |static_file| static_file.is_a? Favicon::StaticFile }
             .select(&:taggable?)
             .collect(&:tags)
-            .compact
+            .flatten
             .join("\n")
       end
     end

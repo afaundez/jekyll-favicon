@@ -3,9 +3,11 @@
 module Jekyll
   module Favicon
     module Asset
-      # Add source to a static file
+      # Add reference to a static file
       module Referenceable
-        DEFAULTS = Favicon.defaults :referenceable
+        FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
+        CONFIG_ROOT = FAVICON_ROOT.join 'config'
+        DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'asset', 'referenceable.yml')
         KEY = 'reference'
 
         def reference
@@ -13,8 +15,8 @@ module Jekyll
           reference_path options
         end
 
-        def reference_path(options)
-          options
+        def referenciable?
+          true
         end
       end
     end

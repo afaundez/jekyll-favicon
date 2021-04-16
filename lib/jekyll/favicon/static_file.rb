@@ -55,7 +55,17 @@ module Jekyll
         case value
         when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url
+        when :sizes then sizes.join ' '
+        when :mime then mimetype
         else value
+        end
+      end
+
+      def mimetype
+        case extname
+        when '.ico' then 'image/x-icon'
+        when '.png' then 'image/png'
+        when '.svg' then 'image/svg+xml'
         end
       end
     end

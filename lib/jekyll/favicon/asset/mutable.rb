@@ -8,8 +8,6 @@ module Jekyll
     module Asset
       # Create static file based on a source file
       module Mutable
-        # DEFAULTS = Favicon.defaults :mutable
-
         def mutable?
           mutable || mutation.any?
         end

@@ -84,6 +84,7 @@ describe 'minimal site' do
       data_path = @context.destination 'manifest.webmanifest'
       _(data_path).path_must_exist
       data = JSON.parse File.read(data_path)
+      puts File.read(data_path)
       _(data).wont_be_nil
       _(data).must_include 'icons'
       icons = data['icons']
@@ -120,25 +121,62 @@ describe 'minimal site' do
 
     it 'adds a favicon.ico link' do
       element = REXML::Element.new 'link'
-      element.add_attributes 'href' => 'favicon.ico'
+      element.add_attributes 'href' => '/favicon.ico',
+                             'rel' => 'shortcut icon',
+                             'sizes' => '36x36 24x24 16x16',
+                             'type' => 'image/x-icon'
       _(subject).must_include element.to_s
     end
 
     it 'adds a favicon.png link' do
       element = REXML::Element.new 'link'
-      element.add_attributes 'href' => 'favicon.png'
+      element.add_attributes 'href' => '/favicon.png',
+                             'rel' => 'icon',
+                             'sizes' => '196x196',
+                             'type' => 'image/png'
       _(subject).must_include element.to_s
     end
 
     it 'adds a safari pinned tab link' do
       element = REXML::Element.new 'link'
-      element.add_attributes 'href' => 'safari-pinned-tab.svg'
+      element.add_attributes 'color' => 'transparent',
+                             'href' => '/safari-pinned-tab.svg',
+                             'rel' => 'mask-icon'
       _(subject).must_include element.to_s
     end
 
     it 'adds a webmanifest link' do
       element = REXML::Element.new 'link'
-      element.add_attributes 'href' => 'manifest.webmanifest'
+      element.add_attributes 'href' => '/manifest.webmanifest',
+                              'rel' => 'manifest'
+      _(subject).must_include element.to_s
+    end
+
+    it 'adds a browserconfig meta' do
+      element = REXML::Element.new 'meta'
+      element.add_attributes 'content' => '/browserconfig.xml',
+                             'name' => 'msapplication-config'
+      _(subject).must_include element.to_s
+    end
+
+    it 'adds a browserconfig meta' do
+      element = REXML::Element.new 'meta'
+      element.add_attributes 'content' => '/browserconfig.xml',
+                             'name' => 'msapplication-config'
+      _(subject).must_include element.to_s
+    end
+
+    it 'adds a tile color meta' do
+      element = REXML::Element.new 'meta'
+      element.add_attributes 'content' => 'transparent',
+                             'name' => 'msapplication-TileColor'
+      _(subject).must_include element.to_s
+    end
+
+    it 'adds a tile image meta' do
+      element = REXML::Element.new 'meta'
+      element.add_attributes 'content' => '/mstile-icon-128x128.png',
+                             'name' => 'msapplication-TileImage'
       _(subject).must_include element.to_s
     end
   end
