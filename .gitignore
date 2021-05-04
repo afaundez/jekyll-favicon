@@ -11,3 +11,4 @@
 *.gem
 Gemfile.lock
 gemfiles/*.gemfile.lock
+.vscode
