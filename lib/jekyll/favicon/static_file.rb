@@ -52,7 +52,7 @@ module Jekyll
       end
 
       def base_patch_string(value)
-        value = value[1..-1].to_sym if value.start_with?(':')
+        value = value[1..-1].to_sym if value.to_s.start_with?(':')
         case value
         when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url
