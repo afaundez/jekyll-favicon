@@ -74,6 +74,22 @@ module Jekyll
           merge(merged, *rest)
         end
 
+        def build_element(name, parent = nil, config = {})
+          element = REXML::Element.new name, parent
+          element.text = config and return element unless config.is_a? Enumerable
+
+          config.collect do |key, value|
+            if key.start_with? '__'
+              element.text = value
+            elsif child_key = key.match(/^_(.*)$/)
+              element.add_attribute child_key[1], value
+            else
+              build_element key, element, value
+            end
+          end
+          element
+        end
+
         private
 
         def convert_options(convert, options)

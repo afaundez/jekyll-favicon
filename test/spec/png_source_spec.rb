@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe 'minimal site with custom PNG source' do
-  context fixture: 'minimal-png-source', action: :process
-  let(:site_override) { { favicon: { 'source' => 'favicon.png' } } }
+  fixture :conventioned, :process, favicon: { name: 'custom-source.png' },
+                                   site: { 'favicon' => { 'source' => 'custom-source.png' } }
 
   describe 'generates default files' do
     it 'creates an ICO file for legacy browsers' do

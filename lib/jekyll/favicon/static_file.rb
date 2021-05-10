@@ -38,7 +38,7 @@ module Jekyll
         case attribute_or_attributes
         when Array then base_patch_array attribute_or_attributes
         when Hash then base_patch_hash attribute_or_attributes
-        when Symbol then base_patch_string attribute_or_attributes
+        when Symbol, String then base_patch_string attribute_or_attributes
         else attribute_or_attributes
         end
       end
@@ -52,6 +52,7 @@ module Jekyll
       end
 
       def base_patch_string(value)
+        value = value[1..-1].to_sym if value.start_with?(':')
         case value
         when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url

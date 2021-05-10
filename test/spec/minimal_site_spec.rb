@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'minimal site' do
-  context fixture: :minimal, action: :process
+  fixture :conventioned, :process
 
   describe 'generates default files' do
     it 'creates an ICO file for legacy browsers' do
@@ -84,7 +84,6 @@ describe 'minimal site' do
       data_path = @context.destination 'manifest.webmanifest'
       _(data_path).path_must_exist
       data = JSON.parse File.read(data_path)
-      puts File.read(data_path)
       _(data).wont_be_nil
       _(data).must_include 'icons'
       icons = data['icons']
@@ -112,7 +111,7 @@ describe 'minimal site' do
       favicon_image = MiniMagick::Image.open favicon_path
       favicon_pixels = favicon_image.get_pixels
       _(favicon_pixels[0][0]).must_equal [0, 0, 0]
-      _(favicon_pixels[98][98]).must_equal [220, 20, 60]
+      _(favicon_pixels[98][98]).must_equal [255, 0, 0]
     end
   end
 

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'empty site' do
   describe 'before processing' do
-    context fixture: :empty
+    fixture :empty
 
     it 'warns missing source' do
       expected_pattern = /Jekyll::Favicon: Missing favicon.svg, not generating favicons./
@@ -13,7 +13,7 @@ describe 'empty site' do
   end
 
   describe 'after processing' do
-    context fixture: :empty, action: :process
+    fixture :empty, :process
 
     it "doesn't create favicon files" do
       favicon_path = @context.destination 'favicon.ico'

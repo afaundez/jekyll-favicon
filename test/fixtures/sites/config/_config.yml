@@ -1,6 +1,0 @@
-favicon:
-  source: custom-source.png
-  dir: assets/img
-  background: white
-  assets:
-    - name: custom-asset.png

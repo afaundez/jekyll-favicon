@@ -4,9 +4,9 @@ require 'spec_helper'
 require 'rexml/document'
 
 describe 'when site has an existing custom configuration' do
-  context fixture: 'custom-config', action: :process
+  fixture :configured, :process
 
-  let(:subject_path) { @context.destination 'manifest.webmanifest' }
+  let(:subject_path) { @context.destination 'assets/configured-manifest.webmanifest' }
   subject { JSON.parse File.read subject_path }
 
   it 'should exists only one manifest' do
@@ -18,6 +18,6 @@ describe 'when site has an existing custom configuration' do
   it 'should merge attributes from existent webmanifest' do
     _(subject).must_include 'icons'
     _(subject).must_include 'name'
-    _(subject['name']).must_equal 'target.webmanifest'
+    _(subject['name']).must_equal 'Jekyll Favicon'
   end
 end

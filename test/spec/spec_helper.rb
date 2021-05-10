@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'fixtures/source'
 require 'minitest/hooks/default'
 require 'jekyll'
 require 'jekyll-favicon'
@@ -20,13 +21,13 @@ def source(key)
   File.expand_path File.join('..', '..', *subdirs.collect(&:to_s)), __dir__
 end
 
-def setup_site(context_override = {}, lazy_override = {}, tmp_override = {})
-  override = { destination: '/dev/null/jekyll-favicon' }
-  override = Jekyll::Utils.deep_merge_hashes override, context_override
-  override = Jekyll::Utils.deep_merge_hashes override, lazy_override
-  override = Jekyll::Utils.deep_merge_hashes override, tmp_override
-  jekyll_execute { return Jekyll::Site.new Jekyll.configuration(override) }
-end
+# def initiliaze_site(context_override = {}, lazy_override = {}, tmp_override = {})
+#   override = { destination: '/dev/null/jekyll-favicon' }
+#   override = Jekyll::Utils.deep_merge_hashes override, context_override
+#   override = Jekyll::Utils.deep_merge_hashes override, lazy_override
+#   override = Jekyll::Utils.deep_merge_hashes override, tmp_override
+#   jekyll_execute { return Jekyll::Site.new Jekyll.configuration(override) }
+# end
 
 # struct for easier expectations
 Context = Struct.new(:site, :favicon_defaults) do
@@ -65,24 +66,31 @@ Context = Struct.new(:site, :favicon_defaults) do
   end
 end
 
+def initialize_site(override)
+  jekyll_execute { return Jekyll::Site.new Jekyll.configuration override }
+end
+
 Minitest::Spec::DSL.class_eval do
-  def tmp_context(context_override, actions)
+  def tmp_fixture(site_actions, source_configuration)
     around :all do |&block|
-      lazy_override = site_override || {}
-      Dir.mktmpdir do |tmpdir|
-        tmp_override = { destination: tmpdir }
-        site = setup_site(context_override, lazy_override, tmp_override)
-        @context = Context.new site, Jekyll::Favicon::DEFAULTS
-        @context.execute actions
-        super(&block)
+      # lazy_override = site_override || {}
+      Dir.mktmpdir do |source|
+        Dir.mktmpdir do |destination|
+          Fixtures::Source.build source, source_configuration
+          override = { source: source, destination: destination }
+          site = initialize_site override
+          @context = Context.new site, Jekyll::Favicon::DEFAULTS
+          @context.execute site_actions
+          super(&block)
+        end
       end
       @context.clean
     end
   end
 
-  def context(fixture: :empty, action: [])
+  def fixture(fixture, *site_actions, **options)
     let(:site_override) { {} }
-    override = { source: source(fixture) }
-    tmp_context override, [action].flatten
+    source_configuration = Jekyll::Favicon::Utils.merge send(fixture), options
+    tmp_fixture site_actions, source_configuration
   end
 end

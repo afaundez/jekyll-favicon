@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'favicon config' do
-  context
+  fixture :empty, :process
   subject { Jekyll::Favicon::Configuration.merged @context.site }
 
   it 'is the default config' do

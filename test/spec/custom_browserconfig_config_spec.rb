@@ -4,9 +4,9 @@ require 'spec_helper'
 require 'rexml/document'
 
 describe 'when site overrides source browserconfig' do
-  context fixture: 'custom-config', action: :process
+  fixture :configured, :process
 
-  let(:subject_path) { @context.destination 'browserconfig.xml' }
+  let(:subject_path) { @context.destination 'assets', 'configured-browserconfig.xml' }
   subject { REXML::Document.new File.read(subject_path) }
 
   it 'should exists only one browserconfig' do
@@ -18,13 +18,9 @@ describe 'when site overrides source browserconfig' do
   it 'should merge and override attributes from existent webmanifest' do
     msapplication = subject.elements['/browserconfig/msapplication']
     _(msapplication).wont_be_nil
-    tile = msapplication.elements['tile']
-    _(tile).wont_be_nil
-    tile_logo = tile.elements['square70x70logo']
-    _(tile_logo).wont_be_nil
-    _(tile_logo.attributes['src']).must_equal '/mstile-icon-128x128.png'
-    tile_color = tile.get_elements('TileColor')
-    _(tile_color).wont_be_nil
+    configured = msapplication.elements['configured']
+    _(configured).wont_be_nil
+    _(configured.text).must_equal '/assets/configured-favicon-128x128.png'
     notification = msapplication.elements['notification']
     _(notification).wont_be_nil
     _(notification).must_be :has_elements?

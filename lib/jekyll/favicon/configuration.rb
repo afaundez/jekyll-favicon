@@ -18,7 +18,7 @@ module Jekyll
         return from_defaults unless (user_overrides = from_user site)
 
         user_overrides = unlegacify user_overrides
-        user_merged = Favicon::Utils.merge from_defaults, user_overrides
+        user_merged = Jekyll::Utils.deep_merge_hashes from_defaults, user_overrides
         standardize user_merged
       end
 

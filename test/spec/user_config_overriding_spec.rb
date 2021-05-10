@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'user favicon config overrides favicon defaults' do
-  context fixture: :config
+  fixture :configured
   subject { Jekyll::Favicon::Configuration.merged @context.site }
   let(:user_config_path) { @context.source '_config.yml' }
   let(:user_config) { YAML.load_file(user_config_path)['favicon'] }
@@ -11,7 +11,9 @@ describe 'user favicon config overrides favicon defaults' do
   it 'overwrites global assets attribute' do
     subject_assets = subject['assets']
     _(subject_assets).wont_be_nil
-    _(subject_assets).must_include user_config['assets'].first
+    subject_asset = subject_assets.find { |asset| asset['name'] == 'assets/configured-favicon-128x128.png'}
+    _(subject_asset).wont_be_nil
+    _(subject_asset['source']).must_equal 'images/custom-source.svg'
   end
 
   it 'overwrites global background attribute' do
@@ -29,6 +31,6 @@ describe 'user favicon config overrides favicon defaults' do
   it 'overwrites global source attribute' do
     subject_source = subject['source']
     _(subject_source).wont_be_nil
-    _(subject_source).must_equal({ 'name' => 'custom-source.png', 'dir' => '.' })
+    _(subject_source).must_equal({ 'name' => 'custom-source.svg', 'dir' => 'images' })
   end
 end
