@@ -15,6 +15,7 @@ module Jekyll
         module ClassMethods
           def convert(input, output, options = {})
             MiniMagick::Tool::Convert.new do |convert|
+              convert.flatten
               convert_options(convert, options) << input << output
             end
           end
@@ -23,9 +24,9 @@ module Jekyll
 
           def convert_options(convert, options = {})
             priorities = %w[resize scale]
-            convert.flatten
             convert_apply convert, options.slice(*priorities)
-            convert_apply convert, options.except(*priorities)
+            common_options = options.reject { |key| priorities.include? key }
+            convert_apply convert, common_options
           end
 
           # :reek:UtilityFunction
