@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rexml/document'
+require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
@@ -15,7 +16,8 @@ module Jekyll
         def tags
           config.fetch(KEY, []).collect do |attributes|
             tag_type, tag_attributues = attributes.first
-            new_element tag_type, base_patch(DEFAULTS[tag_type].merge(tag_attributues))
+            config = base_patch(DEFAULTS[tag_type].merge(tag_attributues))
+            Taggable.build tag_type, config
           end
         end
 
@@ -23,12 +25,9 @@ module Jekyll
           true
         end
 
-        private
-
-        def new_element(name, attributes = {})
-          element = REXML::Element.new name
-          element.add_attributes attributes
-          element
+        def self.build(name, attributes = {})
+          config = attributes.transform_keys { |key| "_#{key}" }
+          Jekyll::Favicon::Utils.build_element name, nil, config
         end
       end
     end

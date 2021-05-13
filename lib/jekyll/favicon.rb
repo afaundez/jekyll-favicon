@@ -23,15 +23,17 @@ module Jekyll
     end
 
     def self.assets(site)
-      configuration(site).fetch('assets', []).collect do |attributes|
-        asset_class = case File.extname attributes['name']
-                      when '.ico', '.png', '.svg' then Asset::Graphic
-                      when '.webmanifest', '.json', '.xml' then Asset::Data
-                      end
-        next unless asset_class
+      configuration(site).fetch('assets', [])
+                         .collect { |attributes| build_asset site, attributes }
+                         .compact
+    end
 
-        asset_class.new site, attributes
-      end.compact
+    def self.build_asset(site, attributes)
+      asset_class = case File.extname attributes['name']
+                    when '.ico', '.png', '.svg' then Asset::Graphic
+                    when '.webmanifest', '.json', '.xml' then Asset::Data
+                    end
+      asset_class&.new site, attributes
     end
   end
 end

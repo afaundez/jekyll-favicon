@@ -8,6 +8,7 @@ module Jekyll
   module Favicon
     # New generator that creates all the stastic icons and metadata files
     class Generator < Jekyll::Generator
+      # :reek:UtilityFunction
       def generate(site)
         Favicon.assets(site).each do |asset|
           next asset.warn_not_generable unless asset.generable?

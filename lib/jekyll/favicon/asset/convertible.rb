@@ -12,7 +12,7 @@ module Jekyll
 
         def convert
           options = Favicon::Utils.merge convert_defaults, convert_asset
-          convert_patch base_patch options
+          convert_patch base_patch(options)
         end
 
         def convertible?
@@ -21,11 +21,21 @@ module Jekyll
 
         def sizes
           convert_attributes = attributes.fetch KEY, {}
+          Convertible.build_sizes name, convert_attributes
+        end
+
+        def self.convert_normalize(options)
+          return {} unless options
+
+          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
+        end
+
+        def self.build_sizes(name, attributes)
           if (match = name.match(/^.*-(\d+x\d+)\..*$/)) then [match[1]]
-          elsif (define = convert_attributes['define'])
+          elsif (define = attributes['define'])
             define.split('=').last.split(',').collect { |size| [size, size].join 'x' }
-          elsif (resize = convert_attributes['resize']) then [resize]
-          elsif (scale = convert_attributes['scale']) then [scale]
+          elsif (resize = attributes['resize']) then [resize]
+          elsif (scale = attributes['scale']) then [scale]
           end
         end
 
@@ -47,19 +57,22 @@ module Jekyll
         end
 
         def convert_asset
-          convert_normalize config.fetch(KEY, {})
+          Convertible.convert_normalize config.fetch(KEY, {})
         end
 
-        def convert_normalize(options)
-          return {} unless options
-
+        # :reek:FeatureEnvy
+        def convert_patch(options)
+          %w[density extent].each do |name|
+            method = "convert_patch_#{name}".to_sym
+            options.merge! name => send(method, options[name])
+          end
           Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
 
         def convert_patch_density(density)
           case density
           when :max
-            length = sizes.collect{ |size| size.split('x').max }.max.to_i
+            length = sizes.collect { |size| size.split('x').max }.max.to_i
             length * 3
           else density
           end
@@ -74,12 +87,6 @@ module Jekyll
             end
           else extent
           end
-        end
-
-        def convert_patch(options)
-          options.merge! 'density' => convert_patch_density(options['density'])
-          options.merge! 'extent' => convert_patch_extent(options['extent'])
-          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
         end
       end
     end

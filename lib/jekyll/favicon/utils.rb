@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
-require 'mini_magick'
+require 'jekyll/favicon/utils/convert'
+require 'jekyll/favicon/utils/tag'
 
 module Jekyll
   module Favicon
     # Favicon utils functions
     module Utils
+      include Favicon::Utils::Convert
+      include Favicon::Utils::Tag
+
       def self.except(hash, *keys)
         hash.reject { |key, _| keys.include? key }
       end
@@ -14,21 +18,15 @@ module Jekyll
         Pathname.new(File.join(*paths.compact)).cleanpath.to_s
       end
 
-      class << self
-        def convert(input, output, options = {})
-          MiniMagick::Tool::Convert.new do |convert|
-            convert_options convert, options
-            convert << input
-            convert << output
-          end
-        end
+      def self.string_symbol(value)
+        value.to_s.start_with?(':') ? value[1..-1].to_sym : value
+      end
 
+      class << self
         def compact(compactable)
           case compactable
-          when Hash, Array
-            deep_compact(compactable) || compactable.class[]
-          else
-            compactable
+          when Hash, Array then deep_compact(compactable) || compactable.class[]
+          else compactable
           end
         end
 
@@ -42,16 +40,16 @@ module Jekyll
           end.compact.flatten
         end
 
-        def merge_pair_hash(left, right)
-          left.merge(right) do |_, left_value, right_value|
+        def merge_pair_hash(left_hash, right_hash)
+          left_hash.merge(right_hash) do |_, left_value, right_value|
             merge left_value, right_value
           end
         end
 
-        def merge_pair_array(left, right)
-          (left + right).group_by { |map| map.is_a?(Hash) ? map.values_at('name', 'dir') : [] }
-                        .collect { |group, values| group.first ? merge(*values) : values }
-                        .flatten
+        def merge_pair_array(left_array, right_array)
+          (left_array + right_array).group_by { |map| map.is_a?(Hash) ? map.values_at('name', 'dir') : [] }
+                                    .collect { |group, values| group.first ? merge(*values) : values }
+                                    .flatten
         end
 
         def merge_pair(left, right)
@@ -74,45 +72,13 @@ module Jekyll
           merge(merged, *rest)
         end
 
-        def build_element(name, parent = nil, config = {})
-          element = REXML::Element.new name, parent
-          element.text = config and return element unless config.is_a? Enumerable
-
-          config.collect do |key, value|
-            if key.start_with? '__'
-              element.text = value
-            elsif child_key = key.match(/^_(.*)$/)
-              element.add_attribute child_key[1], value
-            else
-              build_element key, element, value
-            end
-          end
-          element
-        end
-
         private
-
-        def convert_options(convert, options)
-          convert.flatten
-          if (resize = options.delete 'resize')
-            convert.resize resize
-          end
-          if (scale = options.delete 'scale')
-            convert.scale scale
-          end
-          options.each do |option, value|
-            convert.send option.to_sym, value
-          end
-        end
 
         def deep_compact(compactable)
           case compactable
-          when Hash
-            compact_hash compactable
-          when Array
-            compact_array compactable
-          else
-            compactable
+          when Hash then compact_hash compactable
+          when Array then compact_array compactable
+          else compactable
           end
         end
 

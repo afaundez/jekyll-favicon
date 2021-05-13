@@ -38,21 +38,7 @@ module Jekyll
           Pathname.new(File.join(*[source['dir'], source['name']].compact)).cleanpath.to_s
         end
 
-        private
-
-        def source_defaults
-          DEFAULTS
-        end
-
-        def source_site
-          source_normalize source_filter(Favicon::Configuration.merged(@site))
-        end
-
-        def source_asset
-          source_normalize source_filter(config)
-        end
-
-        def source_normalize(options)
+        def self.source_normalize(options)
           case options
           when String
             source_dir, source_name = File.split options
@@ -63,8 +49,24 @@ module Jekyll
           end
         end
 
-        def source_filter(options)
+        def self.source_filter(options)
           options.fetch KEY, {}
+        end
+
+        private
+
+        def source_defaults
+          DEFAULTS
+        end
+
+        def source_site
+          site_config = Favicon::Configuration.merged @site
+          config = Sourceable.source_filter site_config
+          Sourceable.source_normalize config
+        end
+
+        def source_asset
+          Sourceable.source_normalize Sourceable.source_filter(config)
         end
       end
     end

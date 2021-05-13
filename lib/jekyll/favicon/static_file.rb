@@ -13,7 +13,7 @@ module Jekyll
       CONFIG_ROOT = FAVICON_ROOT.join 'config'
       DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'static_file.yml')
 
-      attr_reader :attributes
+      attr_reader :attributes, :site
 
       def initialize(site, attributes = {})
         super site, site.source, attributes['dir'], attributes['name']
@@ -31,16 +31,21 @@ module Jekyll
       private
 
       def base_defaults
-        DEFAULTS.merge Favicon.configuration(@site).slice(*DEFAULTS.keys)
+        DEFAULTS.merge Favicon.configuration(site).slice(*DEFAULTS.keys)
       end
 
       def base_patch(attribute_or_attributes)
-        case attribute_or_attributes
-        when Array then base_patch_array attribute_or_attributes
-        when Hash then base_patch_hash attribute_or_attributes
-        when Symbol, String then base_patch_string attribute_or_attributes
-        else attribute_or_attributes
-        end
+        patch_method = case attribute_or_attributes
+                       when Array then :base_patch_array
+                       when Hash then :base_patch_hash
+                       when Symbol, String then :base_patch_string
+                       else :base_patch_identity
+                       end
+        send patch_method, attribute_or_attributes
+      end
+
+      def base_patch_identity(value)
+        value
       end
 
       def base_patch_array(values)
@@ -52,8 +57,7 @@ module Jekyll
       end
 
       def base_patch_string(value)
-        value = value[1..-1].to_sym if value.to_s.start_with?(':')
-        case value
+        case Jekyll::Favicon::Utils.string_symbol value
         when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url
         when :sizes then sizes.join ' '
@@ -63,11 +67,12 @@ module Jekyll
       end
 
       def mimetype
-        case extname
-        when '.ico' then 'image/x-icon'
-        when '.png' then 'image/png'
-        when '.svg' then 'image/svg+xml'
-        end
+        mappings = {
+          '.ico' => 'image/x-icon',
+          '.png' => 'image/png',
+          '.svg' => 'image/svg+xml'
+        }
+        mappings[extname]
       end
     end
   end

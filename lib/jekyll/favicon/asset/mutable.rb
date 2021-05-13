@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rexml/document'
+require 'jekyll/favicon/utils'
 require 'jekyll/favicon/asset/graphic'
 
 module Jekyll
@@ -39,24 +40,10 @@ module Jekyll
         end
 
         def mutated_content_xml
-          mutated = mutate_element (mutable || REXML::Document.new), mutation
+          mutated = Favicon::Utils.mutate_element (mutable || REXML::Document.new), mutation
           output = String.new
           mutated.write output
           output
-        end
-
-        def mutate_find_or_create_element(parent, key)
-          parent.get_elements(key).first || parent.add_element(key)
-        end
-
-        def mutate_element(parent, changes = {})
-          changes.each do |key, value|
-            if key.start_with? '__' then parent.text = value
-            elsif key.start_with? '_' then parent.add_attribute key[1..-1], value
-            else mutate_element mutate_find_or_create_element(parent, key), value
-            end
-          end
-          parent
         end
 
         def mutable
