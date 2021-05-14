@@ -43,19 +43,6 @@ module Jekyll
         assert_equal Favicon::Utils.compact(true), true
       end
 
-      def test_utils_has_find_all
-        assert_respond_to Favicon::Utils, :find_all
-      end
-
-      def test_utils_finds_nothing_when_empty
-        assert_equal [], Favicon::Utils.find_all({}, :a)
-      end
-
-      def test_utils_finds_all_when_deep_nested
-        assert_equal [1, 2, 3],
-                     Favicon::Utils.find_all({ a: 1, b: { a: 2, c: { a: 3 } } }, :a)
-      end
-
       def test_utils_has_merge
         assert_respond_to Favicon::Utils, :merge
       end
