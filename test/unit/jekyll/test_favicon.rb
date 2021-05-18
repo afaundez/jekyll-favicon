@@ -30,13 +30,13 @@ module Jekyll
     def test_favicon_configuration_retrieves_defaults_when_site_is_not_valid
       config = Favicon.configuration nil
       assert_kind_of Hash, config
-      assert_equal Favicon::DEFAULTS, config
+      assert_equal Favicon.defaults, config
     end
 
     def test_favicon_configuration_retrieves_defaults_when_site_config_is_empty
       @site.expect :config, {}
       config = Favicon.configuration @site
-      assert_equal Favicon::DEFAULTS, config
+      assert_equal Favicon.defaults, config
     end
 
     def test_favicon_configuration_merge_when_site_config_has_values
@@ -46,7 +46,7 @@ module Jekyll
       config = Favicon.configuration @site
       assert_includes config, overriden_key
       assert_equal user_overrides[overriden_key], config[overriden_key]
-      assert_equal Favicon::Utils.except(Favicon::DEFAULTS, overriden_key),
+      assert_equal Favicon::Utils.except(Favicon.defaults, overriden_key),
                    Favicon::Utils.except(config, overriden_key)
     end
 

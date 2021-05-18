@@ -59,14 +59,14 @@ module Jekyll
       def test_merged_retrieves_defaults_when_site_is_invalid
         merged = Favicon::Configuration.merged nil
         refute_nil merged
-        assert_equal Favicon::DEFAULTS, merged
+        assert_equal Favicon.defaults, merged
       end
 
       def test_merged_retrieves_defaults_when_custom_config_is_empty
         @site.expect :config, {}
         merged = Favicon::Configuration.merged nil
         assert_kind_of Hash, merged
-        assert_equal Favicon::DEFAULTS, merged
+        assert_equal Favicon.defaults, merged
       end
 
       def test_merged_merges_defaults_when_site_has_favicon_config

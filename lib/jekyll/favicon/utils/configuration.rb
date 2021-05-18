@@ -15,11 +15,14 @@ module Jekyll
         module ClassMethods
           def compact(compactable)
             case compactable
-            when Hash, Array then compact_deep(compactable) || compactable.class[]
-            else compactable
+            when Hash, Array
+              compact_deep(compactable) || compactable.class[]
+            else
+              compactable
             end
           end
 
+          # :reek:UtilityFunction
           def except(hash, *keys)
             hash.reject { |key, _| keys.include? key }
           end
@@ -83,11 +86,20 @@ module Jekyll
             end
           end
 
-          # :reek:UtilityFunction
           def merge_pair_array(left_array, right_array)
-            (left_array + right_array).group_by { |map| map.is_a?(Hash) ? map.values_at('name', 'dir') : [] }
-                                      .collect { |group, values| group.first ? merge(*values) : values }
-                                      .flatten
+            joint_array = left_array + right_array
+            joint_array.group_by { |map| merge_group map }
+                       .collect { |group, values| merge_collect group, values }
+                       .flatten
+          end
+
+          # :reek:UtilityFunction
+          def merge_group(map, keys = %w[name dir])
+            map.is_a?(Hash) ? map.values_at(*keys) : []
+          end
+
+          def merge_collect(group, values)
+            group.first ? merge(*values) : values
           end
         end
       end

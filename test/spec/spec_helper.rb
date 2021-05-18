@@ -79,7 +79,7 @@ Minitest::Spec::DSL.class_eval do
           Fixtures::Source.build source, source_configuration
           override = { source: source, destination: destination }
           site = initialize_site override
-          @context = Context.new site, Jekyll::Favicon::DEFAULTS
+          @context = Context.new site, Jekyll::Favicon::ROOT
           @context.execute site_actions
           super(&block)
         end

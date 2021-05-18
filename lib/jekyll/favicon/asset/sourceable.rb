@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon'
+require 'jekyll/favicon/utils/configurable'
 require 'jekyll/favicon/utils'
 
 module Jekyll
@@ -8,9 +8,7 @@ module Jekyll
     module Asset
       # Add source to a static file
       module Sourceable
-        FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
-        CONFIG_ROOT = FAVICON_ROOT.join 'config'
-        DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'asset', 'sourceable.yml')
+        include Favicon::Utils::Configurable
         KEY = 'source'
 
         def source
@@ -56,7 +54,7 @@ module Jekyll
         private
 
         def source_defaults
-          DEFAULTS
+          sourceable_defaults
         end
 
         def source_site

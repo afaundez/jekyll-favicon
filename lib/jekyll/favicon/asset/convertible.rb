@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
+require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon/utils'
+
 module Jekyll
   module Favicon
     module Asset
       # Create static file based on a source file
       module Convertible
-        FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
-        CONFIG_ROOT = FAVICON_ROOT.join 'config'
-        DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'asset', 'convertible.yml')
+        include Favicon::Utils::Configurable
         KEY = 'convert'
 
         def convert
@@ -24,10 +25,10 @@ module Jekyll
           Convertible.build_sizes name, convert_attributes
         end
 
-        def self.convert_normalize(options)
+        def convert_normalize(options)
           return {} unless options
 
-          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
+          Favicon::Utils.compact options.slice(*convertible_defaults['defaults'].keys)
         end
 
         def self.build_sizes(name, attributes)
@@ -53,11 +54,11 @@ module Jekyll
         end
 
         def convert_defaults
-          DEFAULTS.dig(File.extname(path), @extname)
+          convertible_defaults.dig(File.extname(path), @extname)
         end
 
         def convert_asset
-          Convertible.convert_normalize config.fetch(KEY, {})
+          convert_normalize config.fetch(KEY, {})
         end
 
         # :reek:FeatureEnvy
@@ -66,7 +67,7 @@ module Jekyll
             method = "convert_patch_#{name}".to_sym
             options.merge! name => send(method, options[name])
           end
-          Favicon::Utils.compact options.slice(*DEFAULTS['defaults'].keys)
+          Favicon::Utils.compact options.slice(*convertible_defaults['defaults'].keys)
         end
 
         def convert_patch_density(density)

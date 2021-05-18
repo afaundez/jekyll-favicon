@@ -11,14 +11,6 @@ module Jekyll
       include Favicon::Utils::Configuration
       include Favicon::Utils::Convert
       include Favicon::Utils::Tag
-
-      def self.pathname(*paths)
-        Pathname.new(File.join(*paths.compact)).cleanpath.to_s
-      end
-
-      def self.string_symbol(value)
-        value.to_s.start_with?(':') ? value[1..-1].to_sym : value
-      end
     end
   end
 end

@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'jekyll/favicon'
 require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
+    ROOT = Pathname.new File.dirname(File.dirname(File.dirname(__dir__)))
+
     # Favicon configuration
     module Configuration
-      def self.asset(concern)
-        config_root = Favicon::GEM_ROOT.join 'lib', 'jekyll', 'favicon', 'config'
-        concern_path = config_root.join 'asset', "#{concern}.yml"
-        YAML.load_file concern_path
+      def self.load_defaults(*parts)
+        load_file 'config', *parts
       end
 
       def self.merged(site)
         return from_defaults unless (user_overrides = from_user site)
 
         user_overrides = unlegacify user_overrides
-        user_merged = Jekyll::Utils.deep_merge_hashes from_defaults, user_overrides
+        user_merged = Jekyll::Utils.deep_merge_hashes from_defaults,
+                                                      user_overrides
         standardize user_merged
       end
 
@@ -27,7 +27,7 @@ module Jekyll
       end
 
       def self.from_defaults
-        Favicon::DEFAULTS
+        Favicon.defaults
       end
 
       def self.standardize(config)
@@ -35,6 +35,14 @@ module Jekyll
 
         config.merge 'source' => standardize_source(config['source'])
       end
+
+      def self.load_file(*parts)
+        path = Favicon::ROOT.join(*parts).to_s
+        path = "#{path}.yml"
+        YAML.load_file path
+      end
+
+      private_class_method :load_file
 
       def self.standardize_source(source)
         case source
@@ -56,10 +64,16 @@ module Jekyll
         name_dir, name = File.split source['name']
         dir = source['dir']
         source_dir = dir && !dir.empty? ? dir : nil
-        { 'name' => name, 'dir' => Favicon::Utils.pathname(source_dir, name_dir) }
+        { 'name' => name, 'dir' => standardize_pathname(source_dir, name_dir) }
       end
 
       private_class_method :standardize_source_hash
+
+      def self.standardize_pathname(*paths)
+        Pathname.new(File.join(*paths.compact)).cleanpath.to_s
+      end
+
+      private_class_method :standardize_source_string
 
       def self.unlegacify(config)
         options = config.slice 'source', 'dir', 'background', 'assets'

@@ -7,7 +7,7 @@ describe 'favicon config' do
   subject { Jekyll::Favicon::Configuration.merged @context.site }
 
   it 'is the default config' do
-    _(subject).must_equal Jekyll::Favicon::DEFAULTS
+    _(subject).must_equal Jekyll::Favicon.defaults
   end
 
   it 'has default global background attribute' do

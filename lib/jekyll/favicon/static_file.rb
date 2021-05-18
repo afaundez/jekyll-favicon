@@ -4,15 +4,14 @@ require 'yaml'
 require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
+require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon/configuration'
 
 module Jekyll
   module Favicon
     # StaticFile extension with extra config variable with attributes
     class StaticFile < Jekyll::StaticFile
-      FAVICON_ROOT = Pathname.new File.dirname(File.dirname(File.dirname(__dir__)))
-      CONFIG_ROOT = FAVICON_ROOT.join 'config'
-      DEFAULTS = YAML.load_file CONFIG_ROOT.join('jekyll', 'favicon', 'static_file.yml')
-
+      include Favicon::Utils::Configurable
       attr_reader :attributes, :site
 
       def initialize(site, attributes = {})
@@ -31,7 +30,9 @@ module Jekyll
       private
 
       def base_defaults
-        DEFAULTS.merge Favicon.configuration(site).slice(*DEFAULTS.keys)
+        override = Favicon.configuration(site)
+                          .slice(*static_file_defaults.keys)
+        static_file_defaults.merge override
       end
 
       def base_patch(attribute_or_attributes)
@@ -56,8 +57,13 @@ module Jekyll
         values.transform_values { |value| base_patch value }
       end
 
+      # :reek:UtilityFunction
+      def base_string_symbol(value)
+        value.to_s.start_with?(':') ? value[1..-1].to_sym : value
+      end
+
       def base_patch_string(value)
-        case Jekyll::Favicon::Utils.string_symbol value
+        case base_string_symbol value
         when :background, :dir then base_defaults[value.to_s]
         when :url then semi_relative_url
         when :sizes then sizes.join ' '
