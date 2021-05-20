@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon/configuration/yamleable'
 require 'jekyll/favicon/configuration'
-require 'jekyll/favicon/asset/data'
-require 'jekyll/favicon/asset/graphic'
+require 'jekyll/favicon/static_data_file'
+require 'jekyll/favicon/static_graphic_file'
 
 module Jekyll
   # Module for custom configurations and defaults
   module Favicon
-    include Favicon::Utils::Configurable
+    include Configuration::YAMLeable
 
     def self.configuration(site)
-      Favicon::Configuration.merged site
+      Configuration.merged site
     end
 
     def self.sources(site)
@@ -29,8 +29,8 @@ module Jekyll
 
     def self.build_asset(site, attributes)
       asset_class = case File.extname attributes['name']
-                    when '.ico', '.png', '.svg' then Asset::Graphic
-                    when '.webmanifest', '.json', '.xml' then Asset::Data
+                    when '.ico', '.png', '.svg' then StaticGraphicFile
+                    when '.webmanifest', '.json', '.xml' then StaticDataFile
                     end
       asset_class&.new site, attributes
     end

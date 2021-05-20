@@ -2,11 +2,11 @@
 
 require 'rexml/document'
 require 'jekyll/favicon/utils'
-require 'jekyll/favicon/asset/graphic'
+require 'jekyll/favicon/static_graphic_file'
 
 module Jekyll
   module Favicon
-    module Asset
+    class StaticFile
       # Create static file based on a source file
       module Mutable
         def mutable?
@@ -22,7 +22,7 @@ module Jekyll
         # Jekyll::StaticFile method
         def copy_file(dest_path)
           return unless mutable?
-          return super dest_path unless mutation.any?
+          return super(dest_path) unless mutation.any?
 
           File.write dest_path, mutated_content
         end
@@ -35,12 +35,13 @@ module Jekyll
         end
 
         def mutated_content_json
-          mutated = Jekyll::Utils.deep_merge_hashes (mutable || {}), mutation
+          mutated = Jekyll::Utils.deep_merge_hashes (mutable || {}), patch(mutation)
           JSON.pretty_generate mutated
         end
 
         def mutated_content_xml
-          mutated = Favicon::Utils.mutate_element (mutable || REXML::Document.new), mutation
+          mutated = Utils.mutate_element (mutable || REXML::Document.new),
+                                         patch(mutation)
           output = String.new
           mutated.write output
           output
@@ -57,11 +58,12 @@ module Jekyll
         end
 
         def mutation_refers
-          static_files = @site.static_files
-          static_files.select { |static_file| static_file.is_a? Asset::Graphic }
-                      .collect { |graphic| graphic.config['refer'] }
-                      .flatten
-                      .compact
+          @site.static_files
+               .select { |static_file| static_file.is_a? StaticGraphicFile }
+               .select(&:referenceable?)
+               .collect(&:refer)
+               .flatten
+               .compact
         end
 
         def mutation

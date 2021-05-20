@@ -20,23 +20,23 @@ module Jekyll
       end
 
       def test_raises_error_when_initializing_without_parameters
-        assert_raises { Favicon::StaticFile.new }
+        assert_raises { StaticFile.new }
       end
 
       def test_raises_error_when_initializing_with_nil_site
-        assert_raises { Favicon::StaticFile.new nil }
+        assert_raises { StaticFile.new nil }
       end
 
       def test_raises_error_when_initializing_with_empty_config
-        assert_raises { Favicon::StaticFile.new @site, {} }
+        assert_raises { StaticFile.new @site, {} }
       end
 
       def test_raises_error_when_initializing_without_name_config
-        assert_raises { Favicon::StaticFile.new @site, 'dir' => 'some-dir' }
+        assert_raises { StaticFile.new @site, 'dir' => 'some-dir' }
       end
 
       def test_initializes_without_dir_config
-        static_file = Favicon::StaticFile.new @site, 'name' => 'some-name'
+        static_file = StaticFile.new @site, 'name' => 'some-name'
         assert static_file
       end
     end

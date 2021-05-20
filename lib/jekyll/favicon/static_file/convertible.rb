@@ -1,19 +1,28 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon/configuration/yamleable'
 require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
-    module Asset
+    class StaticFile
       # Create static file based on a source file
       module Convertible
-        include Favicon::Utils::Configurable
+        include Configuration::YAMLeable
         KEY = 'convert'
 
         def convert
-          options = Favicon::Utils.merge convert_defaults, convert_asset
-          convert_patch base_patch(options)
+          options = Utils.merge convert_defaults, convert_asset
+          convert_patch options
+        end
+
+        def convertible_patch(configuration)
+          Utils.patch configuration do |value|
+            case value
+            when :sizes then sizes.join ' '
+            else value
+            end
+          end
         end
 
         def convertible?
@@ -21,22 +30,22 @@ module Jekyll
         end
 
         def sizes
-          convert_attributes = attributes.fetch KEY, {}
-          Convertible.build_sizes name, convert_attributes
+          convert_spec = spec.fetch KEY, {}
+          Convertible.build_sizes name, convert_spec
         end
 
         def convert_normalize(options)
           return {} unless options
 
-          Favicon::Utils.compact options.slice(*convertible_defaults['defaults'].keys)
+          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
         end
 
-        def self.build_sizes(name, attributes)
+        def self.build_sizes(name, options)
           if (match = name.match(/^.*-(\d+x\d+)\..*$/)) then [match[1]]
-          elsif (define = attributes['define'])
+          elsif (define = options['define'])
             define.split('=').last.split(',').collect { |size| [size, size].join 'x' }
-          elsif (resize = attributes['resize']) then [resize]
-          elsif (scale = attributes['scale']) then [scale]
+          elsif (resize = options['resize']) then [resize]
+          elsif (scale = options['scale']) then [scale]
           end
         end
 
@@ -47,7 +56,7 @@ module Jekyll
           case @extname
           when '.svg' then super(dest_path)
           when '.ico', '.png'
-            Favicon::Utils.convert path, dest_path, convert
+            Utils.convert path, dest_path, patch(convert)
           else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
                               " #{dest_path}. Extension not supported."
           end
@@ -58,7 +67,7 @@ module Jekyll
         end
 
         def convert_asset
-          convert_normalize config.fetch(KEY, {})
+          convert_normalize spec.fetch(KEY, {})
         end
 
         # :reek:FeatureEnvy
@@ -67,7 +76,7 @@ module Jekyll
             method = "convert_patch_#{name}".to_sym
             options.merge! name => send(method, options[name])
           end
-          Favicon::Utils.compact options.slice(*convertible_defaults['defaults'].keys)
+          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
         end
 
         def convert_patch_density(density)

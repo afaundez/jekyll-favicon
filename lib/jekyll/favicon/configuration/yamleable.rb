@@ -5,9 +5,9 @@ require 'jekyll/favicon/configuration'
 
 module Jekyll
   module Favicon
-    module Utils
+    module Configuration
       # Create configurable for include
-      module Configurable
+      module YAMLeable
         def self.included(base)
           *modules, class_or_module_name = base_name_to_parts base.name
           method_name = "#{class_or_module_name}_defaults"

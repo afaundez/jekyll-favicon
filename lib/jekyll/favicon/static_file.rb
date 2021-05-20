@@ -4,81 +4,71 @@ require 'yaml'
 require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
-require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon'
+require 'jekyll/favicon/configuration/yamleable'
 require 'jekyll/favicon/configuration'
 
 module Jekyll
   module Favicon
     # StaticFile extension with extra config variable with attributes
     class StaticFile < Jekyll::StaticFile
-      include Favicon::Utils::Configurable
-      attr_reader :attributes, :site
+      include Configuration::YAMLeable
 
-      def initialize(site, attributes = {})
-        super site, site.source, attributes['dir'], attributes['name']
-        @attributes = attributes
+      attr_reader :spec, :site
+
+      def initialize(site, spec = {})
+        raise StandardError unless spec.include? 'name'
+
+        @spec = spec
+        dir, name = File.split spec_relative_path
+        super site, site.source, dir, name
       end
 
-      def semi_relative_url
-        Pathname.new('/').join(url).to_s
-      end
-
-      def config
-        base_patch @attributes
+      def patch(configuration)
+        Favicon::Utils.patch configuration do |value|
+          case value
+          when :background then site_background
+          when :dir then site_dir
+          when :url then url_path
+          else value
+          end
+        end
       end
 
       private
 
-      def base_defaults
-        override = Favicon.configuration(site)
-                          .slice(*static_file_defaults.keys)
-        static_file_defaults.merge override
+      def spec_relative_path
+        spec_relative_pathname.cleanpath
       end
 
-      def base_patch(attribute_or_attributes)
-        patch_method = case attribute_or_attributes
-                       when Array then :base_patch_array
-                       when Hash then :base_patch_hash
-                       when Symbol, String then :base_patch_string
-                       else :base_patch_identity
-                       end
-        send patch_method, attribute_or_attributes
+      def spec_relative_pathname
+        return spec_pathname if spec_pathname.relative?
+
+        pathname.relative_path_from '/'
       end
 
-      def base_patch_identity(value)
-        value
+      def spec_pathname
+        Pathname.new(site_dir)
+                .join(*spec_dir_name)
       end
 
-      def base_patch_array(values)
-        values.collect { |value| base_patch value }
+      def site_dir
+        Configuration.merged(site).fetch 'dir', '.'
       end
 
-      def base_patch_hash(values)
-        values.transform_values { |value| base_patch value }
+      def spec_dir_name
+        @spec.values_at('dir', 'name')
+             .compact
       end
 
-      # :reek:UtilityFunction
-      def base_string_symbol(value)
-        value.to_s.start_with?(':') ? value[1..-1].to_sym : value
+      def url_path
+        Pathname.new('/')
+                .join(url)
+                .to_s
       end
 
-      def base_patch_string(value)
-        case base_string_symbol value
-        when :background, :dir then base_defaults[value.to_s]
-        when :url then semi_relative_url
-        when :sizes then sizes.join ' '
-        when :mime then mimetype
-        else value
-        end
-      end
-
-      def mimetype
-        mappings = {
-          '.ico' => 'image/x-icon',
-          '.png' => 'image/png',
-          '.svg' => 'image/svg+xml'
-        }
-        mappings[extname]
+      def site_background
+        Configuration.merged(site).fetch 'background', 'transparent'
       end
     end
   end

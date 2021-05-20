@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/utils/configurable'
+require 'jekyll/favicon/configuration/yamleable'
 require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
-    module Asset
+    class StaticFile
       # Add source to a static file
       module Sourceable
-        include Favicon::Utils::Configurable
+        include Configuration::YAMLeable
         KEY = 'source'
 
         def source
@@ -64,7 +64,8 @@ module Jekyll
         end
 
         def source_asset
-          Sourceable.source_normalize Sourceable.source_filter(config)
+          filtered = Sourceable.source_filter spec
+          Sourceable.source_normalize filtered
         end
       end
     end

@@ -65,9 +65,9 @@ module Jekyll
         assert_kind_of Array, assets
         refute_empty assets
         assert_equal 3, assets.size
-        refute_nil assets.find { |asset| asset.config['name'] == 'test.png' }
-        refute_nil assets.find { |asset| asset.config['name'] == 'test.json' }
-        refute_nil assets.find { |asset| asset.config['name'] == 'test.xml' }
+        refute_nil assets.find { |asset| asset.spec['name'] == 'test.png' }
+        refute_nil assets.find { |asset| asset.spec['name'] == 'test.json' }
+        refute_nil assets.find { |asset| asset.spec['name'] == 'test.xml' }
       end
     end
 

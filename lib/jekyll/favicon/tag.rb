@@ -9,13 +9,13 @@ module Jekyll
     class Tag < Liquid::Tag
       # :reek:UtilityFunction
       def render(context)
-        site = context.registers[:site]
-        site.static_files
-            .select { |static_file| static_file.is_a? Favicon::StaticFile }
-            .select(&:taggable?)
-            .collect(&:tags)
-            .flatten
-            .join("\n")
+        context.registers[:site]
+               .static_files
+               .select { |static_file| static_file.is_a? StaticFile }
+               .filter(&:taggable?)
+               .collect(&:tags)
+               .flatten
+               .join("\n")
       end
     end
   end
