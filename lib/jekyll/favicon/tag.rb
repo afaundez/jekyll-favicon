@@ -12,7 +12,7 @@ module Jekyll
         context.registers[:site]
                .static_files
                .select { |static_file| static_file.is_a? StaticFile }
-               .filter(&:taggable?)
+               .select(&:taggable?)
                .collect(&:tags)
                .flatten
                .join("\n")
