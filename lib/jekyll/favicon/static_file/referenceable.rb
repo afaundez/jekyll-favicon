@@ -4,7 +4,7 @@ require 'jekyll/favicon/configuration/yamleable'
 
 module Jekyll
   module Favicon
-    class StaticFile
+    class StaticFile < Jekyll::StaticFile
       # Add reference to a static file
       module Referenceable
         include Configuration::YAMLeable

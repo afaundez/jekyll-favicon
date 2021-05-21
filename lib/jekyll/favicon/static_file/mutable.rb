@@ -6,7 +6,7 @@ require 'jekyll/favicon/static_graphic_file'
 
 module Jekyll
   module Favicon
-    class StaticFile
+    class StaticFile < Jekyll::StaticFile
       # Create static file based on a source file
       module Mutable
         def mutable?

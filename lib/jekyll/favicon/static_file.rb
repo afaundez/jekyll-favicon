@@ -4,13 +4,20 @@ require 'yaml'
 require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
-require 'jekyll/favicon'
+require 'jekyll/favicon/static_file/sourceable'
+require 'jekyll/favicon/static_file/taggable'
+require 'jekyll/favicon/utils'
 require 'jekyll/favicon/configuration'
 
 module Jekyll
   module Favicon
     # Class for static files from with spec dictionary
+    # Modify source from spec source
+    # Enable tags from spec tags
     class StaticFile < Jekyll::StaticFile
+      include StaticFile::Sourceable
+      include StaticFile::Taggable
+
       attr_reader :spec, :site
 
       def initialize(site, spec = {})
@@ -22,7 +29,7 @@ module Jekyll
       end
 
       def patch(configuration)
-        Favicon::Utils.patch configuration do |value|
+        Utils.patch configuration do |value|
           case value
           when :background then site_background
           when :href then href

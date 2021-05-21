@@ -6,7 +6,7 @@ require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
-    class StaticFile
+    class StaticFile < Jekyll::StaticFile
       # Add tags to favicon's static files
       module Taggable
         include Configuration::YAMLeable

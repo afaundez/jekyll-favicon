@@ -5,7 +5,7 @@ require 'jekyll/favicon/utils'
 
 module Jekyll
   module Favicon
-    class StaticFile
+    class StaticFile < Jekyll::StaticFile
       # Add source to a static file
       module Sourceable
         include Configuration::YAMLeable

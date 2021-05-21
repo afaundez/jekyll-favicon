@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 require 'jekyll/favicon/static_file'
-require 'jekyll/favicon/static_file/sourceable'
-require 'jekyll/favicon/static_file/taggable'
 require 'jekyll/favicon/static_file/convertible'
 require 'jekyll/favicon/static_file/referenceable'
 
 module Jekyll
   module Favicon
-    # StaticFile extension for data graphic formats
+    # Favicon::StaticFile subclass
     class StaticGraphicFile < StaticFile
-      include StaticFile::Sourceable
-      include StaticFile::Taggable
       include StaticFile::Convertible
       include StaticFile::Referenceable
 
