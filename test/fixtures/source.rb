@@ -60,8 +60,8 @@ def configured_site
       'assets' => [
         { 'name' => 'assets/configured-favicon-128x128.png',
           'source' => 'images/custom-source.svg',
-          'tag' => [{ 'link' => { 'href' => :url, 'crossorigin' => 'use-credentials' } }, { 'meta' => { 'name' => :name } }],
-          'refer' => [{ 'webmanifest' => { 'icons' => { 'scr' => :url}}}, { 'browserconfig' => { 'msapplication' => { 'configured' => { '__text' => :url}}}}]
+          'tag' => [{ 'link' => { 'href' => :href, 'crossorigin' => 'use-credentials' } }, { 'meta' => { 'name' => :name } }],
+          'refer' => [{ 'webmanifest' => { 'icons' => { 'scr' => :href}}}, { 'browserconfig' => { 'msapplication' => { 'configured' => { '__text' => :href}}}}]
         },
         { 'name' => 'assets/configured-browserconfig.xml', 'source' => 'data/source.xml' },
         { 'name' => 'assets/configured-manifest.webmanifest', 'source' => 'data/source.json', 'tag' => [{ 'link' => { 'href' => :href,  'crossorigin' => 'use-credentials' } }] }

@@ -11,7 +11,7 @@ assets:
       scale: 36x36
     tag:
       - link:
-          href: :url
+          href: :href
           rel: shortcut icon
           type: :mime
           sizes: :sizes
@@ -20,7 +20,7 @@ assets:
       scale: 196x196
     tag:
       - link:
-          href: :url
+          href: :href
           rel: icon
           type: :mime
           sizes: :sizes
@@ -31,7 +31,7 @@ assets:
     tag:
       - link:
           color: :background
-          href: :url
+          href: :href
           rel: mask-icon
   - name: android-chrome-192x192.png
     convert:
@@ -39,14 +39,14 @@ assets:
     refer:
       - webmanifest:
           icons:
-          - src: :url
+          - src: :href
   - name: android-chrome-512x512.png
     convert:
       scale: 512x512
     refer:
       - webmanifest:
           icons:
-          - src: :url
+          - src: :href
   - name: mstile-icon-128x128.png
     convert:
       scale: 128x128
@@ -57,10 +57,10 @@ assets:
               TileColor:
                 __text: :background
               square70x70logo:
-                _src: :url
+                _src: :href
     tag:
       - meta:
-          content: :url
+          content: :href
           name: msapplication-TileImage
       - meta:
           content: :background
@@ -76,7 +76,7 @@ assets:
               TileColor:
                 __text: :background
               square150x150logo:
-                _src: :url
+                _src: :href
   - name: mstile-icon-558x270.png
     convert:
       scale: 558x270
@@ -87,7 +87,7 @@ assets:
               TileColor:
                 __text: :background
               wide310x150logo:
-                _src: :url
+                _src: :href
   - name: mstile-icon-558x558.png
     convert:
       scale: 558x558
@@ -98,18 +98,18 @@ assets:
               TileColor:
                 __text: :background
               square310x310logo:
-                _src: :url
+                _src: :href
   - name: manifest.webmanifest
     source:
       name: manifest.webmanifest
     tag:
       - link:
-          href: :url
+          href: :href
           rel: manifest
   - name: browserconfig.xml
     source:
       name: browserconfig.xml
     tag:
       - meta:
-          content: :url
+          content: :href
           name: msapplication-config

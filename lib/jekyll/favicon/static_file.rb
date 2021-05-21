@@ -5,37 +5,51 @@ require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
 require 'jekyll/favicon'
-require 'jekyll/favicon/configuration/yamleable'
 require 'jekyll/favicon/configuration'
 
 module Jekyll
   module Favicon
-    # StaticFile extension with extra config variable with attributes
+    # Class for static files from with spec dictionary
     class StaticFile < Jekyll::StaticFile
-      include Configuration::YAMLeable
-
       attr_reader :spec, :site
 
       def initialize(site, spec = {})
         raise StandardError unless spec.include? 'name'
 
         @spec = spec
-        dir, name = File.split spec_relative_path
-        super site, site.source, dir, name
+        spec_dir, spec_name = File.split spec_relative_path
+        super site, site.source, spec_dir, spec_name
       end
 
       def patch(configuration)
         Favicon::Utils.patch configuration do |value|
           case value
           when :background then site_background
-          when :dir then site_dir
-          when :url then url_path
+          when :href then href
           else value
           end
         end
       end
 
+      def href
+        Pathname.new('/')
+                .join(url)
+                .to_s
+      end
+
       private
+
+      def site_dir
+        site_configuration.fetch('dir', '.')
+      end
+
+      def site_background
+        site_configuration.fetch('background', 'transparent')
+      end
+
+      def site_configuration
+        Configuration.merged site
+      end
 
       def spec_relative_path
         spec_relative_pathname.cleanpath
@@ -52,23 +66,9 @@ module Jekyll
                 .join(*spec_dir_name)
       end
 
-      def site_dir
-        Configuration.merged(site).fetch 'dir', '.'
-      end
-
       def spec_dir_name
-        @spec.values_at('dir', 'name')
-             .compact
-      end
-
-      def url_path
-        Pathname.new('/')
-                .join(url)
-                .to_s
-      end
-
-      def site_background
-        Configuration.merged(site).fetch 'background', 'transparent'
+        spec.values_at('dir', 'name')
+            .compact
       end
     end
   end
