@@ -8,14 +8,13 @@ module Jekyll
       # Add reference to a static file
       module Referenceable
         include Configuration::YAMLeable
-        KEY = 'reference'
-
-        def refer
-          patch spec.fetch('refer', {})
-        end
 
         def referenceable?
           refer.any?
+        end
+
+        def refer
+          patch spec.fetch('refer', [])
         end
       end
     end

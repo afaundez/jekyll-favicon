@@ -18,6 +18,7 @@ module Jekyll
       end
 
       def test_generator_generate
+        @site.expect :static_files, []
         Jekyll::Favicon.stub :assets, [] do 
           assert_output { @generator.generate @site }
         end

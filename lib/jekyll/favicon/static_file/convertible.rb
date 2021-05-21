@@ -9,11 +9,16 @@ module Jekyll
       # Create static file based on a source file
       module Convertible
         include Configuration::YAMLeable
-        KEY = 'convert'
+
+        def convertible?
+          convert.any? || convert_allow_empty?
+        end
 
         def convert
-          options = Utils.merge convert_defaults, convert_asset
-          convert_patch options
+          convert_defaults = convertible_defaults.dig File.extname(path), @extname
+          convert_normalized = convert_normalize convert_spec
+          convert_consolidated = Utils.merge convert_defaults, convert_normalized
+          patch convert_patch(convert_consolidated || {})
         end
 
         def convertible_patch(configuration)
@@ -25,27 +30,12 @@ module Jekyll
           end
         end
 
-        def convertible?
-          File.exist?(path) && convert_defaults
-        end
-
         def sizes
-          convert_spec = spec.fetch KEY, {}
-          Convertible.build_sizes name, convert_spec
-        end
-
-        def convert_normalize(options)
-          return {} unless options
-
-          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
-        end
-
-        def self.build_sizes(name, options)
           if (match = name.match(/^.*-(\d+x\d+)\..*$/)) then [match[1]]
-          elsif (define = options['define'])
+          elsif (define = convert_spec['define'])
             define.split('=').last.split(',').collect { |size| [size, size].join 'x' }
-          elsif (resize = options['resize']) then [resize]
-          elsif (scale = options['scale']) then [scale]
+          elsif (resize = convert_spec['resize']) then [resize]
+          elsif (scale = convert_spec['scale']) then [scale]
           end
         end
 
@@ -56,18 +46,28 @@ module Jekyll
           case @extname
           when '.svg' then super(dest_path)
           when '.ico', '.png'
-            Utils.convert path, dest_path, patch(convert)
+            Utils.convert path, dest_path, convert
           else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
-                              " #{dest_path}. Extension not supported."
+                                  " #{dest_path}. Extension not supported."
           end
         end
 
-        def convert_defaults
-          convertible_defaults.dig(File.extname(path), @extname)
+        def convert_allow_empty?
+          @extname == '.svg' && @extname == File.extname(path)
         end
 
-        def convert_asset
-          convert_normalize spec.fetch(KEY, {})
+        def convert_spec
+          spec.fetch 'convert', {}
+        end
+
+        def convert_normalize(options)
+          return {} unless options
+
+          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
+        end
+
+        def convert_defaults
+          convertible_defaults.dig File.extname(path), @extname
         end
 
         # :reek:FeatureEnvy

@@ -15,12 +15,6 @@ module Jekyll
       Configuration.merged site
     end
 
-    def self.sources(site)
-      assets(site).select(&:generable?)
-                  .collect(&:source_relative_path)
-                  .uniq
-    end
-
     def self.assets(site)
       configuration(site).fetch('assets', [])
                          .collect { |attributes| build_asset site, attributes }

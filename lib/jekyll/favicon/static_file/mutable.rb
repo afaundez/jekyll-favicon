@@ -10,19 +10,31 @@ module Jekyll
       # Create static file based on a source file
       module Mutable
         def mutable?
-          mutable || mutation.any?
+          mutation.any? || super
         end
 
+        def mutation
+          refers = case @extname
+                   when '.xml'
+                     mutation_refers.select { |refer| refer.key? 'browserconfig' }
+                   else
+                     mutation_refers.collect { |refer| refer['webmanifest'] }
+                                    .compact
+                   end
+          patch(Utils.merge(*refers) || {})
+        end
+
+        # overrides Jekyll::StaticFile method
         def mtime
           return super if File.file? path
         end
 
         private
 
-        # Jekyll::StaticFile method
+        # overrides Jekyll::StaticFile method
         def copy_file(dest_path)
-          return unless mutable?
-          return super(dest_path) unless mutation.any?
+          # return unless mutable?
+          # return super(dest_path) unless mutation.any?
 
           File.write dest_path, mutated_content
         end
@@ -35,20 +47,19 @@ module Jekyll
         end
 
         def mutated_content_json
-          mutated = Jekyll::Utils.deep_merge_hashes (mutable || {}), patch(mutation)
+          mutated = Jekyll::Utils.deep_merge_hashes (mutable || {}), mutation
           JSON.pretty_generate mutated
         end
 
         def mutated_content_xml
-          mutated = Utils.mutate_element (mutable || REXML::Document.new),
-                                         patch(mutation)
+          mutated = Utils.mutate_element (mutable || REXML::Document.new), mutation
           output = String.new
           mutated.write output
           output
         end
 
         def mutable
-          return unless path && File.file?(path)
+          return unless File.file? path
 
           content = File.read path
           case File.extname path
@@ -58,23 +69,11 @@ module Jekyll
         end
 
         def mutation_refers
-          @site.static_files
-               .select { |static_file| static_file.is_a? StaticGraphicFile }
-               .select(&:referenceable?)
-               .collect(&:refer)
-               .flatten
-               .compact
-        end
-
-        def mutation
-          refers = case @extname
-                   when '.xml'
-                     mutation_refers.select { |refer| refer.key? 'browserconfig' }
-                   else
-                     mutation_refers.collect { |refer| refer['webmanifest'] }
-                                    .compact
-                   end
-          Favicon::Utils.merge(*refers) || {}
+          site.static_files
+              .select { |static_file| static_file.is_a? StaticFile }
+              .select(&:referenceable?)
+              .collect(&:refer)
+              .flatten
         end
       end
     end

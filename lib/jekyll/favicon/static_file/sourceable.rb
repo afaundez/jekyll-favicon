@@ -9,37 +9,22 @@ module Jekyll
       # Add source to a static file
       module Sourceable
         include Configuration::YAMLeable
-        KEY = 'source'
-
-        def source
-          Utils.merge source_defaults, source_site, source_asset
-        end
 
         def sourceable?
-          File.file? path
+          source.any? && File.file?(path)
         end
 
-        def warn_not_sourceable
-          return if sourceable?
-
-          Jekyll.logger.warn(Favicon) do
-            "Missing #{source['name']}, not generating favicons."
-          end
+        def source
+          Utils.merge sourceable_defaults, source_site, source_asset
         end
 
-        # Jekyll::StaticFile method
+        # overrides Jekyll::StaticFile method
         def path
           File.join(*[@base, source_relative_path].compact)
         end
 
         def source_relative_path
           source_relative_pathname.to_s
-        end
-
-        def source_relative_pathname
-          Pathname.new(source['dir'])
-                  .join(source['name'])
-                  .cleanpath
         end
 
         def self.source_normalize(options)
@@ -54,10 +39,16 @@ module Jekyll
         end
 
         def self.source_filter(options)
-          options.fetch KEY, {}
+          options.fetch 'source', {}
         end
 
         private
+
+        def source_relative_pathname
+          Pathname.new(source['dir'])
+                  .join(source['name'])
+                  .cleanpath
+        end
 
         def source_defaults
           sourceable_defaults
@@ -69,9 +60,12 @@ module Jekyll
           Sourceable.source_normalize config
         end
 
+        def source_spec
+          Sourceable.source_filter spec
+        end
+
         def source_asset
-          filtered = Sourceable.source_filter spec
-          Sourceable.source_normalize filtered
+          Sourceable.source_normalize source_spec
         end
       end
     end

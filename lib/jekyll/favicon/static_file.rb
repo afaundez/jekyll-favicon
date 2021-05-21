@@ -4,6 +4,7 @@ require 'yaml'
 require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
+require 'jekyll/favicon/static_file/referenceable'
 require 'jekyll/favicon/static_file/sourceable'
 require 'jekyll/favicon/static_file/taggable'
 require 'jekyll/favicon/utils'
@@ -14,9 +15,11 @@ module Jekyll
     # Class for static files from with spec dictionary
     # Modify source from spec source
     # Enable tags from spec tags
+    # Enable refer
     class StaticFile < Jekyll::StaticFile
       include StaticFile::Sourceable
       include StaticFile::Taggable
+      include StaticFile::Referenceable
 
       attr_reader :spec, :site
 

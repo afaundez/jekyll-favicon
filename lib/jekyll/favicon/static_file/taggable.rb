@@ -10,7 +10,10 @@ module Jekyll
       # Add tags to favicon's static files
       module Taggable
         include Configuration::YAMLeable
-        KEY = 'tag'
+
+        def taggable?
+          tags.any?
+        end
 
         def tags
           tag_spec.collect do |options|
@@ -21,14 +24,10 @@ module Jekyll
           end
         end
 
-        def taggable?
-          tags.any?
-        end
-
         private
 
         def tag_spec
-          spec.fetch(KEY, [])
+          spec.fetch 'tag', []
         end
 
         # :reek:UtilityFunction
