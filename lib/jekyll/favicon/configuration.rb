@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
-require 'yaml'
-require 'jekyll/favicon/utils'
+require 'jekyll/utils'
 
 module Jekyll
   module Favicon
-    ROOT = Pathname.new File.dirname(File.dirname(File.dirname(__dir__)))
-
     # Favicon configuration
     module Configuration
-      def self.load_defaults(*parts)
-        load_file 'config', *parts
-      end
-
       def self.merged(site)
         return from_defaults unless (user_overrides = from_user site)
 
@@ -35,14 +28,6 @@ module Jekyll
 
         config.merge 'source' => standardize_source(config['source'])
       end
-
-      def self.load_file(*parts)
-        path = Favicon::ROOT.join(*parts).to_s
-        path = "#{path}.yml"
-        YAML.load_file path
-      end
-
-      private_class_method :load_file
 
       def self.standardize_source(source)
         case source

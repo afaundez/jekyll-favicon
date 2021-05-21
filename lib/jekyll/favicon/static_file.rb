@@ -3,9 +3,9 @@
 require 'pathname'
 require 'forwardable'
 require 'jekyll/static_file'
-require 'jekyll/favicon/static_file/referenceable'
 require 'jekyll/favicon/static_file/sourceable'
 require 'jekyll/favicon/static_file/taggable'
+require 'jekyll/favicon/static_file/referenceable'
 require 'jekyll/favicon/utils'
 require 'jekyll/favicon/configuration'
 

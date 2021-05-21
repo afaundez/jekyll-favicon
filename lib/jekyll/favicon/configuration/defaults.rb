@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/utils'
-require 'jekyll/favicon/configuration'
+require 'yaml'
 
 module Jekyll
   module Favicon
+    ROOT = Pathname.new File.dirname(File.dirname(File.dirname(File.dirname(__dir__))))
+
     module Configuration
       # Create configurable for include
       module Defaults
@@ -12,8 +13,18 @@ module Jekyll
           *modules, class_or_module_name = base_name_to_parts base.name
           method_name = "#{class_or_module_name}_defaults"
           define_defaults base, method_name do
-            Favicon::Configuration.load_defaults(*modules, class_or_module_name)
+            Defaults.load_defaults(*modules, class_or_module_name)
           end
+        end
+
+        def self.load_defaults(*parts)
+          load_file 'config', *parts
+        end
+
+        def self.load_file(*parts)
+          path = Favicon::ROOT.join(*parts).to_s
+          path = "#{path}.yml"
+          YAML.load_file path
         end
 
         def self.define_defaults(base, method_name, &block)

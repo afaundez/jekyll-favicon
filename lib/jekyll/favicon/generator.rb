@@ -3,7 +3,6 @@
 require 'jekyll/plugin'
 require 'jekyll/generator'
 require 'jekyll/favicon'
-require 'jekyll/favicon/static_data_file'
 
 module Jekyll
   module Favicon
