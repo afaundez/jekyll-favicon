@@ -10,15 +10,11 @@ module Jekyll
       include StaticFile::Mutable
 
       def generable?
-        sourceable? || mutable?
+        super || mutable?
       end
 
       def warn_not_generable
         warn_not_sourceable unless sourceable?
-      end
-
-      def patch(configuration)
-        taggable_patch super(configuration)
       end
     end
   end

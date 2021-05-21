@@ -28,14 +28,16 @@ module Jekyll
         super site, site.source, spec_dir, spec_name
       end
 
+      def generable?
+        sourceable?
+      end
+
+      def taggable?
+        generable? && super
+      end
+
       def patch(configuration)
-        Utils.patch configuration do |value|
-          case value
-          when :background then site_background
-          when :href then href
-          else value
-          end
-        end
+        taggable_patch spec_patch configuration
       end
 
       def href
@@ -45,6 +47,16 @@ module Jekyll
       end
 
       private
+
+      def spec_patch(configuration)
+        Utils.patch configuration do |value|
+          case value
+          when :background then site_background
+          when :href then href
+          else value
+          end
+        end
+      end
 
       def site_dir
         site_configuration.fetch('dir', '.')

@@ -12,11 +12,7 @@ module Jekyll
       include StaticFile::Referenceable
 
       def generable?
-        sourceable? && convertible?
-      end
-
-      def taggable?
-        true
+        super && convertible?
       end
 
       def warn_not_generable
@@ -24,7 +20,7 @@ module Jekyll
       end
 
       def patch(configuration)
-        taggable_patch convertible_patch super(configuration)
+        convertible_patch super(configuration)
       end
     end
   end

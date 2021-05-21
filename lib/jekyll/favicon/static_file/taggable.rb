@@ -22,7 +22,7 @@ module Jekyll
         end
 
         def taggable?
-          true
+          tags.any?
         end
 
         private

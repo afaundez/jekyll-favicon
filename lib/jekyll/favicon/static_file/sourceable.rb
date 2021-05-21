@@ -12,11 +12,11 @@ module Jekyll
         KEY = 'source'
 
         def source
-          Favicon::Utils.merge source_defaults, source_site, source_asset
+          Utils.merge source_defaults, source_site, source_asset
         end
 
         def sourceable?
-          File.exist? path
+          File.file? path
         end
 
         def warn_not_sourceable
@@ -33,7 +33,13 @@ module Jekyll
         end
 
         def source_relative_path
-          Pathname.new(File.join(*[source['dir'], source['name']].compact)).cleanpath.to_s
+          source_relative_pathname.to_s
+        end
+
+        def source_relative_pathname
+          Pathname.new(source['dir'])
+                  .join(source['name'])
+                  .cleanpath
         end
 
         def self.source_normalize(options)
@@ -42,7 +48,7 @@ module Jekyll
             source_dir, source_name = File.split options
             { 'dir' => source_dir, 'name' => source_name }
           when Hash
-            Favicon::Utils.compact options
+            Utils.compact options
           else {}
           end
         end
@@ -58,7 +64,7 @@ module Jekyll
         end
 
         def source_site
-          site_config = Favicon::Configuration.merged @site
+          site_config = Configuration.merged @site
           config = Sourceable.source_filter site_config
           Sourceable.source_normalize config
         end
