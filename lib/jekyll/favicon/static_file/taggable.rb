@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rexml/document'
-require 'jekyll/favicon/configuration/yamleable'
+require 'jekyll/favicon/configuration/defaults'
 require 'jekyll/favicon/utils'
 
 module Jekyll
@@ -9,7 +9,7 @@ module Jekyll
     class StaticFile < Jekyll::StaticFile
       # Add tags to favicon's static files
       module Taggable
-        include Configuration::YAMLeable
+        include Configuration::Defaults
 
         def taggable?
           tags.any?

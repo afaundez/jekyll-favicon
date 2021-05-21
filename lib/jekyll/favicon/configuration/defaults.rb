@@ -7,7 +7,7 @@ module Jekyll
   module Favicon
     module Configuration
       # Create configurable for include
-      module YAMLeable
+      module Defaults
         def self.included(base)
           *modules, class_or_module_name = base_name_to_parts base.name
           method_name = "#{class_or_module_name}_defaults"

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'jekyll/favicon/configuration/yamleable'
+require 'jekyll/favicon/configuration/defaults'
 require 'jekyll/favicon/configuration'
 require 'jekyll/favicon/static_data_file'
 require 'jekyll/favicon/static_graphic_file'
@@ -9,7 +9,7 @@ require 'jekyll/favicon/static_graphic_file'
 module Jekyll
   # Module for custom configurations and defaults
   module Favicon
-    include Configuration::YAMLeable
+    include Configuration::Defaults
 
     def self.configuration(site)
       Configuration.merged site

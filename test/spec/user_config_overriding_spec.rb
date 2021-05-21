@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'yaml'
 require 'spec_helper'
 
 describe 'user favicon config overrides favicon defaults' do

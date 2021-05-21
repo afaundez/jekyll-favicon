@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/configuration/yamleable'
+require 'jekyll/favicon/configuration/defaults'
 require 'jekyll/favicon/utils'
 
 module Jekyll
@@ -8,7 +8,7 @@ module Jekyll
     class StaticFile < Jekyll::StaticFile
       # Create static file based on a source file
       module Convertible
-        include Configuration::YAMLeable
+        include Configuration::Defaults
 
         def convertible?
           convert.any? || convert_allow_empty?

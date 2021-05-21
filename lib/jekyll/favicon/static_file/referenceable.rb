@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/configuration/yamleable'
+require 'jekyll/favicon/configuration/defaults'
 
 module Jekyll
   module Favicon
     class StaticFile < Jekyll::StaticFile
       # Add reference to a static file
       module Referenceable
-        include Configuration::YAMLeable
+        include Configuration::Defaults
 
         def referenceable?
           refer.any?
