@@ -3,14 +3,14 @@
 require 'jekyll/hooks'
 
 Jekyll::Hooks.register :site, :after_init do |site|
-  Jekyll::Favicon.assets(site)
-                 .uniq(&:path)
-                 .each_with_object site.config['exclude'] do |asset, memo|
-                   source = asset.source_relative_path
-                   next memo.push(source) if asset.generable?
+  static_files = Jekyll::Favicon.assets(site)
+                                .uniq(&:path)
+  excludes = site.config['exclude']
+  static_files.each do |static_file|
+    source = static_file.source_relative_path
+    excludes << source and next if static_file.generable?
 
-                   Jekyll.logger.warn(Jekyll::Favicon) do
-                     "Missing #{source}, not generating favicons."
-                   end
-                 end
+    Jekyll.logger.warn Jekyll::Favicon,
+                       "Missing #{source}, not generating favicons."
+  end
 end
