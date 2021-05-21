@@ -13,7 +13,7 @@ module Jekyll
       def generate(site)
         Favicon.assets(site)
                .select(&:generable?)
-               .each_with_object(site.static_files) { |asset, memo| memo << asset }
+               .each { |asset| site.static_files << asset }
       end
     end
   end
