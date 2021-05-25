@@ -39,9 +39,22 @@ module Jekyll
           end
         end
 
+        # Jekyll::StaticFile method
+        # asks if dest mtime is older than source mtime after original modified?
+        def modified?
+          super || self.class.mtimes[href] < mtime
+        end
+
+        # Jekyll::StaticFile method
+        # adds dest mtime to list after original write
+        def write(dest)
+          super(dest) && self.class.mtimes[href] = mtime
+        end
+
         private
 
         # Jekyll::StaticFile method
+        # add file creation instead of copying
         def copy_file(dest_path)
           case @extname
           when '.svg' then super(dest_path)
