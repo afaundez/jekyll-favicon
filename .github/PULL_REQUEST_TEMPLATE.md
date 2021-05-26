@@ -5,12 +5,12 @@
   - how you did it (use Markdown and screenshots if needed)
 
 - Did you...
-  - [ ] update the Readme? (if needed)
-  - [ ] update the Changelog? (if needed)
+  - [ ] update the README? (if needed)
+  - [ ] update the CHANGELOG? (if needed)
   - [ ] update the tests?
   - [ ] run the tests?
-  - [ ] check rubocop?
+  - [ ] check with Rubocop?
 
-Don't forget to visit [travis-ci](https://travis-ci.org/afaundez/jekyll-favicon/pull_requests) after creating the PR.
+Don't forget to visit the [GitHub Action workflows](https://github.com/afaundez/jekyll-favicon/actions) after creating the PR.
 
 Thanks for contributing!

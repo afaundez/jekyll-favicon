@@ -1,0 +1,15 @@
+---
+webmanifest: # https://developer.mozilla.org/en-US/docs/Web/Manifest
+  icons: # https://developer.mozilla.org/en-US/docs/Web/Manifest/icons
+  - sizes: :sizes
+    src: :relative_path
+    type: :mime
+    purpose: null
+browserconfig: # https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426(v=vs.85)?redirectedfrom=MSDN
+  browserconfig:
+    msapplication:
+      tile:
+        TileColor: :background
+        ___element:
+          name: :logo
+          _src: :relative_path

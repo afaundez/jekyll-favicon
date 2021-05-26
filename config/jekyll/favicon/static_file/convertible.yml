@@ -1,0 +1,42 @@
+---
+defaults: &defaults
+  alpha: null
+  background: null
+  define: null
+  density: null
+  extent: null
+  gravity: null
+  resize: null
+  scale: null
+.svg:
+  .png:
+    <<: *defaults
+    background: :background
+    density: :max
+    extent: :auto
+    gravity: center
+    scale:
+  .ico:
+    <<: *defaults
+    background: :background
+    define:
+    density: :max
+    extent: :auto
+    gravity: center
+    scale:
+  .svg:
+    <<: *defaults
+.png:
+  .ico:
+    <<: *defaults
+    background: :background
+    define:
+    extent: :auto
+    gravity: center
+    resize:
+  .png:
+    <<: *defaults
+    background: :background
+    extent: :auto
+    gravity: center
+    resize:

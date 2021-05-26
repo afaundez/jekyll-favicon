@@ -6,4 +6,9 @@
 /pkg/
 /spec/reports/
 /tmp/
+.jekyll-cache
+.ruby-version
 *.gem
+Gemfile.lock
+gemfiles/*.gemfile.lock
+.vscode

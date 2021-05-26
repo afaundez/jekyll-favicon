@@ -1,0 +1,115 @@
+---
+source:
+  name: favicon.svg
+  dir: .
+background: transparent
+dir: .
+assets:
+  - name: favicon.ico
+    convert:
+      define: 'icon:auto-resize=36,24,16'
+      scale: 36x36
+    tag:
+      - link:
+          href: :href
+          rel: shortcut icon
+          type: :mime
+          sizes: :sizes
+  - name: favicon.png
+    convert:
+      scale: 196x196
+    tag:
+      - link:
+          href: :href
+          rel: icon
+          type: :mime
+          sizes: :sizes
+  - name: apple-touch-icon.png
+    convert:
+      scale: 180x180
+  - name: safari-pinned-tab.svg
+    tag:
+      - link:
+          color: :background
+          href: :href
+          rel: mask-icon
+  - name: android-chrome-192x192.png
+    convert:
+      scale: 192x192
+    refer:
+      - webmanifest:
+          icons:
+          - src: :href
+  - name: android-chrome-512x512.png
+    convert:
+      scale: 512x512
+    refer:
+      - webmanifest:
+          icons:
+          - src: :href
+  - name: mstile-icon-128x128.png
+    convert:
+      scale: 128x128
+    refer:
+      - browserconfig:
+          msapplication:
+            tile:
+              TileColor:
+                __text: :background
+              square70x70logo:
+                _src: :href
+    tag:
+      - meta:
+          content: :href
+          name: msapplication-TileImage
+      - meta:
+          content: :background
+          name: msapplication-TileColor
+
+  - name: mstile-icon-270x270.png
+    convert:
+      scale: 270x270
+    refer:
+      - browserconfig:
+          msapplication:
+            tile:
+              TileColor:
+                __text: :background
+              square150x150logo:
+                _src: :href
+  - name: mstile-icon-558x270.png
+    convert:
+      scale: 558x270
+    refer:
+      - browserconfig:
+          msapplication:
+            tile:
+              TileColor:
+                __text: :background
+              wide310x150logo:
+                _src: :href
+  - name: mstile-icon-558x558.png
+    convert:
+      scale: 558x558
+    refer:
+      - browserconfig:
+          msapplication:
+            tile:
+              TileColor:
+                __text: :background
+              square310x310logo:
+                _src: :href
+  - name: manifest.webmanifest
+    source:
+      name: manifest.webmanifest
+    tag:
+      - link:
+          href: :href
+          rel: manifest
+  - name: browserconfig.xml
+    source:
+      name: browserconfig.xml
+    tag:
+      - meta:
+          content: :href
+          name: msapplication-config

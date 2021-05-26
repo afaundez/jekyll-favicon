@@ -1,26 +1,32 @@
+# frozen_string_literal: true
+
 require 'yaml'
+require 'jekyll/favicon/configuration/defaults'
+require 'jekyll/favicon/configuration'
+require 'jekyll/favicon/static_data_file'
+require 'jekyll/favicon/static_graphic_file'
 
 module Jekyll
   # Module for custom configurations and defaults
   module Favicon
-    GEM_ROOT = File.dirname File.dirname __dir__
-    PROJECT_LIB = File.join GEM_ROOT, 'lib'
-    PROJECT_ROOT = File.join PROJECT_LIB, 'jekyll', 'favicon'
-    defaults_path = File.join PROJECT_ROOT, 'config', 'defaults.yml'
-    DEFAULTS = YAML.load_file(defaults_path)['favicon']
+    include Configuration::Defaults
 
-    # rubocop:disable  Style/ClassVars
-    def self.merge(overrides)
-      @@config = Jekyll::Utils.deep_merge_hashes DEFAULTS, (overrides || {})
+    def self.configuration(site)
+      Configuration.merged site
     end
 
-    def self.config
-      @@config ||= DEFAULTS
+    def self.assets(site)
+      configuration(site).fetch('assets', [])
+                         .collect { |attributes| build_asset site, attributes }
+                         .compact
     end
-    # rubocop:enable  Style/ClassVars
 
-    def self.templates
-      File.join PROJECT_ROOT, 'templates'
+    def self.build_asset(site, attributes)
+      asset_class = case File.extname attributes['name']
+                    when '.ico', '.png', '.svg' then StaticGraphicFile
+                    when '.webmanifest', '.json', '.xml' then StaticDataFile
+                    end
+      asset_class&.new site, attributes
     end
   end
 end

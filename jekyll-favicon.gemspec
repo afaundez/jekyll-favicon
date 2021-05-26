@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -22,15 +23,14 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.5.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.17'
-  spec.add_development_dependency 'minitest', '~> 5.0'
-  spec.add_development_dependency 'minitest-hooks', '~> 1.4', '>= 1.4.2'
-  spec.add_development_dependency 'nokogiri', '~> 1.8'
+  spec.add_development_dependency 'minitest', '~> 5.8'
+  spec.add_development_dependency 'minitest-hooks', '~> 1.5'
+  spec.add_development_dependency 'minitest-reporters', '~> 1.4.3'
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'rubocop', '~> 0.54.0', '>= 0.54.0'
 
   spec.add_runtime_dependency 'jekyll', '>= 3.0', '< 5.0'
-  spec.add_runtime_dependency 'mini_magick', '>= 4.9.4'
+  spec.add_runtime_dependency 'mini_magick', '~> 4.11'
+  spec.add_runtime_dependency 'rexml', '~> 3.2', '>= 3.2.5'
 end

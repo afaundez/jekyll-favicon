@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches: [ $default-branch, next, update-ci ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  test:
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby ${{ matrix.ruby-version }}
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: ${{ matrix.ruby-version }}
+
+    - name: Run tests with ${{ matrix.gemfile }}
+      run: bundle exec rake
+
+    strategy:
+      matrix:
+        exclude:
+        - ruby-version: '3.0'
+          gemfile: jekyll36
+        - ruby-version: '3.0'
+          gemfile: jekyll37
+
+        gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41 ]
+        os: [ ubuntu-latest ]
+        ruby-version: [ 2.5, 2.6, 2.7, '3.0' ]

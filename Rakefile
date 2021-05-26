@@ -1,10 +1,12 @@
-require 'bundler/gem_tasks'
+# frozen_string_literal: true
+
 require 'rake/testtask'
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'test'
-  t.libs << 'lib'
-  t.test_files = FileList['test/**/*_test.rb']
-end
-
+desc 'run tests'
 task default: :test
+
+Rake::TestTask.new do |t|
+  t.libs << ['test',  'test/spec', 'test/unit']
+  t.test_files = FileList['test/**/*_spec.rb', 'test/**/test_*.rb']
+  t.warning = false
+end

@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+- Delete Gemfile.lock
+- Delete .ruby-version
+- Remove unsupported versions from travis config
+- Remove bundler and rubocop gemspec's development dependencies
+- Remove graphicmagick from travis config
+- Remove travis-ci config
+- Remove nokogiri gemspec development dependency
+### Changed
+- Move supported ruby versions to 2.5
+- Update nokogiri, minitest, and minitest-hooks gemspec's development dependencies
+- Update mini_magick gemspec's runtime dependencies
+- Update travis rvm versions
+- Rename Gem Push github action workflow
+### Added
+- gitignore Gemfile.lock
+- gitignore .jekyll-cache
+- Add Test github action workflow
+
 ## [0.2.9] - 2021-02-10
 ### Added
 - Optional `crossorigin` attribute for Chrome manifest

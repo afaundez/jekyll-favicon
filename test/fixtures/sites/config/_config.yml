@@ -1,6 +1,0 @@
-favicon:
-  source: custom-favicon.png
-  path: assets/img
-  background: white
-  sizes:
-    - 1x1

@@ -1,0 +1,22 @@
+---
+defaults:
+  webmanifest:
+    icons:
+      # https://developer.mozilla.org/en-US/docs/Web/Manifest/icons
+    - sizes: null
+      src: null
+      type: null
+      purpose: null
+  browserconfig:
+    browserconfig:
+      msapplication:
+        tile:
+          TileColor: :background
+.json:
+  # https://developer.mozilla.org/en-US/docs/Web/Manifest
+  icons: :references
+.xml:
+  # https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426(v=vs.85)?redirectedfrom=MSDN
+  browserconfig:
+    msapplication:
+      tile: :references

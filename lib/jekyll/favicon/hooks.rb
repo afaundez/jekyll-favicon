@@ -1,14 +1,16 @@
-Jekyll::Hooks.register :site, :after_init do |site|
-  Jekyll::Favicon.merge site.config['favicon']
-  favicon_config = Jekyll::Favicon.config
-  site.config['exclude'] << favicon_config['source']
-  site.config['exclude'] << favicon_config['chrome']['manifest']['source']
-  site.config['exclude'] << favicon_config['ie']['browserconfig']['source']
-end
+# frozen_string_literal: true
 
-Jekyll::Hooks.register :site, :post_write do |site|
-  favicon_generators = site.generators.select do |generator|
-    generator.is_a? Jekyll::Favicon::Generator
+require 'jekyll/hooks'
+
+Jekyll::Hooks.register :site, :after_init do |site|
+  static_files = Jekyll::Favicon.assets(site)
+                                .uniq(&:path)
+  excludes = site.config['exclude']
+  static_files.each do |static_file|
+    source = static_file.source_relative_path
+    excludes << source and next if static_file.generable?
+
+    Jekyll.logger.warn Jekyll::Favicon,
+                       "Missing #{source}, not generating favicons."
   end
-  favicon_generators.each(&:clean)
 end
