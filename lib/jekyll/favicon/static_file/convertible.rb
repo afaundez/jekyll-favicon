@@ -42,7 +42,7 @@ module Jekyll
         # Jekyll::StaticFile method
         # asks if dest mtime is older than source mtime after original modified?
         def modified?
-          super || self.class.mtimes[href] < mtime
+          super || self.class.mtimes.fetch(href, -1) < mtime
         end
 
         # Jekyll::StaticFile method
