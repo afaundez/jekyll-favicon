@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [1.0.0-pre.1] - 2021-05-26
+## [1.0.0.pre.1] - 2021-05-26
 ### Removed
 - Delete Gemfile.lock
 - Delete .ruby-version

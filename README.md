@@ -34,7 +34,7 @@ Check the devcontainer's [Dockerfile](.devcontainer/Dockerfile) for more practic
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll-favicon', '~> 1.0.0-pre.1', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 1.0.0.pre.1', group: :jekyll_plugins
 ```
 
 ## Usage
