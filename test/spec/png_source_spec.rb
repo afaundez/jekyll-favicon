@@ -112,7 +112,7 @@ describe 'minimal site with custom PNG source' do
       favicon_image = MiniMagick::Image.open favicon_path
       favicon_pixels = favicon_image.get_pixels
       _(favicon_pixels[0][0]).must_equal [0, 0, 0]
-      _(favicon_pixels[98][98]).must_equal [0, 0, 0]
+      _(favicon_pixels[98][98]).must_equal [255, 0, 0]
     end
   end
 end

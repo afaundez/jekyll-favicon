@@ -53,6 +53,7 @@ module Jekyll
       def spec_patch(configuration)
         Utils.patch configuration do |value|
           case value
+          when :site_dir then site_dir
           when :background then site_background
           when :href then href
           else value

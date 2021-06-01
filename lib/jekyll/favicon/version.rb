@@ -2,6 +2,6 @@
 
 module Jekyll
   module Favicon
-    VERSION = '0.2.9'
+    VERSION = '1.0.0-pre.1'
   end
 end

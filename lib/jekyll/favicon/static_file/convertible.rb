@@ -47,6 +47,7 @@ module Jekyll
 
         # Jekyll::StaticFile method
         # adds dest mtime to list after original write
+        # :reek:ControlParameter
         def write(dest)
           super(dest) && self.class.mtimes[href] = mtime
         end
