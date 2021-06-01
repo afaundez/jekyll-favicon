@@ -44,7 +44,7 @@ module Jekyll
 
       def href
         Pathname.new('/')
-                .join(url)
+                .join(*[site.baseurl, url].compact)
                 .to_s
       end
 

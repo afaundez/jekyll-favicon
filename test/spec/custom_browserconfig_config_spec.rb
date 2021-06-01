@@ -20,7 +20,7 @@ describe 'when site overrides source browserconfig' do
     _(msapplication).wont_be_nil
     configured = msapplication.elements['configured']
     _(configured).wont_be_nil
-    _(configured.text).must_equal '/assets/configured-favicon-128x128.png'
+    _(configured.text).must_equal '/blog/assets/configured-favicon-128x128.png'
     notification = msapplication.elements['notification']
     _(notification).wont_be_nil
     _(notification).must_be :has_elements?
