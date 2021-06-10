@@ -10,4 +10,4 @@
 .ruby-version
 *.gem
 Gemfile.lock
-gemfiles/*.gemfile.lock
+*.gemfile.lock
