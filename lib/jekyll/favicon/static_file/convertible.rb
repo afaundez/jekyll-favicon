@@ -31,9 +31,8 @@ module Jekyll
         end
 
         def sizes
-          if (match = name.match(/^.*-(\d+x\d+)\..*$/)) then [match[1]]
-          elsif (define = convert_spec['define'])
-            define.split('=').last.split(',').collect { |size| [size, size].join 'x' }
+          if (match = Utils.name_to_size(name)) then [match[1]]
+          elsif (define = Utils.define_to_size(convert_spec['define'])) then define
           elsif (resize = convert_spec['resize']) then [resize]
           elsif (scale = convert_spec['scale']) then [scale]
           end

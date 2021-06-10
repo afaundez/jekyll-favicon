@@ -19,6 +19,20 @@ module Jekyll
       def self.except(hash, *keys)
         hash.reject { |key, _| keys.include? key }
       end
+
+      def self.define_to_size(define)
+        return unless define
+
+        define.split('=')
+              .last
+              .split(',')
+              .collect { |size| [size, size].join 'x' }
+      end
+
+      def self.name_to_size(name)
+        size_in_name_regex = /^.*-(\d+x\d+)\..*$/
+        name.match size_in_name_regex
+      end
     end
   end
 end
