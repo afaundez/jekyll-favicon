@@ -83,27 +83,29 @@ module Jekyll
         end
 
         def convert_patch(options)
-          merged_options = convert_merge_options options
-          Utils.slice_and_compact merged_options, convertible_keys
+          patched_options = convert_patch_options options
+          Utils.slice_and_compact patched_options, convertible_keys
         end
 
-        def convert_merge_options(options)
+        def convert_patch_options(options)
           %w[density extent].each_with_object(options) do |name, memo|
-            method = "convert_patch_#{name}".to_sym
+            method = "convert_patch_option_#{name}".to_sym
             memo.merge! name => send(method, options[name])
           end
         end
 
-        def convert_patch_density(density)
+        def convert_patch_option_density(density)
           case density
           when :max
-            length = sizes.collect { |size| size.split('x').max }.max.to_i
+            length = sizes.collect { |size| size.split('x').collect(&:to_i) }
+                          .flatten
+                          .max
             length * 3
           else density
           end
         end
 
-        def convert_patch_extent(extent)
+        def convert_patch_option_extent(extent)
           case extent
           when :auto
             if (size = sizes.first)
