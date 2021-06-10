@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'minitest/hooks/default'
-require 'test_helper'
-require 'fixtures/configuration'
-require 'fixtures/context'
-require 'fixtures/site'
-require 'jekyll-favicon'
+require "minitest/hooks/default"
+require "test_helper"
+require "fixtures/configuration"
+require "fixtures/context"
+require "fixtures/site"
+require "jekyll-favicon"
 
 Minitest::Spec::DSL.class_eval do
   def fixture(fixture, *actions, **overrides)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'unit_helper'
-require 'jekyll/favicon/generator'
+require "unit_helper"
+require "jekyll/favicon/generator"
 
 module Jekyll
   module Favicon
@@ -62,7 +62,7 @@ module Jekyll
         site_generate_with_stub_assets @asset
         assert_equal 1, static_files.size
         assert_includes static_files.collect(&:object_id),
-                        @static_file.object_id
+          @static_file.object_id
       end
     end
   end

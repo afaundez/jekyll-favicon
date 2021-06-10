@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/static_file'
-require 'jekyll/favicon/static_file/mutable'
+require "jekyll/favicon/static_file"
+require "jekyll/favicon/static_file/mutable"
 
 module Jekyll
   module Favicon

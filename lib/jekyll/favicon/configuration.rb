@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/utils'
+require "jekyll/utils"
 
 module Jekyll
   module Favicon
@@ -11,12 +11,12 @@ module Jekyll
 
         user_overrides = unlegacify user_overrides
         user_merged = Jekyll::Utils.deep_merge_hashes from_defaults,
-                                                      user_overrides
+          user_overrides
         standardize user_merged
       end
 
       def self.from_user(site)
-        site&.config&.fetch 'favicon', {}
+        site&.config&.fetch "favicon", {}
       end
 
       def self.from_defaults
@@ -26,7 +26,7 @@ module Jekyll
       def self.standardize(config)
         return unless config
 
-        config.merge 'source' => standardize_source(config['source'])
+        config.merge "source" => standardize_source(config["source"])
       end
 
       def self.standardize_source(source)
@@ -40,16 +40,16 @@ module Jekyll
 
       def self.standardize_source_string(source)
         dir, name = File.split source
-        { 'name' => name, 'dir' => dir }
+        {"name" => name, "dir" => dir}
       end
 
       private_class_method :standardize_source_string
 
       def self.standardize_source_hash(source)
-        name_dir, name = File.split source['name']
-        dir = source['dir']
+        name_dir, name = File.split source["name"]
+        dir = source["dir"]
         source_dir = dir && !dir.empty? ? dir : nil
-        { 'name' => name, 'dir' => standardize_pathname(source_dir, name_dir) }
+        {"name" => name, "dir" => standardize_pathname(source_dir, name_dir)}
       end
 
       private_class_method :standardize_source_hash
@@ -61,9 +61,9 @@ module Jekyll
       private_class_method :standardize_source_string
 
       def self.unlegacify(config)
-        options = config.slice 'source', 'dir', 'background', 'assets'
-        path = options['path']
-        options['dir'] ||= path if path
+        options = config.slice "source", "dir", "background", "assets"
+        path = options["path"]
+        options["dir"] ||= path if path
         options
       end
 

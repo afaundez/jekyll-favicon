@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'unit_helper'
-require 'jekyll/favicon/utils'
+require "unit_helper"
+require "jekyll/favicon/utils"
 
 module Jekyll
   module Favicon
@@ -12,19 +12,19 @@ module Jekyll
       end
 
       def test_utils_compacts_nil
-        expected_compacted = { a: 1 }
+        expected_compacted = {a: 1}
         assert_equal expected_compacted,
-                     Favicon::Utils.compact({ a: 1, c: nil })
+          Favicon::Utils.compact({a: 1, c: nil})
         assert_equal [1], Favicon::Utils.compact([1, nil])
       end
 
       def test_utils_compacts_deep_nested_nil
-        expected_compacted = { a: { b: { c: 3 } } }
+        expected_compacted = {a: {b: {c: 3}}}
         assert_equal expected_compacted,
-                     Favicon::Utils.compact({ a: { b: { c: 3, d: nil } } })
+          Favicon::Utils.compact({a: {b: {c: 3, d: nil}}})
         expected_compacted = [:a, [:b, [3]]]
         assert_equal expected_compacted,
-                     Favicon::Utils.compact([:a, [:b, [3, nil]]])
+          Favicon::Utils.compact([:a, [:b, [3, nil]]])
       end
 
       def test_utils_compacts_empty_hash
@@ -37,18 +37,18 @@ module Jekyll
       end
 
       def test_utils_compacts_empty_mix
-        expected_compacted = { a: 1 }
+        expected_compacted = {a: 1}
         assert_equal expected_compacted,
-                     Favicon::Utils.compact({ a: 1, c: {}, d: [] })
+          Favicon::Utils.compact({a: 1, c: {}, d: []})
         assert_equal [1], Favicon::Utils.compact([1, {}, []])
       end
 
       def test_utils_compacts_deep_nested_empty
-        expected_compacted = { a: { b: { c: 3 } } }
+        expected_compacted = {a: {b: {c: 3}}}
         assert_equal expected_compacted,
-                     Favicon::Utils.compact({ a: { b: { c: 3, d: [] } } })
+          Favicon::Utils.compact({a: {b: {c: 3, d: []}}})
         assert_equal [:a, [:b, [3]]],
-                     Favicon::Utils.compact([:a, [:b, [3, []]]])
+          Favicon::Utils.compact([:a, [:b, [3, []]]])
       end
 
       def test_utils_does_nothing_to_no_compactable
@@ -66,44 +66,44 @@ module Jekyll
       end
 
       def test_utils_merges_nothing_with_one_argument
-        expected_merged = { a: :b }
-        assert_equal expected_merged, Favicon::Utils.merge({ a: :b })
+        expected_merged = {a: :b}
+        assert_equal expected_merged, Favicon::Utils.merge({a: :b})
         assert_equal %i[a b], Favicon::Utils.merge(%i[a b])
-        assert_equal 'a', Favicon::Utils.merge('a')
+        assert_equal "a", Favicon::Utils.merge("a")
         assert_nil Favicon::Utils.merge(nil)
       end
 
       def test_utils_merges_nothing_with_more_than_two_arguments
-        expected_merged = { a: %i[c d] }
+        expected_merged = {a: %i[c d]}
         assert_equal expected_merged,
-                     Favicon::Utils.merge({ a: :b }, { a: [:c] }, { a: [:d] })
+          Favicon::Utils.merge({a: :b}, {a: [:c]}, {a: [:d]})
       end
 
       def test_utils_merges_deep_nested
-        expected_merged = { a: { b: :d } }
+        expected_merged = {a: {b: :d}}
         assert_equal expected_merged,
-                     Favicon::Utils.merge({ a: { b: :c } }, { a: { b: :d } })
-        expected_merged = { a: %i[b c] }
+          Favicon::Utils.merge({a: {b: :c}}, {a: {b: :d}})
+        expected_merged = {a: %i[b c]}
         assert_equal expected_merged,
-                     Favicon::Utils.merge({ a: [:b] }, { a: [:c] })
+          Favicon::Utils.merge({a: [:b]}, {a: [:c]})
       end
 
       def test_utils_merges_overwriting_when_types_do_not_match
-        assert_equal :c, Favicon::Utils.merge({ a: :b }, :c)
-        assert_equal [:c], Favicon::Utils.merge({ a: :b }, [:c])
-        assert_equal ({ b: :c }), Favicon::Utils.merge([:a], { b: :c })
+        assert_equal :c, Favicon::Utils.merge({a: :b}, :c)
+        assert_equal [:c], Favicon::Utils.merge({a: :b}, [:c])
+        assert_equal ({b: :c}), Favicon::Utils.merge([:a], {b: :c})
       end
 
       def test_utils_merges_overwriting_when_nested_types_do_not_match
-        assert_equal ({ a: nil }), Favicon::Utils.merge({ a: [:b] }, { a: nil })
-        assert_equal ({ a: :c }), Favicon::Utils.merge({ a: [:b] }, { a: :c })
-        assert_equal ({ a: :d }),
-                     Favicon::Utils.merge({ a: { b: :c } }, { a: :d })
+        assert_equal ({a: nil}), Favicon::Utils.merge({a: [:b]}, {a: nil})
+        assert_equal ({a: :c}), Favicon::Utils.merge({a: [:b]}, {a: :c})
+        assert_equal ({a: :d}),
+          Favicon::Utils.merge({a: {b: :c}}, {a: :d})
       end
 
       def test_utils_merges_arrays_elements
-        assert_equal [{ 'name' => :a, b: :c, d: :f }],
-                     Favicon::Utils.merge([{ 'name' => :a, b: :c, d: :e }], [{ 'name' => :a, b: :c, d: :f }])
+        assert_equal [{"name" => :a, :b => :c, :d => :f}],
+          Favicon::Utils.merge([{"name" => :a, :b => :c, :d => :e}], [{"name" => :a, :b => :c, :d => :f}])
       end
     end
   end

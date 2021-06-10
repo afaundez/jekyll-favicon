@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'unit_helper'
-require 'jekyll/favicon/tag'
+require "unit_helper"
+require "jekyll/favicon/tag"
 
 module Jekyll
   module Favicon
@@ -32,7 +32,7 @@ module Jekyll
       def setup_tag
         liquid_parse_context = MiniTest::Mock.new
         liquid_parse_context.expect :line_number, 1
-        @tag = Favicon::Tag.parse '', nil, nil, liquid_parse_context
+        @tag = Favicon::Tag.parse "", nil, nil, liquid_parse_context
       end
 
       def setup_site_and_context

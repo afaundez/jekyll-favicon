@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rexml/document'
-require 'jekyll/favicon/configuration/defaults'
-require 'jekyll/favicon/utils'
+require "rexml/document"
+require "jekyll/favicon/configuration/defaults"
+require "jekyll/favicon/utils"
 
 module Jekyll
   module Favicon
@@ -27,14 +27,14 @@ module Jekyll
         private
 
         def tag_spec
-          spec.fetch 'tag', []
+          spec.fetch "tag", []
         end
 
         def mimetype
           mappings = {
-            '.ico' => 'image/x-icon',
-            '.png' => 'image/png',
-            '.svg' => 'image/svg+xml'
+            ".ico" => "image/x-icon",
+            ".png" => "image/png",
+            ".svg" => "image/svg+xml"
           }
           mappings[extname]
         end

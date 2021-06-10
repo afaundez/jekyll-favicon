@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/configuration/defaults'
-require 'jekyll/favicon/utils'
+require "jekyll/favicon/configuration/defaults"
+require "jekyll/favicon/utils"
 
 module Jekyll
   module Favicon
@@ -24,7 +24,7 @@ module Jekyll
         def convertible_patch(configuration)
           Utils.patch configuration do |value|
             case value
-            when :sizes then sizes.join ' '
+            when :sizes then sizes.join " "
             else value
             end
           end
@@ -32,9 +32,9 @@ module Jekyll
 
         def sizes
           if (match = Utils.name_to_size(name)) then [match[1]]
-          elsif (define = Utils.define_to_size(convert_spec['define'])) then define
-          elsif (resize = convert_spec['resize']) then [resize]
-          elsif (scale = convert_spec['scale']) then [scale]
+          elsif (define = Utils.define_to_size(convert_spec["define"])) then define
+          elsif (resize = convert_spec["resize"]) then [resize]
+          elsif (scale = convert_spec["scale"]) then [scale]
           end
         end
 
@@ -56,8 +56,8 @@ module Jekyll
         # add file creation instead of copying
         def copy_file(dest_path)
           case @extname
-          when '.svg' then super(dest_path)
-          when '.ico', '.png'
+          when ".svg" then super(dest_path)
+          when ".ico", ".png"
             Utils.convert path, dest_path, convert
           else Jekyll.logger.warn "Jekyll::Favicon: Can't generate " \
                                   " #{dest_path}. Extension not supported."
@@ -65,15 +65,15 @@ module Jekyll
         end
 
         def convert_allow_empty?
-          @extname == '.svg' && @extname == File.extname(path)
+          @extname == ".svg" && @extname == File.extname(path)
         end
 
         def convert_spec
-          spec.fetch 'convert', {}
+          spec.fetch "convert", {}
         end
 
         def convertible_keys
-          convertible_defaults['defaults'].keys
+          convertible_defaults["defaults"].keys
         end
 
         def convert_normalize(options)
@@ -90,16 +90,16 @@ module Jekyll
         def convert_patch_options(options)
           %w[density extent].each_with_object(options) do |name, memo|
             method = "convert_patch_option_#{name}".to_sym
-            memo.merge! name => send(method, options[name])
+            memo[name] = send(method, options[name])
           end
         end
 
         def convert_patch_option_density(density)
           case density
           when :max
-            length = sizes.collect { |size| size.split('x').collect(&:to_i) }
-                          .flatten
-                          .max
+            length = sizes.collect { |size| size.split("x").collect(&:to_i) }
+              .flatten
+              .max
             length * 3
           else density
           end
@@ -109,7 +109,7 @@ module Jekyll
           case extent
           when :auto
             if (size = sizes.first)
-              width, height = size.split 'x'
+              width, height = size.split "x"
               size if width != height
             end
           else extent

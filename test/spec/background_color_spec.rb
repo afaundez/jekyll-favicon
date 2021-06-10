@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'user can change background color' do
-  describe 'when source is an SVG' do
+describe "user can change background color" do
+  describe "when source is an SVG" do
     fixture :conventioned, :process, config: {
-      name: '_config.yml',
+      name: "_config.yml",
       options: {
-        'favicon' => {
-          'background' => 'green'
+        "favicon" => {
+          "background" => "green"
         }
       }
     }
 
     subject do
-      img_path = @context.destination 'favicon.png'
+      img_path = @context.destination "favicon.png"
       MiniMagick::Image.open img_path
     end
 
-    it 'changes PNG background' do
+    it "changes PNG background" do
       pixels = subject.get_pixels
       assert_equal [0, 128, 0], pixels[1][1]
       half_size = pixels.size / 2

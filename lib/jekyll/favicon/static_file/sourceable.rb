@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/configuration/defaults'
-require 'jekyll/favicon/utils'
+require "jekyll/favicon/configuration/defaults"
+require "jekyll/favicon/utils"
 
 module Jekyll
   module Favicon
@@ -31,7 +31,7 @@ module Jekyll
           case options
           when String
             source_dir, source_name = File.split options
-            { 'dir' => source_dir, 'name' => source_name }
+            {"dir" => source_dir, "name" => source_name}
           when Hash
             Utils.compact options
           else {}
@@ -39,15 +39,15 @@ module Jekyll
         end
 
         def self.source_filter(options)
-          options.fetch 'source', {}
+          options.fetch "source", {}
         end
 
         private
 
         def source_relative_pathname
-          Pathname.new(source['dir'])
-                  .join(source['name'])
-                  .cleanpath
+          Pathname.new(source["dir"])
+            .join(source["name"])
+            .cleanpath
         end
 
         def source_defaults

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/favicon/configuration/defaults'
+require "jekyll/favicon/configuration/defaults"
 
 module Jekyll
   module Favicon
@@ -14,7 +14,7 @@ module Jekyll
         end
 
         def refer
-          patch spec.fetch('refer', [])
+          patch spec.fetch("refer", [])
         end
       end
     end

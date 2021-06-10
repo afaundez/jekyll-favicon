@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'jekyll/plugin'
-require 'jekyll/generator'
-require 'jekyll/favicon'
+require "jekyll/plugin"
+require "jekyll/generator"
+require "jekyll/favicon"
 
 module Jekyll
   module Favicon
@@ -10,8 +10,8 @@ module Jekyll
     class Generator < Jekyll::Generator
       def generate(site)
         Favicon.assets(site)
-               .select(&:generable?)
-               .each { |asset| site.static_files << asset }
+          .select(&:generable?)
+          .each { |asset| site.static_files << asset }
       end
     end
   end

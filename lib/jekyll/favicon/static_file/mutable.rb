@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rexml/document'
-require 'jekyll/favicon/utils'
-require 'jekyll/favicon/static_graphic_file'
+require "rexml/document"
+require "jekyll/favicon/utils"
+require "jekyll/favicon/static_graphic_file"
 
 module Jekyll
   module Favicon
@@ -15,12 +15,12 @@ module Jekyll
 
         def mutation
           refers = case @extname
-                   when '.xml'
-                     mutation_refers.select { |refer| refer.key? 'browserconfig' }
+                   when ".xml"
+                     mutation_refers.select { |refer| refer.key? "browserconfig" }
                    else
-                     mutation_refers.collect { |refer| refer['webmanifest'] }
-                                    .compact
-                   end
+                     mutation_refers.collect { |refer| refer["webmanifest"] }
+                       .compact
+          end
           patch(Utils.merge(*refers) || {})
         end
 
@@ -41,8 +41,8 @@ module Jekyll
 
         def mutated_content
           case @extname
-          when '.json', '.webmanifest', '.manifest' then mutated_content_json
-          when '.xml' then mutated_content_xml
+          when ".json", ".webmanifest", ".manifest" then mutated_content_json
+          when ".xml" then mutated_content_xml
           end
         end
 
@@ -53,7 +53,7 @@ module Jekyll
 
         def mutated_content_xml
           mutated = Utils.mutate_element (mutable || REXML::Document.new), mutation
-          output = String.new
+          output = +""
           mutated.write output
           output
         end
@@ -63,17 +63,17 @@ module Jekyll
 
           content = File.read path
           case File.extname path
-          when '.xml' then REXML::Document.new content
+          when ".xml" then REXML::Document.new content
           else JSON.parse content
           end
         end
 
         def mutation_refers
           site.static_files
-              .select { |static_file| static_file.is_a? StaticFile }
-              .select(&:referenceable?)
-              .collect(&:refer)
-              .flatten
+            .select { |static_file| static_file.is_a? StaticFile }
+            .select(&:referenceable?)
+            .collect(&:refer)
+            .flatten
         end
       end
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'yaml'
+require "yaml"
 
 module Jekyll
   module Favicon
@@ -18,7 +18,7 @@ module Jekyll
         end
 
         def self.load_defaults(*parts)
-          load_file 'config', *parts
+          load_file "config", *parts
         end
 
         def self.load_file(*parts)
@@ -28,20 +28,20 @@ module Jekyll
         end
 
         def self.define_defaults(base, method_name, &block)
-          base.define_singleton_method('defaults', &block)
+          base.define_singleton_method("defaults", &block)
           define_method(method_name, &block)
         end
 
         def self.base_name_to_parts(name)
-          name.split('::').collect do |module_or_class|
+          name.split("::").collect do |module_or_class|
             camelcase_to_snakecase module_or_class
           end
         end
 
         def self.camelcase_to_snakecase(camelcase)
           camelcase.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
-                   .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-                   .downcase
+            .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+            .downcase
         end
       end
     end

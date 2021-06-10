@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'pathname'
-require 'fixtures/jekyll'
-require 'fixtures/site'
-require 'jekyll/favicon'
+require "pathname"
+require "fixtures/jekyll"
+require "fixtures/site"
+require "jekyll/favicon"
 
 # struct for easier expectations
 module Fixtures
@@ -18,19 +18,19 @@ module Fixtures
     end
 
     def destination(*path)
-      Pathname.new(site.config['destination'])
-              .join(*path)
+      Pathname.new(site.config["destination"])
+        .join(*path)
     end
 
     def source(*path)
       Pathname.new(site.source)
-              .join(*path)
+        .join(*path)
     end
 
     def baseurl(*path)
-      Pathname.new('/')
-              .join(site.baseurl || '')
-              .join(*path)
+      Pathname.new("/")
+        .join(site.baseurl || "")
+        .join(*path)
     end
 
     def defaults(*keys)

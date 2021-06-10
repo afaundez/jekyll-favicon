@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'unit_helper'
-require 'jekyll/favicon/static_file'
+require "unit_helper"
+require "jekyll/favicon/static_file"
 
 module Jekyll
   module Favicon
@@ -29,11 +29,11 @@ module Jekyll
       end
 
       def test_raises_error_when_initializing_without_name_config
-        assert_raises(StandardError) { StaticFile.new @site, 'dir' => 'some-dir' }
+        assert_raises(StandardError) { StaticFile.new @site, "dir" => "some-dir" }
       end
 
       def test_initializes_without_dir_config
-        static_file = StaticFile.new @site, 'name' => 'some-name'
+        static_file = StaticFile.new @site, "name" => "some-name"
         assert static_file
       end
 
@@ -41,7 +41,7 @@ module Jekyll
 
       def setup_site
         @site = MiniTest::Mock.new
-        @site.expect :source, '/dev/null'
+        @site.expect :source, "/dev/null"
       end
     end
   end

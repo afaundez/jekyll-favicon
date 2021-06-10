@@ -1,38 +1,38 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'favicon config' do
+describe "favicon config" do
   fixture :empty, :process
   subject { Jekyll::Favicon::Configuration.merged @context.site }
 
-  it 'is the default config' do
+  it "is the default config" do
     _(subject).must_equal Jekyll::Favicon.defaults
   end
 
-  it 'has default global background attribute' do
-    background_attribute = subject['background']
+  it "has default global background attribute" do
+    background_attribute = subject["background"]
     _(background_attribute).wont_be_nil
     _(background_attribute).must_be_kind_of String
   end
 
-  it 'has default global dir attribute' do
-    path_attribute = subject['dir']
+  it "has default global dir attribute" do
+    path_attribute = subject["dir"]
     _(path_attribute).wont_be_nil
     _(path_attribute).must_be_kind_of String
   end
 
-  it 'does not have default global sizes attribute' do
-    sizes_attribute = subject['sizes']
+  it "does not have default global sizes attribute" do
+    sizes_attribute = subject["sizes"]
     _(sizes_attribute).must_be_nil
   end
 
-  it 'has default global source attribute' do
-    source_attribute = subject['source']
+  it "has default global source attribute" do
+    source_attribute = subject["source"]
     _(source_attribute).wont_be_nil
     _(source_attribute).must_be_kind_of Hash
-    _(source_attribute['name']).wont_be_nil
-    _(source_attribute['dir']).wont_be_nil
+    _(source_attribute["name"]).wont_be_nil
+    _(source_attribute["dir"]).wont_be_nil
   end
 
   # describe 'targets' do

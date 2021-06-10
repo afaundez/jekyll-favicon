@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'jekyll'
-require 'fixtures/source'
-require 'fixtures/jekyll'
+require "jekyll"
+require "fixtures/source"
+require "fixtures/jekyll"
 
 module Fixtures
   # Site fixture

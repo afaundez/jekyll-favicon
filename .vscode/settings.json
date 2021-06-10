@@ -1,6 +1,7 @@
 {
     "ruby.lint": {
         "reek": true,
-        "rubocop": true
-    }
+        "standard": true
+    },
+    "ruby.useLanguageServer": true
 }

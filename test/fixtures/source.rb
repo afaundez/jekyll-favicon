@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'fixtures/file'
+require "fixtures/file"
 
 module Fixtures
   # Write files in destination

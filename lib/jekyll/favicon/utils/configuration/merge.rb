@@ -39,8 +39,8 @@ module Jekyll
           def self.merge_pair_array(left_array, right_array)
             joint_array = left_array + right_array
             joint_array.group_by { |map| merge_group map }
-                       .collect { |group, values| merge_collect group, values }
-                       .flatten
+              .collect { |group, values| merge_collect group, values }
+              .flatten
           end
 
           def self.merge_group(map, keys = %w[name dir])

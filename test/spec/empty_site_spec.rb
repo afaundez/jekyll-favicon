@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'empty site' do
+describe "empty site" do
   # describe 'before processing' do
   #   fixture :empty
 
@@ -12,11 +12,11 @@ describe 'empty site' do
   #   end
   # end
 
-  describe 'after processing' do
+  describe "after processing" do
     fixture :empty, :process
 
     it "doesn't create favicon files" do
-      favicon_path = @context.destination 'favicon.ico'
+      favicon_path = @context.destination "favicon.ico"
       _(favicon_path).path_wont_exist
     end
   end

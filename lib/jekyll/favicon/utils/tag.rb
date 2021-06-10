@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rexml/document'
+require "rexml/document"
 
 module Jekyll
   module Favicon
@@ -22,8 +22,8 @@ module Jekyll
         end
 
         def self.mutate_iterator(key, value, memo)
-          if key.start_with? '__' then memo.text = value
-          elsif key.start_with? '_' then memo.add_attribute key[1..-1], value
+          if key.start_with? "__" then memo.text = value
+          elsif key.start_with? "_" then memo.add_attribute key[1..], value
           else Tag.mutate_xml Tag.mutate_find_or_create_element(memo, key), value
           end
         end
@@ -42,7 +42,7 @@ module Jekyll
         end
 
         def self.populate_iterator(key, value, memo)
-          if key.start_with? '__' then memo.text = value
+          if key.start_with? "__" then memo.text = value
           elsif (child_key = key.match(/^_(.*)$/))
             memo.add_attribute child_key[1], value
           else build_xml key, memo, value

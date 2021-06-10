@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'liquid'
-require 'jekyll/favicon/static_file'
+require "liquid"
+require "jekyll/favicon/static_file"
 
 module Jekyll
   module Favicon
@@ -9,15 +9,15 @@ module Jekyll
     class Tag < Liquid::Tag
       def render(context)
         context.registers[:site]
-               .static_files
-               .select { |static_file| static_file.is_a? StaticFile }
-               .select(&:taggable?)
-               .collect(&:tags)
-               .flatten
-               .join("\n")
+          .static_files
+          .select { |static_file| static_file.is_a? StaticFile }
+          .select(&:taggable?)
+          .collect(&:tags)
+          .flatten
+          .join("\n")
       end
     end
   end
 end
 
-Liquid::Template.register_tag('favicon', Jekyll::Favicon::Tag)
+Liquid::Template.register_tag("favicon", Jekyll::Favicon::Tag)

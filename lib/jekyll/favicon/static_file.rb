@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'pathname'
-require 'forwardable'
-require 'jekyll/static_file'
-require 'jekyll/favicon/static_file/sourceable'
-require 'jekyll/favicon/static_file/taggable'
-require 'jekyll/favicon/static_file/referenceable'
-require 'jekyll/favicon/utils'
-require 'jekyll/favicon/configuration'
+require "pathname"
+require "forwardable"
+require "jekyll/static_file"
+require "jekyll/favicon/static_file/sourceable"
+require "jekyll/favicon/static_file/taggable"
+require "jekyll/favicon/static_file/referenceable"
+require "jekyll/favicon/utils"
+require "jekyll/favicon/configuration"
 
 module Jekyll
   module Favicon
@@ -23,7 +23,7 @@ module Jekyll
       attr_reader :spec, :site
 
       def initialize(site, spec = {})
-        raise StandardError unless spec.include? 'name'
+        raise StandardError unless spec.include? "name"
 
         @spec = spec
         spec_dir, spec_name = File.split spec_relative_path
@@ -43,9 +43,9 @@ module Jekyll
       end
 
       def href
-        Pathname.new('/')
-                .join(*[site.baseurl, url].compact)
-                .to_s
+        Pathname.new("/")
+          .join(*[site.baseurl, url].compact)
+          .to_s
       end
 
       private
@@ -62,11 +62,11 @@ module Jekyll
       end
 
       def site_dir
-        site_configuration.fetch('dir', '.')
+        site_configuration.fetch("dir", ".")
       end
 
       def site_background
-        site_configuration.fetch('background', 'transparent')
+        site_configuration.fetch("background", "transparent")
       end
 
       def site_configuration
@@ -80,17 +80,17 @@ module Jekyll
       def spec_relative_pathname
         return spec_pathname if spec_pathname.relative?
 
-        pathname.relative_path_from '/'
+        pathname.relative_path_from "/"
       end
 
       def spec_pathname
         Pathname.new(site_dir)
-                .join(*spec_dir_name)
+          .join(*spec_dir_name)
       end
 
       def spec_dir_name
-        spec.values_at('dir', 'name')
-            .compact
+        spec.values_at("dir", "name")
+          .compact
       end
     end
   end

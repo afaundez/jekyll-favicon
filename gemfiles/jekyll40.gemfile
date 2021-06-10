@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'jekyll', '~> 4.0.0'
-gemspec path: '..'
+gem "jekyll", "~> 4.0.0"
+gemspec path: ".."

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'pathname'
-require 'rexml/document'
-require 'fixtures/configuration'
-require 'jekyll/favicon/utils'
+require "pathname"
+require "rexml/document"
+require "fixtures/configuration"
+require "jekyll/favicon/utils"
 
 module Fixtures
   # Write files in destination
@@ -18,8 +18,8 @@ module Fixtures
     end
 
     def self.build(file_type, name, options)
-      is_png_favicon = file_type == :favicon && name.end_with?('.png')
-      return load_fixture_file 'favicon.png' if is_png_favicon
+      is_png_favicon = file_type == :favicon && name.end_with?(".png")
+      return load_fixture_file "favicon.png" if is_png_favicon
 
       send "build_#{file_type}", options
     end
@@ -29,18 +29,18 @@ module Fixtures
       ::Jekyll::Favicon::Utils.merge(defaults, overrides).to_yaml
     end
 
-    def self.build_favicon(overrides = { 'svg' => {} })
+    def self.build_favicon(overrides = {"svg" => {}})
       defaults = Configuration.red_favicon
-      overriden = ::Jekyll::Favicon::Utils.merge defaults['svg'], overrides['svg']
-      ::Jekyll::Favicon::Utils.build_element 'svg', nil, overriden
+      overriden = ::Jekyll::Favicon::Utils.merge defaults["svg"], overrides["svg"]
+      ::Jekyll::Favicon::Utils.build_element "svg", nil, overriden
     end
 
-    def self.build_browserconfig(overrides = { 'browserconfig' => {} })
-      overriden = ::Jekyll::Favicon::Utils.merge Configuration.browserconfig['browserconfig'],
-                                                 overrides['browserconfig']
+    def self.build_browserconfig(overrides = {"browserconfig" => {}})
+      overriden = ::Jekyll::Favicon::Utils.merge Configuration.browserconfig["browserconfig"],
+        overrides["browserconfig"]
       document = REXML::Document.new
-      document << REXML::XMLDecl.new('1.0', 'UTF-8')
-      ::Jekyll::Favicon::Utils.build_element 'browserconfig', document, overriden
+      document << REXML::XMLDecl.new("1.0", "UTF-8")
+      ::Jekyll::Favicon::Utils.build_element "browserconfig", document, overriden
       document
     end
 
@@ -51,7 +51,7 @@ module Fixtures
     end
 
     def self.build_index(_overrides = {})
-      load_fixture_file 'index.html'
+      load_fixture_file "index.html"
     end
 
     def self.load_fixture_file(path)

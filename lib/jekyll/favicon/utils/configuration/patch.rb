@@ -16,7 +16,7 @@ module Jekyll
                            when Hash then :patch_hash
                            when Symbol, String then :patch_value
                            else return value_or_values
-                           end
+            end
             send patch_method, value_or_values, &block
           end
 
@@ -33,7 +33,7 @@ module Jekyll
           end
 
           def self.patch_value_string_symbol(value)
-            value.to_s.start_with?(':') ? value[1..-1].to_sym : value
+            value.to_s.start_with?(":") ? value[1..].to_sym : value
           end
 
           # Patch configuration with the block provided

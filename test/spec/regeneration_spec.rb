@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'favicon regeneration' do
+describe "favicon regeneration" do
   fixture :conventioned, :process
 
-  subject { @context.destination.join 'favicon.png' }
+  subject { @context.destination.join "favicon.png" }
 
-  it 'will not modify files when reprocessing without changes' do
+  it "will not modify files when reprocessing without changes" do
     pre_mtime = File.mtime subject
     @context.site.process
     post_mtime = File.mtime subject
@@ -15,12 +15,12 @@ describe 'favicon regeneration' do
     _(post_mtime).must_equal pre_mtime
   end
 
-  it 'will modify files when reprocessing after modifiying favicon source' do
+  it "will modify files when reprocessing after modifiying favicon source" do
     pre_mtime = File.mtime subject
 
-    basename = 'favicon.svg'
+    basename = "favicon.svg"
     source_path = @context.source.join basename
-    source_overrides = { 'svg' => { 'circle' => { '_fill' => 'blue' } } }
+    source_overrides = {"svg" => {"circle" => {"_fill" => "blue"}}}
     source_overriden = Fixtures::File.build :favicon, basename, source_overrides
     sleep 1 and File.write(source_path, source_overriden)
     @context.site.process
