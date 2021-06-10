@@ -33,6 +33,11 @@ module Jekyll
         size_in_name_regex = /^.*-(\d+x\d+)\..*$/
         name.match size_in_name_regex
       end
+
+      def self.slice_and_compact(hash, keys)
+        compactable = hash.slice(*keys)
+        Utils.compact compactable
+      end
     end
   end
 end

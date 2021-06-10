@@ -72,21 +72,19 @@ module Jekyll
           spec.fetch 'convert', {}
         end
 
+        def convertible_keys
+          convertible_defaults['defaults'].keys
+        end
+
         def convert_normalize(options)
           return {} unless options
 
-          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
-        end
-
-        def convert_defaults
-          convertible_defaults.dig File.extname(path), @extname
+          Utils.slice_and_compact options, convertible_keys
         end
 
         def convert_patch(options)
           merged_options = convert_merge_options options
-          convertible_keys = convertible_defaults['defaults'].keys
-          compactable = merged_options.slice(*convertible_keys)
-          Utils.compact compactable
+          Utils.slice_and_compact merged_options, convertible_keys
         end
 
         def convert_merge_options(options)
