@@ -8,6 +8,7 @@ module Fixtures
   # Site fixture
   module Site
     def self.build(override)
+      override.merge! disable_disk_cache: false
       Fixtures::Jekyll.execute { return ::Jekyll::Site.new ::Jekyll.configuration override }
     end
 
