@@ -11,14 +11,11 @@ module Jekyll
   module Favicon
     include Configuration::Defaults
 
-    def self.configuration(site)
-      Configuration.merged site
-    end
-
     def self.assets(site)
-      configuration(site).fetch('assets', [])
-                         .collect { |attributes| build_asset site, attributes }
-                         .compact
+      Configuration.merged(site)
+                   .fetch('assets', [])
+                   .collect { |attributes| build_asset site, attributes }
+                   .compact
     end
 
     def self.build_asset(site, attributes)

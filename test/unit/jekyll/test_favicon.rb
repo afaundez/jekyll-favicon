@@ -21,38 +21,6 @@ module Jekyll
       assert Gem::Version.correct?(version)
     end
 
-    def test_favicon_has_configuration_method
-      assert_respond_to Favicon, :configuration
-    end
-
-    def test_favicon_configuration_retrieves_defaults_when_site_is_not_valid
-      config = Favicon.configuration nil
-      assert_kind_of Hash, config
-      assert_equal Favicon.defaults, config
-    end
-
-    def test_favicon_configuration_retrieves_defaults_when_site_config_is_empty
-      @site.expect :config, {}
-      config = Favicon.configuration @site
-      assert_equal Favicon.defaults, config
-    end
-
-    def expect_site_with_user_overriden_key
-      overriden_key = 'background'
-      user_overrides = { overriden_key => 'some-background' }
-      @site.expect :config, 'favicon' => user_overrides
-      [overriden_key, user_overrides]
-    end
-
-    def test_favicon_configuration_merge_when_site_config_has_values
-      overriden_key, user_overrides = expect_site_with_user_overriden_key
-      config = Favicon.configuration @site
-      assert_includes config, overriden_key
-      assert_equal user_overrides[overriden_key], config[overriden_key]
-      assert_equal Favicon::Utils.except(Favicon.defaults, overriden_key),
-                   Favicon::Utils.except(config, overriden_key)
-    end
-
     def test_favicon_has_assets_methods
       assert_respond_to Favicon, :assets
     end
@@ -65,7 +33,7 @@ module Jekyll
     end
 
     def test_favicon_assets_retrieves_collection_of_favicon_static_files
-      Favicon.stub :configuration, 'assets' => config_assets do
+      Favicon::Configuration.stub :merged, 'assets' => config_assets do
         assets = Favicon.assets @site
         assert_kind_of Array, assets
         assert_equal(%w[.png .json .xml],
