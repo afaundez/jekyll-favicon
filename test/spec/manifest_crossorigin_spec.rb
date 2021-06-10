@@ -3,13 +3,19 @@
 require 'spec_helper'
 
 describe 'when site defines chrome crossorigin value' do
-  fixture :configured, :process, site: {
-    'favicon' => {
-      'assets' => [{
-          'name' => 'assets/manifest.webmanifest',
-          'source' => 'data/source.json',
-          'tag' => [{ 'link' => { 'href' => :href, 'crossorigin' => 'use-credentials' } }]
-    }]}
+  fixture :configured, :process, config: {
+    name: '_config.yml',
+    options: {
+      'favicon' => {
+        'assets' => [
+          {
+            'name' => 'assets/manifest.webmanifest',
+            'source' => 'data/source.json',
+            'tag' => [{ 'link' => { 'href' => :href, 'crossorigin' => 'use-credentials' } }]
+          }
+        ]
+      }
+    }
   }
 
   subject { REXML::Document.new File.open(index_destination) }

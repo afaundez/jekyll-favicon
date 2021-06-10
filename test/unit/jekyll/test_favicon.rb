@@ -9,12 +9,10 @@ module Jekyll
     def setup
       @site = Minitest::Mock.new
       frontmatter_defaults = Minitest::Mock.new
-      frontmatter_defaults.expect :all, {}, [Object, Object]
-      frontmatter_defaults.expect :all, {}, [Object, Object]
-      frontmatter_defaults.expect :all, {}, [Object, Object]
-      @site.expect :frontmatter_defaults, frontmatter_defaults
-      @site.expect :frontmatter_defaults, frontmatter_defaults
-      @site.expect :frontmatter_defaults, frontmatter_defaults
+      3.times do
+        frontmatter_defaults.expect :all, {}, [Object, Object]
+        @site.expect :frontmatter_defaults, frontmatter_defaults
+      end
     end
 
     def test_favicon_has_version
@@ -39,10 +37,15 @@ module Jekyll
       assert_equal Favicon.defaults, config
     end
 
-    def test_favicon_configuration_merge_when_site_config_has_values
+    def expect_site_with_user_overriden_key
       overriden_key = 'background'
       user_overrides = { overriden_key => 'some-background' }
       @site.expect :config, 'favicon' => user_overrides
+      [overriden_key, user_overrides]
+    end
+
+    def test_favicon_configuration_merge_when_site_config_has_values
+      overriden_key, user_overrides = expect_site_with_user_overriden_key
       config = Favicon.configuration @site
       assert_includes config, overriden_key
       assert_equal user_overrides[overriden_key], config[overriden_key]
@@ -54,20 +57,19 @@ module Jekyll
       assert_respond_to Favicon, :assets
     end
 
-    def test_favicon_assets_retrieves_collection_of_favicon_static_files
+    def config_assets
       3.times { @site.expect :source, {} }
-      config_assets = %w[.png .json .xml .txt].collect do |extname|
-        Hash['name', "test#{extname}", 'source', "source#{extname}"]
+      %w[.png .json .xml .txt].collect do |extname|
+        { 'name' => "test#{extname}", 'source' => "source#{extname}" }
       end
+    end
+
+    def test_favicon_assets_retrieves_collection_of_favicon_static_files
       Favicon.stub :configuration, 'assets' => config_assets do
         assets = Favicon.assets @site
-        refute_nil assets
         assert_kind_of Array, assets
-        refute_empty assets
-        assert_equal 3, assets.size
-        refute_nil assets.find { |asset| asset.spec['name'] == 'test.png' }
-        refute_nil assets.find { |asset| asset.spec['name'] == 'test.json' }
-        refute_nil assets.find { |asset| asset.spec['name'] == 'test.xml' }
+        assert_equal(%w[.png .json .xml],
+                     assets.collect { |asset| File.extname asset.spec['name'] })
       end
     end
 

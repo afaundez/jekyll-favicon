@@ -47,7 +47,6 @@ module Jekyll
 
         # Jekyll::StaticFile method
         # adds dest mtime to list after original write
-        # :reek:ControlParameter
         def write(dest)
           super(dest) && self.class.mtimes[href] = mtime
         end
@@ -84,13 +83,18 @@ module Jekyll
           convertible_defaults.dig File.extname(path), @extname
         end
 
-        # :reek:FeatureEnvy
         def convert_patch(options)
-          %w[density extent].each do |name|
+          merged_options = convert_merge_options options
+          convertible_keys = convertible_defaults['defaults'].keys
+          compactable = merged_options.slice(*convertible_keys)
+          Utils.compact compactable
+        end
+
+        def convert_merge_options(options)
+          %w[density extent].each_with_object(options) do |name, memo|
             method = "convert_patch_#{name}".to_sym
-            options.merge! name => send(method, options[name])
+            memo.merge! name => send(method, options[name])
           end
-          Utils.compact options.slice(*convertible_defaults['defaults'].keys)
         end
 
         def convert_patch_density(density)

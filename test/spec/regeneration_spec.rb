@@ -18,9 +18,11 @@ describe 'favicon regeneration' do
   it 'will modify files when reprocessing after modifiying favicon source' do
     pre_mtime = File.mtime subject
 
-    source_path = @context.source.join 'favicon.svg'
+    basename = 'favicon.svg'
+    source_path = @context.source.join basename
     source_overrides = { 'svg' => { 'circle' => { '_fill' => 'blue' } } }
-    sleep 1 and File.write(source_path, build_site_favicon(source_overrides))
+    source_overriden = Fixtures::File.build :favicon, basename, source_overrides
+    sleep 1 and File.write(source_path, source_overriden)
     @context.site.process
 
     post_mtime = File.mtime subject

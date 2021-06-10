@@ -1,0 +1,9 @@
+---
+svg:
+  _viewBox: 0 0 32 32
+  _xmlns: http://www.w3.org/2000/svg
+  circle:
+    _cx: 16
+    _cy: 16
+    _r: 14
+    _fill: red

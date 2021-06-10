@@ -4,7 +4,14 @@ require 'spec_helper'
 
 describe 'user can change background color' do
   describe 'when source is an SVG' do
-    fixture :conventioned, :process, site: { 'favicon' => { 'background' => 'green' } }
+    fixture :conventioned, :process, config: {
+      name: '_config.yml',
+      options: {
+        'favicon' => {
+          'background' => 'green'
+        }
+      }
+    }
 
     subject do
       img_path = @context.destination 'favicon.png'

@@ -20,7 +20,7 @@ module Jekyll
             tag_name, tag_options = options.first
             tag_defaults = taggable_defaults[tag_name]
             tag_attributes = tag_defaults.merge tag_options
-            tag_build tag_name, patch(tag_attributes)
+            Utils.build_tag tag_name, patch(tag_attributes)
           end
         end
 
@@ -28,12 +28,6 @@ module Jekyll
 
         def tag_spec
           spec.fetch 'tag', []
-        end
-
-        # :reek:UtilityFunction
-        def tag_build(name, attributes = {})
-          config = attributes.transform_keys { |key| "_#{key}" }
-          Jekyll::Favicon::Utils.build_element name, nil, config
         end
 
         def mimetype

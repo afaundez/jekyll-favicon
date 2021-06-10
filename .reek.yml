@@ -1,0 +1,25 @@
+---
+detectors:
+  ControlParameter:
+    exclude:
+      - "Jekyll::Favicon::StaticFile::Convertible#write" # overrides Jekyll::StaticFile method
+  UtilityFunction:
+    exclude:
+      - "Jekyll::Favicon::Generator#generate" # overrides Jekyll::Generator method
+      - "Jekyll::Favicon::Tag#render" # overrides Liquid::Tag method
+      - "Jekyll::Favicon::Utils::Configuration::Compact::ClassMethods#compact" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Configuration::Merge::ClassMethods#merge" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Configuration::Patch::ClassMethods#patch" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Convert::ClassMethods#convert" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Tag::ClassMethods#build_element" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Tag::ClassMethods#build_tag" # TODO: refactor
+      - "Jekyll::Favicon::Utils::Tag::ClassMethods#mutate_element" # TODO: refactor
+  NestedIterators:
+    exclude:
+      - "fixture"
+directories:
+  "test/unit":
+    InstanceVariableAssumption:
+      enabled: false
+    TooManyMethods:
+      enabled: false

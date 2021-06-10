@@ -1,0 +1,13 @@
+require: rubocop-minitest
+
+AllCops:
+    NewCops: enable
+
+Metrics/BlockLength:
+  Exclude:
+    - test/**/test_*.rb
+    - test/**/*_spec.rb
+
+Naming/FileName:
+  Exclude:
+    - lib/jekyll-favicon.rb

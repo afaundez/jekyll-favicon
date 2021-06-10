@@ -12,7 +12,8 @@ describe 'user favicon config overrides favicon defaults' do
   it 'overwrites global assets attribute' do
     subject_assets = subject['assets']
     _(subject_assets).wont_be_nil
-    subject_asset = subject_assets.find { |asset| asset['name'] == 'assets/configured-favicon-128x128.png'}
+    asset_name = 'assets/configured-favicon-128x128.png'
+    subject_asset = subject_assets.find { |asset| asset['name'] == asset_name }
     _(subject_asset).wont_be_nil
     _(subject_asset['source']).must_equal 'images/custom-source.svg'
   end
@@ -32,6 +33,7 @@ describe 'user favicon config overrides favicon defaults' do
   it 'overwrites global source attribute' do
     subject_source = subject['source']
     _(subject_source).wont_be_nil
-    _(subject_source).must_equal({ 'name' => 'custom-source.svg', 'dir' => 'images' })
+    _(subject_source).must_equal 'name' => 'custom-source.svg',
+                                 'dir' => 'images'
   end
 end

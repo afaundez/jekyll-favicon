@@ -7,7 +7,6 @@ module Jekyll
   module Favicon
     # New `favicon` tag include html tags on templates
     class Tag < Liquid::Tag
-      # :reek:UtilityFunction
       def render(context)
         context.registers[:site]
                .static_files

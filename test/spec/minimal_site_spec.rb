@@ -147,7 +147,7 @@ describe 'minimal site' do
     it 'adds a webmanifest link' do
       element = REXML::Element.new 'link'
       element.add_attributes 'href' => '/manifest.webmanifest',
-                              'rel' => 'manifest'
+                             'rel' => 'manifest'
       _(subject).must_include element.to_s
     end
 

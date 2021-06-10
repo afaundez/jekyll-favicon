@@ -1,0 +1,32 @@
+---
+baseurl: blog
+url: http://example.com
+favicon:
+  source: images/custom-source.svg
+  background: black
+  dir: assets
+  assets:
+  - name: assets/configured-favicon-128x128.png
+    source: images/custom-source.svg
+    tag:
+    - link:
+        href: :href
+        crossorigin: use-credentials
+    - meta:
+        name: :name
+    refer:
+    - webmanifest:
+        icons:
+          scr: :href
+    - browserconfig:
+        msapplication:
+          configured:
+            __text: :href
+  - name: assets/configured-browserconfig.xml
+    source: data/source.xml
+  - name: assets/configured-manifest.webmanifest
+    source: data/source.json
+    tag:
+    - link:
+        href: :href
+        crossorigin: use-credentials
