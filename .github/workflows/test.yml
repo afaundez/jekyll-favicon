@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     env:
-      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+      BUNDLE_GEMFILE: test/gemfiles/${{ matrix.gemfile }}.gemfile
     
     runs-on: ${{ matrix.os }}
 
@@ -33,6 +33,6 @@ jobs:
         - ruby-version: '3.0'
           gemfile: jekyll37
 
-        gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41 ]
+        gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41, jekyll42 ]
         os: [ ubuntu-latest ]
-        ruby-version: [ 2.5, 2.6, 2.7, '3.0' ]
+        ruby-version: [ 2.6, 2.7, '3.0' ]
