@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [1.0.0.pre.2] - 2021-05-26
+## [1.0.0.pre.2] - 2021-06-11
 ### Fixed
 - mime time error when starting new project
 
