@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+
+require "pathname"
+require "tmpdir"
+require "jekyll"
+require "jekyll-favicon"
+
+GEM_ROOT = Pathname.new "/workspaces/jekyll-favicon"
+
+Dir.mktmpdir do |source|
+  %w[index.html favicon.svg].each do |basename|
+    template = GEM_ROOT.join "test/fixtures", basename
+    target = File.join source, basename
+    FileUtils.cp template, target
+  end
+  destination = File.join source, "_site"
+  options = {source: source, destination: destination}
+  Jekyll::Commands::Build.process options
+  Jekyll::Commands::Serve.process options
+end
