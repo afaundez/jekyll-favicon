@@ -10,7 +10,7 @@ module Jekyll
       include StaticFile::Convertible
 
       def generable?
-        convertible? && super
+        super && convertible?
       end
 
       def patch(configuration)

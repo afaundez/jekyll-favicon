@@ -3,27 +3,26 @@ defaults: &defaults
   alpha: null
   background: null
   define: null
-  density: null
   extent: null
   gravity: null
   resize: null
-  scale: null
+  size: null
 .svg:
   .png:
     <<: *defaults
     background: :background
-    density: :max
     extent: :auto
     gravity: center
-    scale:
+    resize:
+    size: :auto
   .ico:
     <<: *defaults
     background: :background
     define:
-    density: :max
     extent: :auto
     gravity: center
-    scale:
+    resize:
+    size: :auto
   .svg:
     <<: *defaults
 .png:

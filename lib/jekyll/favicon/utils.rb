@@ -38,6 +38,11 @@ module Jekyll
         compactable = hash.slice(*keys)
         Utils.compact compactable
       end
+
+      def self.odd?(size, separator = "x")
+        size = size.split(separator) if size.is_a? String
+        size.uniq.size == 1
+      end
     end
   end
 end

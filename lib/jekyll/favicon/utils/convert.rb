@@ -18,7 +18,7 @@ module Jekyll
         end
 
         def self.convert_options(convert, options = {})
-          priorities = %w[resize scale]
+          priorities = %w[resize size]
           convert_apply convert, options.slice(*priorities)
           common_options = options.reject { |key| priorities.include? key }
           convert_apply convert, common_options

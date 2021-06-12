@@ -30,11 +30,22 @@ module Jekyll
           end
         end
 
+        def convert_odd_source?
+          img = MiniMagick::Image.open path
+          Utils.odd? img.dimensions
+        end
+
+        def convert_size(size, separator = "x")
+          return size unless convert_odd_source? || Utils.odd?(size)
+          min_dimension = size.split(separator).min
+          [min_dimension, min_dimension].join(separator)
+        end
+
         def sizes
           if (match = Utils.name_to_size(name)) then [match[1]]
           elsif (define = Utils.define_to_size(convert_spec["define"])) then define
           elsif (resize = convert_spec["resize"]) then [resize]
-          elsif (scale = convert_spec["scale"]) then [scale]
+          elsif (size = convert_spec["size"]) then [size]
           end
         end
 
@@ -88,20 +99,17 @@ module Jekyll
         end
 
         def convert_patch_options(options)
-          %w[density extent].each_with_object(options) do |name, memo|
+          %w[size extent].each_with_object(options) do |name, memo|
             method = "convert_patch_option_#{name}".to_sym
             memo[name] = send(method, options[name])
           end
         end
 
-        def convert_patch_option_density(density)
-          case density
-          when :max
-            length = sizes.collect { |size| size.split("x").collect(&:to_i) }
-              .flatten
-              .max
-            length * 3
-          else density
+        def convert_patch_option_size(size)
+          case size
+          when :auto
+            convert_size size if (size = sizes.first)
+          else size
           end
         end
 

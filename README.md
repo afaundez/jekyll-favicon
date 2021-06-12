@@ -28,6 +28,7 @@ sudo apt install librsvg2-bin
 ```
 
 You may need to install ImageMagick after installing the RSVG renderer.
+
 Check the devcontainer's [Dockerfile](.devcontainer/Dockerfile) for more practical details.
 
 ## Installation
@@ -117,12 +118,11 @@ The convert configuration is specific for each type of convertion: SVG to ICO/PN
 |----------------|---------------|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
 | alpha          | string        | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick alpha docs](https://imagemagick.org/script/command-line-options.php#alpha)           |
 | background     | string/symbol | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick background docs](https://imagemagick.org/script/command-line-options.php#background) |
-| define         | string/symbol | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick define docs](https://imagemagick.org/script/command-line-options.php#define)         |
-| density        | string/symbol | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick density docs](https://imagemagick.org/script/command-line-options.php#density)       |
+| define         | string/symbol | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick define docs](https://imagemagick.org/script/command-line-options.php#define)         |      |
 | extent         | string/symbol | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick extent docs](https://imagemagick.org/script/command-line-options.php#extent)         |
 | gravity        | string        | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick gravity docs](https://imagemagick.org/script/command-line-options.php#gravity)       |
 | resize         | string        | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick resize docs](https://imagemagick.org/script/command-line-options.php#resize)         |
-| scale          | string        | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick scale docs](https://imagemagick.org/script/command-line-options.php#scale)           |
+| size          | string        | see [convert config](config/jekyll/favicon/static_file/convertible.yml) | see [imagemagick size docs](https://imagemagick.org/script/command-line-options.php#size)           |
 
 Symbol values:
 
