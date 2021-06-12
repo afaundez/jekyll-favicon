@@ -11,7 +11,9 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends imagemagick librsvg2-bin
+    && apt-get -y install librsvg2-bin
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install imagemagick
 
 # [Optional] Uncomment this line to install additional gems.
 RUN gem install reek standard webrick

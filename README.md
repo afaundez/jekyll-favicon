@@ -27,6 +27,7 @@ If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-
 sudo apt install librsvg2-bin
 ```
 
+You may need to install ImageMagick after installing the RSVG renderer.
 Check the devcontainer's [Dockerfile](.devcontainer/Dockerfile) for more practical details.
 
 ## Installation
