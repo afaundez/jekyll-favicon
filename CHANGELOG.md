@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.0.pre.3] - 2021-06-12
+### Fixed
+- fix SVG to PNG quality
+
 ## [1.0.0.pre.2] - 2021-06-11
 ### Fixed
 - mime time error when starting new project
