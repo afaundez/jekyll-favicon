@@ -2,17 +2,17 @@
 
 This [Jekyll](https://jekyllrb.com) plugin adds:
 
-- a generator for
-  - an ICO favicon
-  - PNG favicons
-  - SVG favicons
-  - a [webmanifest](https://developer.mozilla.org/en-US/docs/Web/Manifest)
-  - a [browser configuration schema](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29)
-- a tag to generate all the corresponding links and metadata needed in the head tag
+- a generator for favicons (ICO, PNG, SVG), [webmanifests]((https://developer.mozilla.org/en-US/docs/Web/Manifest)), and [browserconfig]((https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn320426%28v=vs.85%29)) files
+- a tag for the rendinering of all the corresponding links and metadata needed
+
+Tested with:
+
+- Jekyll 3.6 to 3.7, ruby 2.6 to 2.7
+- Jekyll 3.8 to 4.2, ruby 2.6 to 3.0
 
 ## Prerequisites
 
-This plugin assumes you have [ImageMagick](http://www.imagemagick.org) installed.
+### [ImageMagick](http://www.imagemagick.org)
 
 Check if it is already installed by running:
 
@@ -21,13 +21,15 @@ $ convert --version | grep Version
 Version: ImageMagick 7.0.8-46 Q16 x86_64 2019-05-19 https://imagemagick.org
 ```
 
-If you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
+### [librsvg](https://gitlab.gnome.org/GNOME/librsvg) (optional)
+
+If you are having pixeled icons or if you have a [problem converting SVG files](https://github.com/afaundez/jekyll-favicon/issues/9#issuecomment-473862194), you may need to install the package `librsvg2-bin`. For example, in Ubuntu/Debian systems:
 
 ```sh
 sudo apt install librsvg2-bin
 ```
 
-You may need to install ImageMagick after installing the RSVG renderer.
+You may need to install `librsvg` before installing the RSVG renderer.
 
 Check the devcontainer's [Dockerfile](.devcontainer/Dockerfile) for more practical details.
 
@@ -41,14 +43,10 @@ gem 'jekyll-favicon', '~> 1.0.0.pre.3', group: :jekyll_plugins
 
 ## Usage
 
-If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [this running example](https://afaundez.gitlab.io/jekyll-favicon-example/) hosted by [GitLab](https://about.gitlab.com/features/pages/).
+If you are going to use this plugin in a hosted build/service, be sure that they include your plugins as part of the process. You can check [gh-pages](/afaundez/jekyll-favicon/tree/gh-pages) branch for a working example.
 
-As [Github Pages](https://pages.github.com) build doesn't load custom plugins, this plugin won't work. As an alternative, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
+As [Github Pages](https://pages.github.com) doesn't load custom plugins, this plugin won't be included on the build process. As a workaround, you can build your site and push all files (for example, build to `docs`, version it and push it, although this works only for project pages).
 
-Tested with:
-
-- Jekyll 3.6 to 3.7, ruby 2.6 to 2.7
-- Jekyll 3.8 to 4.2, ruby 2.6 to 3.0
 
 ### Generator
 
@@ -141,10 +139,8 @@ The refer configuration is a list of hashes with only one key, `webmanifest` or 
 
 If you want to add something, just make a PR. There is a lot to do:
 
-- Define and check SVG/PNG attributes before execute
-- Review SVG to PNG conversion, it working as it is, but some parameters are hardcoded and may only work with the samples
-- Encapsulate image conversion
-- Tests everywhere
+- Tests more cases
+- Keep updated the favicons and files needed with modern browsers
 
 ## Contributing
 
