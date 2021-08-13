@@ -4,17 +4,21 @@ All notable changes to Jekyll-Favicon will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-## [1.0.0.pre.3] - 2021-06-12
-### Fixed
-- fix SVG to PNG quality
-
-## [1.0.0.pre.2] - 2021-06-11
+## [1.0.0] - 2021-08-13
+### Added
+- gitignore Gemfile.lock
+- gitignore .jekyll-cache
+- Add Test github action workflow
+- Regenration
+### Changed
+- Move supported ruby versions to 2.5
+- Update nokogiri, minitest, and minitest-hooks gemspec's development dependencies
+- Update mini_magick gemspec's runtime dependencies
+- Update travis rvm versions
+- Rename Gem Push github action workflow
 ### Fixed
 - mime time error when starting new project
-
-## [1.0.0.pre.1] - 2021-05-26
+- fix SVG to PNG quality
 ### Removed
 - Delete Gemfile.lock
 - Delete .ruby-version
@@ -23,17 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove graphicmagick from travis config
 - Remove travis-ci config
 - Remove nokogiri gemspec development dependency
-### Changed
-- Move supported ruby versions to 2.5
-- Update nokogiri, minitest, and minitest-hooks gemspec's development dependencies
-- Update mini_magick gemspec's runtime dependencies
-- Update travis rvm versions
-- Rename Gem Push github action workflow
-### Added
-- gitignore Gemfile.lock
-- gitignore .jekyll-cache
-- Add Test github action workflow
-- Regenration
 
 ## [0.2.9] - 2021-02-10
 ### Added
