@@ -34,6 +34,6 @@ describe "user favicon config overrides favicon defaults" do
     subject_source = subject["source"]
     _(subject_source).wont_be_nil
     _(subject_source).must_equal "name" => "custom-source.svg",
-                                 "dir" => "images"
+      "dir" => "images"
   end
 end
