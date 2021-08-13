@@ -1,15 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     colorator (1.1.0)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     em-websocket (0.5.2)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     eventmachine (1.2.7)
-    ffi (1.15.1)
+    ffi (1.15.3)
     forwardable-extended (2.6.0)
     http_parser.rb (0.6.0)
     i18n (1.8.10)
@@ -29,7 +29,7 @@ GEM
       rouge (~> 3.0)
       safe_yaml (~> 1.0)
       terminal-table (~> 2.0)
-    jekyll-favicon (1.0.0.pre.1)
+    jekyll-favicon (1.0.0.pre.3)
       jekyll (>= 3.0, < 5.0)
       mini_magick (~> 4.11)
       rexml (~> 3.2, >= 3.2.5)
@@ -46,7 +46,7 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     liquid (4.0.3)
-    listen (3.5.1)
+    listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     mercenary (0.4.0)
@@ -69,16 +69,14 @@ GEM
     terminal-table (2.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     unicode-display_width (1.7.0)
-    webrick (1.7.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   jekyll (~> 4.0)
-  jekyll-favicon (~> 1.0.0.pre.1)
+  jekyll-favicon (~> 1.0.0.pre.3)
   minima (~> 2.5)
-  webrick
 
 BUNDLED WITH
    2.2.15
