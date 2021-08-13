@@ -11,12 +11,12 @@ This is an example of a Jekyll site using [Jekyll Favicon Plugin](https://github
 Add the Jekyll Favicon gem at your [Gemfile](https://github.com/afaundez/jekyll-favicon/blob/gh-pages/Gemfile#L7) and bundle!
 
 ```ruby
-gem 'jekyll-favicon', '~> 1.0.0.pre.1', group: :jekyll_plugins
+gem 'jekyll-favicon', '~> 1.0.0.pre.3', group: :jekyll_plugins
 ```
 
 ## Second: the favicon template
 
-Put an SVG like [<img src='https://github.com/afaundez/jekyll-favicon/raw/gh-pages/favicon.svg?sanitize=1' alt='Favicon SVG' width='14' style='vertical-align: baseline;'>](https://github.com/afaundez/jekyll-favicon/blob/gh-pages/favicon.svg) at the root of your project and name it `favicon.svg`.
+Put an SVG like [<img src='https://github.com/afaundez/jekyll-favicon/raw/gh-pages/favicon.svg?sanitize=1' alt='Favicon SVG example' width='14' style='vertical-align: baseline;'>](https://github.com/afaundez/jekyll-favicon/blob/gh-pages/favicon.svg) at the root of your project and name it `favicon.svg`.
 
 | favicon.ico                                        | favicon.png                                        | safari-pinned-tab.svg                                                  |
 |----------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------|
