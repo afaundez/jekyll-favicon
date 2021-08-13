@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Jekyll Favicon | This site is a working example of the jekyll-favicon plugin.</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Jekyll Favicon" />
+<meta name="author" content="Alvaro Faundez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This site is a working example of the jekyll-favicon plugin." />
+<meta property="og:description" content="This site is a working example of the jekyll-favicon plugin." />
+<meta property="og:site_name" content="Jekyll Favicon" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Jekyll Favicon" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Alvaro Faundez"},"description":"This site is a working example of the jekyll-favicon plugin.","url":"/jekyll-favicon/","@type":"WebSite","headline":"Jekyll Favicon","name":"Jekyll Favicon","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<style type="text/css" rel="stylesheet">
+    td img {
+      border: solid 1px lightgray;
+      background-image: linear-gradient(45deg, lightgray 25%, transparent 25%),
+                        linear-gradient(135deg, lightgray 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, lightgray 75%),
+                        linear-gradient(135deg, transparent 75%, lightgray 75%);
+      background-size:25px 25px; /* Must be a square */
+      background-position:0 0, 12.5px 0, 12.5px -12.5px, 0px 12.5px;
+    }
+  </style>
+  <link rel="stylesheet" href="/jekyll-favicon/assets/main.css">
+  <link href='/jekyll-favicon/favicon.ico' rel='shortcut icon' sizes='36x36 24x24 16x16' type='image/x-icon'/>
+<link href='/jekyll-favicon/favicon.png' rel='icon' sizes='196x196' type='image/png'/>
+<link color='transparent' href='/jekyll-favicon/safari-pinned-tab.svg' rel='mask-icon'/>
+<meta content='/jekyll-favicon/mstile-icon-128x128.png' name='msapplication-TileImage'/>
+<meta content='transparent' name='msapplication-TileColor'/>
+<link href='/jekyll-favicon/manifest.webmanifest' rel='manifest'/>
+<meta content='/jekyll-favicon/browserconfig.xml' name='msapplication-config'/>
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/jekyll-favicon/">Jekyll Favicon</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home"><p>This is an example of a Jekyll site using <a href="https://github.com/afaundez/jekyll-favicon">Jekyll Favicon Plugin</a>.</p>
+
+<h1 id="how-does-this-work">How does this work?</h1>
+
+<h2 id="first-the-favicon-gem">First: the favicon gem</h2>
+
+<p>Add the Jekyll Favicon gem at your <a href="https://github.com/afaundez/jekyll-favicon/blob/gh-pages/Gemfile#L7">Gemfile</a> and bundle!</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'jekyll-favicon'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.0.pre.3'</span><span class="p">,</span> <span class="ss">group: :jekyll_plugins</span>
+</code></pre></div></div>
+
+<h2 id="second-the-favicon-template">Second: the favicon template</h2>
+
+<p>Put an SVG like <a href="https://github.com/afaundez/jekyll-favicon/blob/gh-pages/favicon.svg"><img src="https://github.com/afaundez/jekyll-favicon/raw/gh-pages/favicon.svg?sanitize=1" alt="Favicon SVG example" width="14" style="vertical-align: baseline;" /></a> at the root of your project and name it <code class="language-plaintext highlighter-rouge">favicon.svg</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>favicon.ico</th>
+      <th>favicon.png</th>
+      <th>safari-pinned-tab.svg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/jekyll-favicon/favicon.ico" alt="favicon.ico" /></td>
+      <td><img src="/jekyll-favicon/favicon.png" alt="favicon.png" /></td>
+      <td><img src="/jekyll-favicon/safari-pinned-tab.svg" alt="safari-pinned-tab.svg" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>android-chrome-192x192.png</th>
+      <th>android-chrome-512x512.png</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/jekyll-favicon/android-chrome-192x192.png" alt="android-chrome-192x192.png" /></td>
+      <td><img src="/jekyll-favicon/android-chrome-512x512.png" alt="android-chrome-512x512.png" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>mstile-icon-128x128.png</th>
+      <th>mstile-icon-270x270.png</th>
+      <th>mstile-icon-558x270.png</th>
+      <th>mstile-icon-558x558.png</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/jekyll-favicon/mstile-icon-128x128.png" alt="mstile-icon-128x128.png" /></td>
+      <td><img src="/jekyll-favicon/mstile-icon-270x270.png" alt="mstile-icon-270x270.png" /></td>
+      <td><img src="/jekyll-favicon/mstile-icon-558x270.png" alt="mstile-icon-558x270.png" /></td>
+      <td><img src="/jekyll-favicon/mstile-icon-558x558.png" alt="mstile-icon-558x558.png" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Also, It will generate or update a <a href="/jekyll-favicon/browserconfig.xml">browserconfig</a> and a <a href="/jekyll-favicon/manifest.webmanifest">webmanifest</a>.</p>
+
+<h2 id="last-the-favicon-links-and-meta">Last: the favicon links and meta</h2>
+
+<p>In order to load those files, a new Liquid tag <code class="language-plaintext highlighter-rouge">favicon</code> is available. Use it in your head tag:</p>
+
+<!--  -->
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+  <span class="c">&lt;!-- your other head content goes here --&gt;</span>
+  {% favicon %}
+<span class="nt">&lt;/head&gt;</span>
+</code></pre></div></div>
+<!--  -->
+
+<p>Jekyll Favicon will generate tags for all the new resources:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">'/favicon.ico'</span> <span class="na">rel=</span><span class="s">'shortcut icon'</span> <span class="na">sizes=</span><span class="s">'36x36 24x24 16x16'</span> <span class="na">type=</span><span class="s">'image/x-icon'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">'/favicon.png'</span> <span class="na">rel=</span><span class="s">'icon'</span> <span class="na">sizes=</span><span class="s">'196x196'</span> <span class="na">type=</span><span class="s">'image/png'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">color=</span><span class="s">'transparent'</span> <span class="na">href=</span><span class="s">'/safari-pinned-tab.svg'</span> <span class="na">rel=</span><span class="s">'mask-icon'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">'/mstile-icon-128x128.png'</span> <span class="na">name=</span><span class="s">'msapplication-TileImage'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">'transparent'</span> <span class="na">name=</span><span class="s">'msapplication-TileColor'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">'/manifest.webmanifest'</span> <span class="na">rel=</span><span class="s">'manifest'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">'/browserconfig.xml'</span> <span class="na">name=</span><span class="s">'msapplication-config'</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>Use yout browser to inspect the source code of this page, specifically, the content of the <code class="language-plaintext highlighter-rouge">head</code> tag.</p>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-favicon/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Jekyll Favicon</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Alvaro Faundez</li><li><a class="u-email" href="mailto:alvaro@faundez.net">alvaro@faundez.net</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/afaundez"><svg class="svg-icon"><use xlink:href="/jekyll-favicon/assets/minima-social-icons.svg#github"></use></svg> <span class="username">afaundez</span></a></li><li><a href="https://www.twitter.com/afaundez"><svg class="svg-icon"><use xlink:href="/jekyll-favicon/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">afaundez</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This site is a working example of the jekyll-favicon plugin.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{
+  "icons": [
+    {
+      "src": "/jekyll-favicon/android-chrome-192x192.png"
+    },
+    {
+      "src": "/jekyll-favicon/android-chrome-512x512.png"
+    }
+  ]
+}
