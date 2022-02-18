@@ -24,7 +24,7 @@ module Jekyll
         def self.load_file(*parts)
           path = Favicon::ROOT.join(*parts).to_s
           path = "#{path}.yml"
-          YAML.load_file path
+          YAML.load_file path, aliases: true
         end
 
         def self.define_defaults(base, method_name, &block)
