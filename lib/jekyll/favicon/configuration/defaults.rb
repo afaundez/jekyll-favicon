@@ -24,7 +24,12 @@ module Jekyll
         def self.load_file(*parts)
           path = Favicon::ROOT.join(*parts).to_s
           path = "#{path}.yml"
-          YAML.load_file path, aliases: true
+          # Handle Psych 3 and 4
+          begin
+            YAML.load_file path, aliases: true
+          rescue ArgumentError
+            YAML.load_file path
+          end
         end
 
         def self.define_defaults(base, method_name, &block)
