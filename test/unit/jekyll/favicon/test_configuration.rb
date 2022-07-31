@@ -78,7 +78,7 @@ module Jekyll
       end
 
       def expect_site_config(config = {})
-        @site.expect :config, "favicon" => config
+        @site.expect :config, {"favicon" => config}
         config
       end
     end
