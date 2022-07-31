@@ -38,7 +38,7 @@ module Jekyll
       def setup_site_and_context
         @site = MiniTest::Mock.new
         @context = MiniTest::Mock.new
-        @context.expect :registers, site: @site
+        @context.expect :registers, {site: @site}
       end
 
       def populate_site_static_files
