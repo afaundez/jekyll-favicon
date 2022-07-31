@@ -33,7 +33,7 @@ module Jekyll
     end
 
     def test_favicon_assets_retrieves_collection_of_favicon_static_files
-      Favicon::Configuration.stub :merged, "assets" => config_assets do
+      Favicon::Configuration.stub :merged, {"assets" => config_assets} do
         assets = Favicon.assets @site
         assert_kind_of Array, assets
         assert_equal(%w[.png .json .xml],

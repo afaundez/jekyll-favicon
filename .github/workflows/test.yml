@@ -32,7 +32,11 @@ jobs:
           gemfile: jekyll36
         - ruby-version: '3.0'
           gemfile: jekyll37
+        - ruby-version: '3.1'
+          gemfile: jekyll36
+        - ruby-version: '3.1'
+          gemfile: jekyll37
 
         gemfile: [ jekyll36, jekyll37, jekyll38, jekyll39, jekyll40, jekyll41, jekyll42 ]
         os: [ ubuntu-latest ]
-        ruby-version: [ 2.6, 2.7, '3.0' ]
+        ruby-version: [ 2.6, 2.7, '3.0', '3.1' ]
