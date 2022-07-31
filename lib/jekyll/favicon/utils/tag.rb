@@ -24,7 +24,8 @@ module Jekyll
         def self.mutate_iterator(key, value, memo)
           if key.start_with? "__" then memo.text = value
           elsif key.start_with? "_" then memo.add_attribute key[1..], value
-          else Tag.mutate_xml Tag.mutate_find_or_create_element(memo, key), value
+          else
+            Tag.mutate_xml Tag.mutate_find_or_create_element(memo, key), value
           end
         end
 
@@ -45,7 +46,8 @@ module Jekyll
           if key.start_with? "__" then memo.text = value
           elsif (child_key = key.match(/^_(.*)$/))
             memo.add_attribute child_key[1], value
-          else build_xml key, memo, value
+          else
+            build_xml key, memo, value
           end
         end
 

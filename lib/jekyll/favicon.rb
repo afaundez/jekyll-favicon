@@ -20,8 +20,8 @@ module Jekyll
 
     def self.build_asset(site, attributes)
       asset_class = case File.extname attributes["name"]
-                    when ".ico", ".png", ".svg" then StaticGraphicFile
-                    when ".webmanifest", ".json", ".xml" then StaticDataFile
+      when ".ico", ".png", ".svg" then StaticGraphicFile
+      when ".webmanifest", ".json", ".xml" then StaticDataFile
       end
       asset_class&.new site, attributes
     end

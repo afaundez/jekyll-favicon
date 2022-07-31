@@ -12,10 +12,10 @@ module Jekyll
 
           def self.patch_unknown(value_or_values, &block)
             patch_method = case value_or_values
-                           when Array then :patch_array
-                           when Hash then :patch_hash
-                           when Symbol, String then :patch_value
-                           else return value_or_values
+            when Array then :patch_array
+            when Hash then :patch_hash
+            when Symbol, String then :patch_value
+            else return value_or_values
             end
             send patch_method, value_or_values, &block
           end

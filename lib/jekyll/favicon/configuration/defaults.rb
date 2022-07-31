@@ -33,7 +33,7 @@ module Jekyll
         end
 
         def self.define_defaults(base, method_name, &block)
-          base.define_singleton_method("defaults", &block)
+          base.define_singleton_method(:defaults, &block)
           define_method(method_name, &block)
         end
 

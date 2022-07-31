@@ -15,11 +15,11 @@ module Jekyll
 
         def mutation
           refers = case @extname
-                   when ".xml"
-                     mutation_refers.select { |refer| refer.key? "browserconfig" }
-                   else
-                     mutation_refers.collect { |refer| refer["webmanifest"] }
-                       .compact
+          when ".xml"
+            mutation_refers.select { |refer| refer.key? "browserconfig" }
+          else
+            mutation_refers.collect { |refer| refer["webmanifest"] }
+              .compact
           end
           patch(Utils.merge(*refers) || {})
         end
