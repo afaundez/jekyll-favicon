@@ -8,7 +8,7 @@ This [Jekyll](https://jekyllrb.com) plugin adds:
 Tested with:
 
 - Jekyll 3.6 to 3.7, ruby 2.6 to 2.7
-- Jekyll 3.8 to 4.2, ruby 2.6 to 3.0
+- Jekyll 3.8 to 4.2, ruby 2.6 to 3.1
 
 ## Prerequisites
 
